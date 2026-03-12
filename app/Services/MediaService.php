@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\MediaItemModel;
 use App\Repositories\Interfaces\MediaRepositoryInterface;
 use App\Services\Interfaces\MediaServiceInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class MediaService implements MediaServiceInterface
 {
@@ -19,15 +19,26 @@ class MediaService implements MediaServiceInterface
         return $this->mediaRepository->paginate($filters);
     }
 
-    public function upload(UploadedFile $file): Media
+    public function upload(UploadedFile $file, int $userId): MediaItemModel
     {
-        // Standalone media uploads are handled via a dedicated "media" model
-        // For now, return a placeholder — fully wired in Phase 8
-        throw new \RuntimeException('Media upload not yet implemented.');
+        $item = $this->mediaRepository->create([
+            'title' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+            'uploaded_by' => $userId,
+        ]);
+
+        $item->addMedia($file)
+            ->toMediaCollection('files');
+
+        return $item->fresh('media');
     }
 
-    public function delete(Media $media): void
+    public function update(MediaItemModel $item, array $data): MediaItemModel
     {
-        $this->mediaRepository->delete($media);
+        return $this->mediaRepository->update($item, $data);
+    }
+
+    public function delete(MediaItemModel $item): void
+    {
+        $this->mediaRepository->delete($item);
     }
 }

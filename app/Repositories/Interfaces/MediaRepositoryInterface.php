@@ -2,14 +2,18 @@
 
 namespace App\Repositories\Interfaces;
 
+use App\Models\MediaItemModel;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 interface MediaRepositoryInterface
 {
     public function paginate(array $filters): LengthAwarePaginator;
 
-    public function find(int $id): ?Media;
+    public function find(int $id): ?MediaItemModel;
 
-    public function delete(Media $media): void;
+    public function create(array $data): MediaItemModel;
+
+    public function update(MediaItemModel $item, array $data): MediaItemModel;
+
+    public function delete(MediaItemModel $item): void;
 }

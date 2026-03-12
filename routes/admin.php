@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\TagController;
@@ -43,4 +44,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/tags/{tag}/edit', [TagController::class, 'edit'])->name('tags.edit');
     Route::put('/tags/{tag}', [TagController::class, 'update'])->name('tags.update');
     Route::delete('/tags/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
+
+    // Media
+    Route::get('/media', [MediaController::class, 'index'])->name('media.index');
+    Route::get('/media/browse', [MediaController::class, 'browse'])->name('media.browse');
+    Route::post('/media', [MediaController::class, 'store'])->name('media.store');
+    Route::put('/media/{mediaItem}', [MediaController::class, 'update'])->name('media.update');
+    Route::delete('/media/{mediaItem}', [MediaController::class, 'destroy'])->name('media.destroy');
 });
