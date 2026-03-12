@@ -14,5 +14,7 @@ interface TagServiceInterface
 
     public function create(array $data): TagModel;
 
+    public function update(TagModel $tag, array $data): TagModel;
+
     public function delete(TagModel $tag): void;
 }

@@ -18,6 +18,7 @@ class TagRepository implements TagRepositoryInterface
     {
         return TagModel::query()
             ->withCount('posts')
+            ->when($filters['search'] ?? null, fn ($q, $s) => $q->where('name', 'like', "%{$s}%"))
             ->orderBy('name')
             ->paginate(config('cms.per_page.pages'));
     }
@@ -30,6 +31,13 @@ class TagRepository implements TagRepositoryInterface
     public function create(array $data): TagModel
     {
         return TagModel::create($data);
+    }
+
+    public function update(TagModel $tag, array $data): TagModel
+    {
+        $tag->update($data);
+
+        return $tag->fresh();
     }
 
     public function delete(TagModel $tag): void
