@@ -1,0 +1,4 @@
+@import 'tailwindcss';
+
+@source '../js/**/*.vue';
+@source '../js/**/*.js';
