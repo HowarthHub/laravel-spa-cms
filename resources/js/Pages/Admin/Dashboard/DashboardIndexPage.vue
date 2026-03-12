@@ -122,8 +122,7 @@ const statusBadge = (s) => ({
                     </div>
                     <div v-if="recentEnquiries.length" class="divide-y divide-gray-200 dark:divide-gray-700">
                         <Link v-for="enquiry in recentEnquiries" :key="enquiry.id" :href="`/admin/enquiries/${enquiry.id}`"
-                            class="flex items-center justify-between px-6 py-3 hover:bg-gray-50 dark:hover:bg-gray-700"
-                            :class="{ 'bg-blue-50/50 dark:bg-blue-900/20': enquiry.status === 'new' }">
+                            class="flex items-center justify-between px-6 py-3 hover:bg-gray-50 dark:hover:bg-gray-700">
                             <div class="min-w-0 flex-1">
                                 <p class="truncate text-sm font-medium text-gray-900 dark:text-gray-100" :class="{ 'font-semibold': enquiry.status === 'new' }">
                                     {{ enquiry.name }}

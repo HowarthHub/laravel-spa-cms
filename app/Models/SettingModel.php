@@ -2,11 +2,21 @@
 
 namespace App\Models;
 
+use Database\Factories\SettingModelFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class SettingModel extends Model
 {
+    /** @use HasFactory<SettingModelFactory> */
+    use HasFactory;
+
+    protected static function newFactory(): SettingModelFactory
+    {
+        return SettingModelFactory::new();
+    }
+
     protected $table = 'settings';
 
     protected $fillable = [

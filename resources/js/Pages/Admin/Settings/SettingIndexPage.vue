@@ -7,6 +7,7 @@ import MediaPickerComponent from '@/Components/Admin/Forms/MediaPickerComponent.
 
 const props = defineProps({
     settings: Object,
+    pages: Array,
 });
 
 const tabs = [
@@ -126,6 +127,19 @@ const groupFields = computed(() => {
                                 rows="4"
                                 class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm dark:text-gray-100 shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none"
                             />
+
+                            <!-- Homepage page picker -->
+                            <select
+                                v-else-if="field.key === 'general.homepage'"
+                                v-model="form.settings[field.key]"
+                                class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm dark:text-gray-100 shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none"
+                            >
+                                <option value="">None</option>
+                                <option v-for="page in pages" :key="page.id" :value="String(page.id)">{{ page.title }}</option>
+                            </select>
+                            <p v-if="field.key === 'general.homepage'" class="text-xs text-gray-400 dark:text-gray-500">
+                                The selected page will be served at / and its slug will be hidden
+                            </p>
 
                             <!-- Text input (default) -->
                             <input

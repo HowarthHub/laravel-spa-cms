@@ -2,11 +2,21 @@
 
 namespace App\Models;
 
+use Database\Factories\MenuModelFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class MenuModel extends Model
 {
+    /** @use HasFactory<MenuModelFactory> */
+    use HasFactory;
+
+    protected static function newFactory(): MenuModelFactory
+    {
+        return MenuModelFactory::new();
+    }
+
     protected $table = 'menus';
 
     protected $fillable = [

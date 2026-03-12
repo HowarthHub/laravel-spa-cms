@@ -8,6 +8,7 @@ import SeoPanelComponent from '@/Components/Admin/Forms/SeoPanelComponent.vue';
 import PublishPanelComponent from '@/Components/Admin/Forms/PublishPanelComponent.vue';
 import MediaPickerComponent from '@/Components/Admin/Forms/MediaPickerComponent.vue';
 import TagInputComponent from '@/Components/Admin/Forms/TagInputComponent.vue';
+import CategoryInputComponent from '@/Components/Admin/Forms/CategoryInputComponent.vue';
 
 const props = defineProps({
     post: Object,
@@ -17,6 +18,7 @@ const props = defineProps({
 
 const form = useForm({
     title: props.post.title,
+    slug: props.post.slug || '',
     content: props.post.content,
     excerpt: props.post.excerpt || '',
     status: props.post.status,
@@ -89,13 +91,7 @@ const submit = () => {
                     />
 
                     <div class="rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
-                            <select v-model="form.category_ids" multiple
-                                class="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none h-28 dark:bg-gray-700 dark:text-gray-100">
-                                <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
-                            </select>
-                        </div>
+                        <CategoryInputComponent v-model="form.category_ids" :available-categories="categories" />
 
                         <TagInputComponent v-model="form.tag_ids" :available-tags="tags" />
                     </div>
