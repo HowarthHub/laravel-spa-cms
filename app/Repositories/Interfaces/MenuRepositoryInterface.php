@@ -15,5 +15,7 @@ interface MenuRepositoryInterface
 
     public function create(array $data): MenuModel;
 
+    public function update(MenuModel $menu, array $data): MenuModel;
+
     public function delete(MenuModel $menu): void;
 }

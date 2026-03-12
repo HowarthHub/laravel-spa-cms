@@ -28,6 +28,13 @@ class MenuRepository implements MenuRepositoryInterface
         return MenuModel::create($data);
     }
 
+    public function update(MenuModel $menu, array $data): MenuModel
+    {
+        $menu->update($data);
+
+        return $menu->fresh();
+    }
+
     public function delete(MenuModel $menu): void
     {
         $menu->delete();

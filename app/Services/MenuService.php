@@ -42,6 +42,11 @@ class MenuService implements MenuServiceInterface
         return $this->menuRepository->create($data);
     }
 
+    public function update(MenuModel $menu, array $data): MenuModel
+    {
+        return $this->menuRepository->update($menu, $data);
+    }
+
     public function delete(MenuModel $menu): void
     {
         $this->menuRepository->delete($menu);
