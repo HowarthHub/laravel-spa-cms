@@ -23,11 +23,15 @@ class HandleInertiaRequests extends Middleware
                 'roles' => $request->user()?->getRoleNames() ?? [],
                 'permissions' => $request->user()?->getAllPermissions()->pluck('name') ?? [],
             ],
+            'darkMode' => $request->user()?->dark_mode ?? true,
             'flash' => [
                 'success' => session('success'),
                 'error' => session('error'),
                 'warning' => session('warning'),
             ],
+            'enquiryCount' => $request->user()
+                ? \App\Models\ContactEnquiryModel::where('status', 'new')->count()
+                : 0,
         ];
     }
 }

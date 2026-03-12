@@ -25,19 +25,19 @@ watch(hasFlash, (val) => {
         <div v-if="visible && hasFlash" class="mb-4">
             <div
                 v-if="success"
-                class="rounded-md bg-green-50 border border-green-200 p-4 text-sm text-green-700"
+                class="rounded-md bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 p-4 text-sm text-green-700 dark:text-green-300"
             >
                 {{ success }}
             </div>
             <div
                 v-else-if="error"
-                class="rounded-md bg-red-50 border border-red-200 p-4 text-sm text-red-700"
+                class="rounded-md bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 p-4 text-sm text-red-700 dark:text-red-300"
             >
                 {{ error }}
             </div>
             <div
                 v-else-if="warning"
-                class="rounded-md bg-yellow-50 border border-yellow-200 p-4 text-sm text-yellow-700"
+                class="rounded-md bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 p-4 text-sm text-yellow-700 dark:text-yellow-300"
             >
                 {{ warning }}
             </div>

@@ -26,6 +26,14 @@ class ProfileController extends Controller
         return redirect()->route('admin.profile.edit')->with('success', 'Profile updated.');
     }
 
+    public function toggleDarkMode(): RedirectResponse
+    {
+        $user = auth()->user();
+        $user->update(['dark_mode' => !$user->dark_mode]);
+
+        return redirect()->back();
+    }
+
     public function updatePassword(PasswordUpdateRequest $request): RedirectResponse
     {
         $request->user()->update([

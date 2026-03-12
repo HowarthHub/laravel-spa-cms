@@ -143,9 +143,9 @@ const saveEdit = () => {
 
         <div class="space-y-6">
             <div class="flex items-center justify-between">
-                <h1 class="text-xl font-semibold text-gray-900">Edit Menu: {{ menu.name }}</h1>
+                <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Edit Menu: {{ menu.name }}</h1>
                 <button @click="save" :disabled="form.processing"
-                    class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 disabled:opacity-50">
+                    class="inline-flex items-center rounded-md bg-cyan-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-cyan-700 disabled:opacity-50">
                     Save Menu
                 </button>
             </div>
@@ -153,23 +153,23 @@ const saveEdit = () => {
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 <!-- Menu items tree -->
                 <div class="lg:col-span-2 space-y-4">
-                    <div class="rounded-md border border-gray-200 bg-white p-4 space-y-3">
-                        <h2 class="text-sm font-medium text-gray-700">Menu Name</h2>
+                    <div class="rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 space-y-3">
+                        <h2 class="text-sm font-medium text-gray-700 dark:text-gray-300">Menu Name</h2>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <input v-model="form.name" type="text" placeholder="Menu name"
-                                    class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none" />
+                                    class="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
                             </div>
                             <div>
                                 <input v-model="form.handle" type="text" placeholder="Handle"
-                                    class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none font-mono" />
+                                    class="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none font-mono dark:bg-gray-700 dark:text-gray-100" />
                             </div>
                         </div>
                     </div>
 
-                    <div class="rounded-md border border-gray-200 bg-gray-50 p-4 min-h-[200px]">
-                        <h2 class="mb-3 text-sm font-medium text-gray-700">Menu Structure</h2>
-                        <p v-if="!items.length" class="text-sm text-gray-400 py-8 text-center">
+                    <div class="rounded-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/60 p-4 min-h-[200px]">
+                        <h2 class="mb-3 text-sm font-medium text-gray-700 dark:text-gray-300">Menu Structure</h2>
+                        <p v-if="!items.length" class="text-sm text-gray-400 dark:text-gray-500 py-8 text-center">
                             No items yet. Add items from the panel on the right.
                         </p>
                         <MenuTreeComponent
@@ -181,13 +181,13 @@ const saveEdit = () => {
 
                 <!-- Add item panel -->
                 <div class="space-y-4">
-                    <div class="rounded-md border border-gray-200 bg-white p-4 space-y-3">
-                        <h2 class="text-sm font-medium text-gray-700">Add Menu Item</h2>
+                    <div class="rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 space-y-3">
+                        <h2 class="text-sm font-medium text-gray-700 dark:text-gray-300">Add Menu Item</h2>
 
                         <div>
-                            <label class="block text-xs font-medium text-gray-500 mb-1">Type</label>
+                            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Type</label>
                             <select v-model="addType"
-                                class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none">
+                                class="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100">
                                 <option value="custom">Custom URL</option>
                                 <option value="page">Page</option>
                                 <option value="post">Post</option>
@@ -195,40 +195,40 @@ const saveEdit = () => {
                         </div>
 
                         <div v-if="addType !== 'custom'">
-                            <label class="block text-xs font-medium text-gray-500 mb-1">
+                            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
                                 {{ addType === 'page' ? 'Select Page' : 'Select Post' }}
                             </label>
                             <select v-model="addLinkableId"
                                 @change="!addLabel && linkableOptions.find(o => o.id === Number(addLinkableId)) && (addLabel = linkableOptions.find(o => o.id === Number(addLinkableId)).title)"
-                                class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none">
+                                class="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100">
                                 <option value="">Choose...</option>
                                 <option v-for="opt in linkableOptions" :key="opt.id" :value="opt.id">{{ opt.title }}</option>
                             </select>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-medium text-gray-500 mb-1">Label</label>
+                            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Label</label>
                             <input v-model="addLabel" type="text" placeholder="Menu item label"
-                                class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none" />
+                                class="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
                         </div>
 
                         <div v-if="addType === 'custom'">
-                            <label class="block text-xs font-medium text-gray-500 mb-1">URL</label>
+                            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">URL</label>
                             <input v-model="addUrl" type="text" placeholder="https://..."
-                                class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none" />
+                                class="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
                         </div>
 
                         <div>
-                            <label class="block text-xs font-medium text-gray-500 mb-1">Target</label>
+                            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Target</label>
                             <select v-model="addTarget"
-                                class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none">
+                                class="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100">
                                 <option value="_self">Same Window</option>
                                 <option value="_blank">New Tab</option>
                             </select>
                         </div>
 
                         <button type="button" @click="addItem" :disabled="!addLabel"
-                            class="w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50">
+                            class="w-full rounded-md bg-cyan-600 px-3 py-2 text-sm font-medium text-white hover:bg-cyan-700 disabled:opacity-50">
                             Add to Menu
                         </button>
                     </div>
@@ -240,25 +240,25 @@ const saveEdit = () => {
         <Teleport to="body">
             <div v-if="showEditModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
                 <div class="fixed inset-0 bg-black/50" @click="showEditModal = false"></div>
-                <div class="relative z-10 w-full max-w-md rounded-lg bg-white p-5 shadow-xl space-y-4">
-                    <h3 class="text-lg font-semibold text-gray-900">Edit Menu Item</h3>
+                <div class="relative z-10 w-full max-w-md rounded-lg bg-white dark:bg-gray-800 p-5 shadow-xl space-y-4">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Edit Menu Item</h3>
 
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-1">Label</label>
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Label</label>
                         <input v-model="editingItem.label" type="text"
-                            class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none" />
+                            class="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
                     </div>
 
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-1">URL</label>
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">URL</label>
                         <input v-model="editingItem.url" type="text"
-                            class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none" />
+                            class="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
                     </div>
 
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-1">Target</label>
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Target</label>
                         <select v-model="editingItem.target"
-                            class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none">
+                            class="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100">
                             <option value="_self">Same Window</option>
                             <option value="_blank">New Tab</option>
                         </select>
@@ -266,11 +266,11 @@ const saveEdit = () => {
 
                     <div class="flex justify-end gap-2">
                         <button type="button" @click="showEditModal = false"
-                            class="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            class="rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                             Cancel
                         </button>
                         <button type="button" @click="saveEdit"
-                            class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+                            class="rounded-md bg-cyan-600 px-3 py-2 text-sm font-medium text-white hover:bg-cyan-700">
                             Save
                         </button>
                     </div>
