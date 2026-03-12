@@ -1,5 +1,6 @@
 <script setup>
 import { Head, useForm } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import AppBreadcrumbComponent from '@/Components/Admin/Shared/AppBreadcrumbComponent.vue';
 import TiptapEditorComponent from '@/Components/Admin/Forms/TiptapEditorComponent.vue';
@@ -12,6 +13,7 @@ const props = defineProps({
     templates: Object,
     pages: Array,
     forms: Array,
+    homepageId: [String, Number],
 });
 
 const form = useForm({
@@ -27,6 +29,12 @@ const form = useForm({
     meta_title: '',
     meta_description: '',
     og_image: '',
+});
+
+const slugPrefix = computed(() => {
+    if (!form.parent_id) return '';
+    const parent = props.pages.find(p => p.id === form.parent_id);
+    return parent ? `/${parent.slug}` : '';
 });
 
 const submit = () => {
@@ -66,7 +74,7 @@ const submit = () => {
                         <p v-if="form.errors.title" class="mt-1 text-sm text-red-600">{{ form.errors.title }}</p>
                     </div>
 
-                    <SlugInputComponent v-model="form.slug" :title="form.title" prefix="/pages" />
+                    <SlugInputComponent v-model="form.slug" :title="form.title" :prefix="slugPrefix" />
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Content</label>

@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Database\Factories\ServiceModelFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,7 +13,13 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class ServiceModel extends Model implements HasMedia
 {
-    use InteractsWithMedia, SoftDeletes;
+    /** @use HasFactory<ServiceModelFactory> */
+    use HasFactory, InteractsWithMedia, SoftDeletes;
+
+    protected static function newFactory(): ServiceModelFactory
+    {
+        return ServiceModelFactory::new();
+    }
 
     protected $table = 'services';
 

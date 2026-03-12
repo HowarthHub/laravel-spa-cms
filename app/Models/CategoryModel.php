@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Database\Factories\CategoryModelFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,6 +11,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CategoryModel extends Model
 {
+    /** @use HasFactory<CategoryModelFactory> */
+    use HasFactory;
+
+    protected static function newFactory(): CategoryModelFactory
+    {
+        return CategoryModelFactory::new();
+    }
+
     protected $table = 'categories';
 
     protected $fillable = [

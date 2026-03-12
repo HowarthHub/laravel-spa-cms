@@ -2,13 +2,21 @@
 
 namespace App\Models;
 
+use Database\Factories\MediaItemModelFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class MediaItemModel extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    /** @use HasFactory<MediaItemModelFactory> */
+    use HasFactory, InteractsWithMedia;
+
+    protected static function newFactory(): MediaItemModelFactory
+    {
+        return MediaItemModelFactory::new();
+    }
 
     protected $table = 'media_items';
 

@@ -10,6 +10,7 @@ use App\Http\Requests\Admin\Pages\PageStoreRequest;
 use App\Http\Requests\Admin\Pages\PageUpdateRequest;
 use App\Models\FormModel;
 use App\Models\PageModel;
+use App\Models\SettingModel;
 use App\Services\Interfaces\PageServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -35,8 +36,9 @@ class PageController extends Controller
     {
         return Inertia::render('Admin/Pages/PageCreatePage', [
             'templates' => config('cms.templates'),
-            'pages' => PageModel::orderBy('title')->get(['id', 'title']),
+            'pages' => PageModel::orderBy('title')->get(['id', 'title', 'slug']),
             'forms' => FormModel::where('is_active', true)->orderBy('name')->get(['id', 'name']),
+            'homepageId' => SettingModel::getCached('general', 'homepage'),
         ]);
     }
 
@@ -54,8 +56,9 @@ class PageController extends Controller
             'templates' => config('cms.templates'),
             'pages' => PageModel::where('id', '!=', $page->id)
                 ->orderBy('title')
-                ->get(['id', 'title']),
+                ->get(['id', 'title', 'slug']),
             'forms' => FormModel::where('is_active', true)->orderBy('name')->get(['id', 'name']),
+            'homepageId' => SettingModel::getCached('general', 'homepage'),
         ]);
     }
 

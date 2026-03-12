@@ -2,11 +2,21 @@
 
 namespace App\Models;
 
+use Database\Factories\FormSubmissionModelFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FormSubmissionModel extends Model
 {
+    /** @use HasFactory<FormSubmissionModelFactory> */
+    use HasFactory;
+
+    protected static function newFactory(): FormSubmissionModelFactory
+    {
+        return FormSubmissionModelFactory::new();
+    }
+
     protected $table = 'form_submissions';
 
     protected $fillable = ['form_id', 'data', 'ip_address', 'user_agent'];

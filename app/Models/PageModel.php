@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Database\Factories\PageModelFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,7 +14,13 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class PageModel extends Model implements HasMedia
 {
-    use InteractsWithMedia, SoftDeletes;
+    /** @use HasFactory<PageModelFactory> */
+    use HasFactory, InteractsWithMedia, SoftDeletes;
+
+    protected static function newFactory(): PageModelFactory
+    {
+        return PageModelFactory::new();
+    }
 
     protected $table = 'pages';
 

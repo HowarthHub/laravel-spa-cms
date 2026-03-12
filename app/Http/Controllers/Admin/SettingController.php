@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Settings\SettingUpdateRequest;
+use App\Models\PageModel;
 use App\Models\SettingModel;
 use App\Services\Interfaces\SettingServiceInterface;
 use Illuminate\Http\RedirectResponse;
@@ -26,6 +27,7 @@ class SettingController extends Controller
 
         return Inertia::render('Admin/Settings/SettingIndexPage', [
             'settings' => $settings,
+            'pages' => PageModel::orderBy('title')->get(['id', 'title']),
         ]);
     }
 

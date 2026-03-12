@@ -31,6 +31,7 @@ return new class extends Migration
             ['group' => 'general', 'key' => 'contact_email', 'value' => '', 'type' => 'text'],
             ['group' => 'general', 'key' => 'phone', 'value' => '', 'type' => 'text'],
             ['group' => 'general', 'key' => 'address', 'value' => '', 'type' => 'textarea'],
+            ['group' => 'general', 'key' => 'homepage', 'value' => '', 'type' => 'text'],
 
             // SEO
             ['group' => 'seo', 'key' => 'meta_title_template', 'value' => '%title% | %site_name%', 'type' => 'text'],
