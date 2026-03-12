@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\TagController;
@@ -51,4 +52,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/media', [MediaController::class, 'store'])->name('media.store');
     Route::put('/media/{mediaItem}', [MediaController::class, 'update'])->name('media.update');
     Route::delete('/media/{mediaItem}', [MediaController::class, 'destroy'])->name('media.destroy');
+
+    // Menus
+    Route::get('/menus', [MenuController::class, 'index'])->name('menus.index');
+    Route::get('/menus/create', [MenuController::class, 'create'])->name('menus.create');
+    Route::post('/menus', [MenuController::class, 'store'])->name('menus.store');
+    Route::get('/menus/{menu}/edit', [MenuController::class, 'edit'])->name('menus.edit');
+    Route::put('/menus/{menu}', [MenuController::class, 'update'])->name('menus.update');
+    Route::delete('/menus/{menu}', [MenuController::class, 'destroy'])->name('menus.destroy');
 });
