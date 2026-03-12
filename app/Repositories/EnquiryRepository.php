@@ -12,6 +12,12 @@ class EnquiryRepository implements EnquiryRepositoryInterface
     public function paginateWithFilters(array $filters): LengthAwarePaginator
     {
         return ContactEnquiryModel::query()
+            ->when($filters['search'] ?? null, fn ($q, $s) => $q->where(fn ($q) => $q
+                ->where('name', 'like', "%{$s}%")
+                ->orWhere('email', 'like', "%{$s}%")
+                ->orWhere('subject', 'like', "%{$s}%")
+            ))
+            ->when($filters['status'] ?? null, fn ($q, $s) => $q->where('status', $s))
             ->latest()
             ->paginate(config('cms.per_page.enquiries'));
     }
