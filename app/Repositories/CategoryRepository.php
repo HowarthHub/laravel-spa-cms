@@ -18,6 +18,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return CategoryModel::query()
             ->withCount('posts')
+            ->when($filters['search'] ?? null, fn ($q, $s) => $q->where('name', 'like', "%{$s}%"))
             ->orderBy('sort_order')
             ->orderBy('name')
             ->paginate(config('cms.per_page.pages'));

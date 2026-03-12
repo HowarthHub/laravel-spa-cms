@@ -33,6 +33,15 @@ class TagService implements TagServiceInterface
         return $this->tagRepository->create($data);
     }
 
+    public function update(TagModel $tag, array $data): TagModel
+    {
+        if (isset($data['name']) && $data['name'] !== $tag->name) {
+            $data['slug'] = $this->slugService->generate($data['name'], TagModel::class, $tag->id);
+        }
+
+        return $this->tagRepository->update($tag, $data);
+    }
+
     public function delete(TagModel $tag): void
     {
         $this->tagRepository->delete($tag);
