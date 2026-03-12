@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\Pages\PageDestroyRequest;
 use App\Http\Requests\Admin\Pages\PageIndexRequest;
 use App\Http\Requests\Admin\Pages\PageStoreRequest;
 use App\Http\Requests\Admin\Pages\PageUpdateRequest;
+use App\Models\FormModel;
 use App\Models\PageModel;
 use App\Services\Interfaces\PageServiceInterface;
 use Illuminate\Http\RedirectResponse;
@@ -35,6 +36,7 @@ class PageController extends Controller
         return Inertia::render('Admin/Pages/PageCreatePage', [
             'templates' => config('cms.templates'),
             'pages' => PageModel::orderBy('title')->get(['id', 'title']),
+            'forms' => FormModel::where('is_active', true)->orderBy('name')->get(['id', 'name']),
         ]);
     }
 
@@ -53,6 +55,7 @@ class PageController extends Controller
             'pages' => PageModel::where('id', '!=', $page->id)
                 ->orderBy('title')
                 ->get(['id', 'title']),
+            'forms' => FormModel::where('is_active', true)->orderBy('name')->get(['id', 'name']),
         ]);
     }
 

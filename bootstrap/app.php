@@ -16,6 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
         ]);
 
+        $middleware->redirectGuestsTo('/login');
+        $middleware->redirectUsersTo('/admin');
+
         $middleware->statefulApi();
     })
     ->withExceptions(function (Exceptions $exceptions): void {

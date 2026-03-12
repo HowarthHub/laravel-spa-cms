@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -117,6 +118,47 @@ return new class extends Migration
         app('cache')
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
             ->forget(config('permission.cache.key'));
+
+        // Essential roles & permissions — inserted via migration so they exist on every deployment
+        $guard = config('auth.defaults.guard');
+        $now = now();
+
+        $permissions = [
+            'view dashboard', 'view pages', 'create pages', 'edit pages', 'publish pages', 'delete pages',
+            'view posts', 'create posts', 'edit posts', 'publish posts', 'delete posts',
+            'manage categories', 'manage tags', 'view enquiries', 'manage enquiries',
+            'manage menus', 'manage forms', 'manage services', 'manage settings', 'manage media', 'manage users', 'manage roles',
+        ];
+
+        foreach ($permissions as $name) {
+            DB::table($tableNames['permissions'])->insert([
+                'name' => $name, 'guard_name' => $guard, 'created_at' => $now, 'updated_at' => $now,
+            ]);
+        }
+
+        $roles = [
+            'super-admin' => $permissions,
+            'admin' => collect($permissions)->reject(fn ($p) => in_array($p, ['manage users', 'manage roles']))->values()->all(),
+            'editor' => ['view dashboard', 'view pages', 'create pages', 'edit pages', 'view posts', 'create posts', 'edit posts', 'manage categories', 'manage tags', 'manage media', 'manage forms', 'manage services'],
+            'viewer' => ['view dashboard', 'view pages', 'view posts'],
+        ];
+
+        foreach ($roles as $roleName => $rolePermissions) {
+            $roleId = DB::table($tableNames['roles'])->insertGetId([
+                'name' => $roleName, 'guard_name' => $guard, 'created_at' => $now, 'updated_at' => $now,
+            ]);
+
+            $permIds = DB::table($tableNames['permissions'])
+                ->whereIn('name', $rolePermissions)
+                ->where('guard_name', $guard)
+                ->pluck('id');
+
+            foreach ($permIds as $permId) {
+                DB::table($tableNames['role_has_permissions'])->insert([
+                    'permission_id' => $permId, 'role_id' => $roleId,
+                ]);
+            }
+        }
     }
 
     /**

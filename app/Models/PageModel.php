@@ -31,6 +31,7 @@ class PageModel extends Model implements HasMedia
         'og_image',
         'author_id',
         'updated_by',
+        'form_id',
     ];
 
     protected function casts(): array
@@ -60,6 +61,11 @@ class PageModel extends Model implements HasMedia
     public function children(): HasMany
     {
         return $this->hasMany(self::class, 'parent_id');
+    }
+
+    public function form(): BelongsTo
+    {
+        return $this->belongsTo(FormModel::class, 'form_id');
     }
 
     public function scopePublished(Builder $query): Builder

@@ -47,30 +47,30 @@ const submit = () => {
 
         <form @submit.prevent="submit" class="space-y-6">
             <div class="flex items-center justify-between">
-                <h1 class="text-xl font-semibold text-gray-900">Edit Post</h1>
+                <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Edit Post</h1>
             </div>
 
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 <div class="lg:col-span-2 space-y-5">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title</label>
                         <input v-model="form.title" type="text" required autofocus
-                            class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none"
+                            class="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100"
                             :class="{ 'border-red-500': form.errors.title }" />
                         <p v-if="form.errors.title" class="mt-1 text-sm text-red-600">{{ form.errors.title }}</p>
                     </div>
 
-                    <SlugInputComponent v-model="form.slug" :title="form.title" />
+                    <SlugInputComponent v-model="form.slug" :title="form.title" prefix="/blog" />
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Content</label>
                         <TiptapEditorComponent v-model="form.content" />
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Excerpt</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Excerpt</label>
                         <textarea v-model="form.excerpt" rows="3" maxlength="500"
-                            class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none" />
+                            class="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
                     </div>
 
                     <SeoPanelComponent
@@ -88,11 +88,11 @@ const submit = () => {
                         publish-permission="publish posts"
                     />
 
-                    <div class="rounded-md border border-gray-200 bg-white p-4 space-y-4">
+                    <div class="rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
                             <select v-model="form.category_ids" multiple
-                                class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none h-28">
+                                class="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none h-28 dark:bg-gray-700 dark:text-gray-100">
                                 <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
                             </select>
                         </div>

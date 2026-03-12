@@ -2,3 +2,33 @@
 
 @source '../js/**/*.vue';
 @source '../js/**/*.js';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Deep dark palette — near-black backgrounds with cool-tinted grays */
+.dark {
+    --color-gray-50: #eef0f6;
+    --color-gray-100: #d4d7e3;
+    --color-gray-200: #a8adc2;
+    --color-gray-300: #8890a8;
+    --color-gray-400: #6d7590;
+    --color-gray-500: #474e65;
+    --color-gray-600: #282c3a;
+    --color-gray-700: #1a1d2b;
+    --color-gray-800: #12141e;
+    --color-gray-900: #0a0b10;
+    --color-gray-950: #050608;
+}
+
+/* Dark mode form controls */
+.dark input[type="checkbox"],
+.dark input[type="radio"] {
+    background-color: #1a1d2b;
+    border-color: #474e65;
+}
+
+.dark input[type="checkbox"]:checked,
+.dark input[type="radio"]:checked {
+    background-color: #06b6d4;
+    border-color: #06b6d4;
+}

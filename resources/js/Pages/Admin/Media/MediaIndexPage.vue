@@ -4,6 +4,8 @@ import { ref, watch } from 'vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import AppBreadcrumbComponent from '@/Components/Admin/Shared/AppBreadcrumbComponent.vue';
 import EmptyStateComponent from '@/Components/Admin/Shared/EmptyStateComponent.vue';
+import PaginationComponent from '@/Components/Admin/Shared/PaginationComponent.vue';
+import ConfirmModalComponent from '@/Components/Admin/Shared/ConfirmModalComponent.vue';
 import { usePermissions } from '@/Composables/usePermissions.js';
 
 const { can } = usePermissions();
@@ -63,9 +65,28 @@ const onDrop = (e) => {
     }
 };
 
-const deleteMedia = async (id) => {
-    if (!confirm('Delete this media item?')) return;
-    router.delete(`/admin/media/${id}`);
+// Confirm modal
+const confirmModal = ref(false);
+const confirmAction = ref(null);
+const confirmTitle = ref('');
+const confirmMessage = ref('');
+
+const showConfirm = (title, message, action) => {
+    confirmTitle.value = title;
+    confirmMessage.value = message;
+    confirmAction.value = action;
+    confirmModal.value = true;
+};
+
+const onConfirm = () => {
+    confirmModal.value = false;
+    if (confirmAction.value) confirmAction.value();
+};
+
+const deleteMedia = (id) => {
+    showConfirm('Delete Media', 'Are you sure you want to delete this media item?', () => {
+        router.delete(`/admin/media/${id}`);
+    });
 };
 
 const formatSize = (bytes) => {
@@ -85,9 +106,9 @@ const formatSize = (bytes) => {
 
         <div class="space-y-4">
             <div class="flex items-center justify-between">
-                <h1 class="text-xl font-semibold text-gray-900">Media Library</h1>
+                <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Media Library</h1>
                 <label v-if="can('manage media')"
-                    class="inline-flex cursor-pointer items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">
+                    class="inline-flex cursor-pointer items-center rounded-md bg-cyan-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-cyan-700">
                     <span v-if="uploading">Uploading...</span>
                     <span v-else>Upload Files</span>
                     <input type="file" multiple accept="image/*,.pdf" class="hidden" @change="onFileInput" :disabled="uploading" />
@@ -96,10 +117,10 @@ const formatSize = (bytes) => {
 
             <div class="flex items-center gap-3">
                 <input v-model="search" type="text" placeholder="Search media..."
-                    class="w-64 rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none" />
+                    class="w-64 rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
             </div>
 
-            <div class="overflow-hidden rounded-lg bg-white shadow p-5">
+            <div class="overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow p-5">
                 <div v-if="media.data.length"
                     class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6"
                     @dragover.prevent
@@ -110,21 +131,21 @@ const formatSize = (bytes) => {
                         :key="item.id"
                         class="group relative"
                     >
-                        <div class="aspect-square overflow-hidden rounded-md border border-gray-200">
+                        <div class="aspect-square overflow-hidden rounded-md border border-gray-200 dark:border-gray-700">
                             <img
                                 v-if="item.media?.[0]?.mime_type?.startsWith('image/')"
                                 :src="item.media[0].original_url"
                                 :alt="item.title"
                                 class="h-full w-full object-cover"
                             />
-                            <div v-else class="flex h-full w-full items-center justify-center bg-gray-100">
-                                <svg class="h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div v-else class="flex h-full w-full items-center justify-center bg-gray-100 dark:bg-gray-700">
+                                <svg class="h-10 w-10 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                                 </svg>
                             </div>
                         </div>
-                        <p class="mt-1 truncate text-xs text-gray-600">{{ item.title }}</p>
-                        <p v-if="item.media?.[0]?.size" class="text-[10px] text-gray-400">{{ formatSize(item.media[0].size) }}</p>
+                        <p class="mt-1 truncate text-xs text-gray-600 dark:text-gray-300">{{ item.title }}</p>
+                        <p v-if="item.media?.[0]?.size" class="text-[10px] text-gray-400 dark:text-gray-500">{{ formatSize(item.media[0].size) }}</p>
 
                         <button
                             v-if="can('manage media')"
@@ -146,11 +167,16 @@ const formatSize = (bytes) => {
                 />
             </div>
 
-            <div v-if="media.last_page > 1" class="flex justify-center gap-1">
-                <Link v-for="link in media.links" :key="link.label" :href="link.url || '#'" v-html="link.label"
-                    class="rounded-md px-3 py-1 text-sm"
-                    :class="link.active ? 'bg-indigo-600 text-white' : link.url ? 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50' : 'bg-white text-gray-300 border border-gray-200 cursor-default'" />
-            </div>
+            <PaginationComponent :links="media.links" :last-page="media.last_page" />
         </div>
+
+        <ConfirmModalComponent
+            :show="confirmModal"
+            :title="confirmTitle"
+            :message="confirmMessage"
+            confirm-text="Delete"
+            @confirm="onConfirm"
+            @cancel="confirmModal = false"
+        />
     </AdminLayout>
 </template>

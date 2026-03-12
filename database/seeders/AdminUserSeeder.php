@@ -12,7 +12,7 @@ class AdminUserSeeder extends Seeder
         $user = UserModel::firstOrCreate(
             ['email' => env('ADMIN_EMAIL', 'admin@example.com')],
             [
-                'name' => env('ADMIN_NAME', 'Admin'),
+                'name' => env('ADMIN_NAME', 'Nick Howarth'),
                 'password' => bcrypt(env('ADMIN_PASSWORD', 'changeme')),
                 'email_verified_at' => now(),
                 'is_active' => true,

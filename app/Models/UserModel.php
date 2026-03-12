@@ -22,6 +22,7 @@ class UserModel extends Authenticatable
         'password',
         'avatar',
         'is_active',
+        'dark_mode',
         'last_login_at',
     ];
 
@@ -36,6 +37,7 @@ class UserModel extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_active' => 'boolean',
+            'dark_mode' => 'boolean',
             'last_login_at' => 'datetime',
         ];
     }

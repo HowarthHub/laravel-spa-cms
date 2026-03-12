@@ -1,6 +1,6 @@
 <script setup>
 import { Link, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { usePermissions } from '@/Composables/usePermissions.js';
 
 const { can, hasRole } = usePermissions();
@@ -10,38 +10,51 @@ const currentUrl = computed(() => page.url);
 
 const isActive = (path) => currentUrl.value.startsWith(path);
 
+// Auto-expand Posts group if on a posts/categories/tags page
+const postsOpen = ref(
+    isActive('/admin/posts') || isActive('/admin/categories') || isActive('/admin/tags')
+);
+
 const navItems = computed(() => {
     const items = [];
 
     if (can('view dashboard')) {
-        items.push({ label: 'Dashboard', href: '/admin', icon: 'squares', exact: true });
+        items.push({ label: 'Dashboard', href: '/admin', exact: true });
     }
     if (can('view pages')) {
-        items.push({ label: 'Pages', href: '/admin/pages', icon: 'document' });
+        items.push({ label: 'Pages', href: '/admin/pages' });
+    }
+    if (can('manage services')) {
+        items.push({ label: 'Services', href: '/admin/services' });
     }
     if (can('view posts')) {
-        items.push({ label: 'Posts', href: '/admin/posts', icon: 'pencil' });
-    }
-    if (can('manage categories')) {
-        items.push({ label: 'Categories', href: '/admin/categories', icon: 'folder' });
-    }
-    if (can('manage tags')) {
-        items.push({ label: 'Tags', href: '/admin/tags', icon: 'tag' });
+        const children = [];
+        children.push({ label: 'All Posts', href: '/admin/posts' });
+        if (can('manage categories')) {
+            children.push({ label: 'Categories', href: '/admin/categories' });
+        }
+        if (can('manage tags')) {
+            children.push({ label: 'Tags', href: '/admin/tags' });
+        }
+        items.push({ label: 'Posts', href: '/admin/posts', children });
     }
     if (can('manage menus')) {
-        items.push({ label: 'Menus', href: '/admin/menus', icon: 'bars' });
+        items.push({ label: 'Menus', href: '/admin/menus' });
+    }
+    if (can('manage forms')) {
+        items.push({ label: 'Forms', href: '/admin/forms' });
     }
     if (can('view enquiries')) {
-        items.push({ label: 'Enquiries', href: '/admin/enquiries', icon: 'envelope', badge: page.props.enquiryCount ?? null });
+        items.push({ label: 'Enquiries', href: '/admin/enquiries', badge: page.props.enquiryCount ?? null });
     }
     if (can('manage media')) {
-        items.push({ label: 'Media', href: '/admin/media', icon: 'photo' });
+        items.push({ label: 'Media', href: '/admin/media' });
     }
     if (can('manage settings')) {
-        items.push({ label: 'Settings', href: '/admin/settings', icon: 'cog' });
+        items.push({ label: 'Settings', href: '/admin/settings' });
     }
     if (can('manage users')) {
-        items.push({ label: 'Users', href: '/admin/users', icon: 'users' });
+        items.push({ label: 'Users', href: '/admin/users' });
     }
 
     return items;
@@ -49,43 +62,84 @@ const navItems = computed(() => {
 
 const isItemActive = (item) => {
     if (item.exact) return currentUrl.value === item.href;
+    if (item.children) return false;
     return isActive(item.href);
+};
+
+const togglePosts = () => {
+    postsOpen.value = !postsOpen.value;
 };
 </script>
 
 <template>
-    <aside class="fixed inset-y-0 left-0 z-30 w-64 bg-gray-900 text-white flex flex-col">
-        <div class="flex h-16 items-center px-6 border-b border-gray-800">
+    <aside class="fixed inset-y-0 left-0 z-30 w-64 bg-gray-950 text-white flex flex-col">
+        <div class="flex h-16 items-center px-6 border-b border-gray-800/50">
             <Link href="/admin" class="text-lg font-bold tracking-tight">
-                CMS
+                Laravel CMS
             </Link>
         </div>
 
-        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-            <Link
-                v-for="item in navItems"
-                :key="item.href"
-                :href="item.href"
-                class="flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors"
-                :class="isItemActive(item)
-                    ? 'bg-gray-800 text-white'
-                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'"
-            >
-                <span>{{ item.label }}</span>
-                <span
-                    v-if="item.badge"
-                    class="ml-auto inline-flex items-center justify-center rounded-full bg-red-500 px-2 py-0.5 text-xs font-medium text-white"
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
+            <template v-for="item in navItems" :key="item.href">
+                <!-- Collapsible group (Posts) -->
+                <div v-if="item.children">
+                    <button
+                        type="button"
+                        @click="togglePosts"
+                        class="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors"
+                        :class="isActive('/admin/posts') || isActive('/admin/categories') || isActive('/admin/tags')
+                            ? 'bg-gray-800/60 text-white'
+                            : 'text-gray-400 hover:bg-gray-800/40 hover:text-white'"
+                    >
+                        <span>{{ item.label }}</span>
+                        <svg
+                            class="h-4 w-4 transition-transform"
+                            :class="{ 'rotate-90': postsOpen }"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                    <div v-show="postsOpen" class="mt-0.5 space-y-0.5 pl-4">
+                        <Link
+                            v-for="child in item.children"
+                            :key="child.href"
+                            :href="child.href"
+                            class="flex items-center rounded-md px-3 py-1.5 text-sm font-medium transition-colors"
+                            :class="isActive(child.href)
+                                ? 'bg-gray-800/60 text-white'
+                                : 'text-gray-500 hover:bg-gray-800/40 hover:text-white'"
+                        >
+                            {{ child.label }}
+                        </Link>
+                    </div>
+                </div>
+
+                <!-- Regular nav item -->
+                <Link
+                    v-else
+                    :href="item.href"
+                    class="flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors"
+                    :class="isItemActive(item)
+                        ? 'bg-gray-800/60 text-white'
+                        : 'text-gray-400 hover:bg-gray-800/40 hover:text-white'"
                 >
-                    {{ item.badge }}
-                </span>
-            </Link>
+                    <span>{{ item.label }}</span>
+                    <span
+                        v-if="item.badge"
+                        class="ml-auto inline-flex items-center justify-center rounded-full bg-red-500 px-2 py-0.5 text-xs font-medium text-white"
+                    >
+                        {{ item.badge }}
+                    </span>
+                </Link>
+            </template>
         </nav>
 
-        <div class="border-t border-gray-800 px-3 py-4 space-y-1">
+        <div class="border-t border-gray-800/50 px-3 py-4 space-y-1">
             <Link
                 href="/admin/profile"
-                class="flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
-                :class="isActive('/admin/profile') ? 'bg-gray-800 text-white' : ''"
+                class="flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-800/40 hover:text-white transition-colors"
+                :class="isActive('/admin/profile') ? 'bg-gray-800/60 text-white' : ''"
             >
                 Profile
             </Link>

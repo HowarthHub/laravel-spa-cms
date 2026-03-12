@@ -13,6 +13,8 @@ return [
         'posts'     => 20,
         'enquiries' => 25,
         'media'     => 40,
+        'forms'     => 20,
+        'services'  => 20,
         'users'     => 20,
     ],
 

@@ -28,6 +28,7 @@ class SettingService implements SettingServiceInterface
         $this->settingRepository->upsert($group, $key, $value);
 
         Cache::forget('cms_settings');
+        Cache::forget("setting.{$group}.{$key}");
     }
 
     public function group(string $group): array
