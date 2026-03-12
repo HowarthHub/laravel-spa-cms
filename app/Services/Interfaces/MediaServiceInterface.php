@@ -2,15 +2,17 @@
 
 namespace App\Services\Interfaces;
 
+use App\Models\MediaItemModel;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 interface MediaServiceInterface
 {
     public function getPaginatedList(array $filters): LengthAwarePaginator;
 
-    public function upload(UploadedFile $file): Media;
+    public function upload(UploadedFile $file, int $userId): MediaItemModel;
 
-    public function delete(Media $media): void;
+    public function update(MediaItemModel $item, array $data): MediaItemModel;
+
+    public function delete(MediaItemModel $item): void;
 }
