@@ -83,6 +83,13 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        //
+        // Route model bindings for custom model names
+        \Illuminate\Support\Facades\Route::model('page', \App\Models\PageModel::class);
+        \Illuminate\Support\Facades\Route::model('post', \App\Models\PostModel::class);
+        \Illuminate\Support\Facades\Route::model('category', \App\Models\CategoryModel::class);
+        \Illuminate\Support\Facades\Route::model('tag', \App\Models\TagModel::class);
+        \Illuminate\Support\Facades\Route::model('menu', \App\Models\MenuModel::class);
+        \Illuminate\Support\Facades\Route::model('enquiry', \App\Models\ContactEnquiryModel::class);
+        \Illuminate\Support\Facades\Route::model('user', \App\Models\UserModel::class);
     }
 }
