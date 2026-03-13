@@ -1,3 +1,128 @@
+# Laravel SPA CMS — Boilerplate
+
+## What This Is
+
+A reusable CMS boilerplate built with Laravel 12, Inertia.js v2, Vue 3, and Tailwind CSS v4. Clone it, restyle the public frontend, and ship.
+
+## Stack
+
+- **Backend:** Laravel 12, PHP 8.4+, MySQL 8.4
+- **Frontend:** Vue 3 SPA via Inertia.js v2, Tailwind CSS v4
+- **Dev:** Laravel Sail (Docker), Vite 7
+- **Testing:** Pest (220 tests, 1163 assertions)
+- **CI:** GitHub Actions — Pint, Larastan (level 4), vue-tsc, Pest, Vite build
+
+## Architecture
+
+- **Pattern:** Controller → Service → Repository with Form Requests for validation
+- **Auth:** Spatie Permission (roles & permissions)
+- **Media:** Spatie Media Library with thumbnail/preview conversions
+- **Content:** Block-based page builder (10 block types) with legacy TipTap backwards compat
+
+## Key Directories
+
+```
+app/
+├── Console/Commands/         # Artisan commands (scheduled publishing)
+├── Http/Controllers/Admin/   # Admin CRUD controllers (15)
+├── Http/Controllers/Public/  # Public frontend controllers (5)
+├── Http/Requests/            # Form Request validation (52 classes)
+├── Models/                   # Eloquent models (15)
+├── Notifications/            # Email notifications (form submissions)
+├── Repositories/             # Data access layer (12)
+├── Services/                 # Business logic layer (12)
+resources/js/
+├── Components/Admin/         # Admin UI components (30)
+│   └── PageBuilder/          # Block editor components (12)
+├── Components/Public/        # Public components (14)
+│   └── BlockRenderer/        # Block display components (10)
+├── Directives/               # Vue directives (scroll animations)
+├── Layouts/                  # AdminLayout, PublicLayout
+├── Pages/Admin/              # Admin pages (32)
+├── Pages/Public/             # Public pages (8)
+```
+
+## CMS Features
+
+- **Pages** — hierarchical, 6 templates, page builder with 10 block types
+- **Posts** — blog with categories, tags, featured images
+- **Services** — service directory with descriptions
+- **Forms** — dynamic form builder with email notifications on submission
+- **Menus** — drag-and-drop hierarchical navigation builder
+- **Media** — library with upload, thumbnails (400×300), previews (800×600)
+- **Enquiries** — contact management with status tracking, CSV export
+- **Settings** — site name, logo, favicon, SEO, social links, schema markup, mail, maintenance mode
+- **Users** — CRUD with role-based access (admin, editor, author)
+- **Redirects** — URL redirect manager
+- **Revisions** — content version history for pages, posts, services
+- **Scheduled publishing** — `content:publish-scheduled` runs every minute
+- **Search** — full-text search across pages, posts, services
+- **Sitemap** — auto-generated XML sitemap
+- **Dark mode** — per-user toggle in admin
+- **Mobile responsive** — admin sidebar, tables, filters, public nav
+- **Scroll animations** — IntersectionObserver-based on public pages
+
+## Page Builder Block Types
+
+`hero`, `richText`, `image`, `twoColumn`, `threeColumn`, `callToAction`, `featureGrid`, `testimonial`, `checklist`, `spacer`
+
+## Commands
+
+```bash
+# Start dev environment
+vendor/bin/sail up -d
+
+# Install dependencies
+vendor/bin/sail composer install && vendor/bin/sail npm install
+
+# Run migrations + seed demo data
+vendor/bin/sail artisan migrate --seed
+
+# Build frontend
+vendor/bin/sail npm run build
+
+# Run tests
+vendor/bin/sail artisan test --compact
+
+# Code style
+vendor/bin/sail bin pint --dirty --format agent
+
+# Static analysis
+vendor/bin/sail bin phpstan analyse --memory-limit=512M
+
+# Type check
+vendor/bin/sail npm run type-check
+
+# Publish scheduled content (runs automatically via scheduler)
+vendor/bin/sail artisan content:publish-scheduled
+
+# Regenerate media conversions (after adding new conversions)
+vendor/bin/sail artisan media-library:regenerate
+```
+
+## Per-Client Workflow
+
+1. Clone the repo
+2. `composer install && npm install`
+3. `vendor/bin/sail up -d && vendor/bin/sail artisan migrate --seed`
+4. Restyle `resources/js/Pages/Public/` and `resources/js/Components/Public/` to match client brand
+5. Update settings in admin panel (site name, logo, favicon, SEO, social links)
+6. Add client-specific block types if needed
+7. Ship
+
+## Config
+
+All CMS config lives in `config/cms.php` — templates, block types, pagination, media settings.
+
+## Testing
+
+All tests are Pest tests in `tests/Feature/`. Run the full suite before shipping:
+```bash
+vendor/bin/sail artisan test --compact
+```
+
+---
+
 <laravel-boost-guidelines>
 === foundation rules ===
 
