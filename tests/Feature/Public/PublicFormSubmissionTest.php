@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\FormModel;
+use App\Notifications\FormSubmissionNotification;
+use Illuminate\Support\Facades\Notification;
 
 it('submits a form successfully', function () {
     $form = FormModel::factory()->create();
@@ -36,6 +38,36 @@ it('fails validation for invalid email', function () {
         'email' => 'not-an-email',
     ])
         ->assertSessionHasErrors('email');
+});
+
+it('sends email notification when notification_email is set', function () {
+    Notification::fake();
+
+    $form = FormModel::factory()->create([
+        'notification_email' => 'admin@example.com',
+    ]);
+
+    $this->post(route('public.form.submit', $form), [
+        'name' => 'Jane',
+        'email' => 'jane@example.com',
+    ]);
+
+    Notification::assertSentOnDemand(FormSubmissionNotification::class);
+});
+
+it('does not send email when notification_email is empty', function () {
+    Notification::fake();
+
+    $form = FormModel::factory()->create([
+        'notification_email' => null,
+    ]);
+
+    $this->post(route('public.form.submit', $form), [
+        'name' => 'Jane',
+        'email' => 'jane@example.com',
+    ]);
+
+    Notification::assertNothingSent();
 });
 
 it('redirects back with success flash after submission', function () {

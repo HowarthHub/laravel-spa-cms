@@ -41,6 +41,7 @@ class HandleInertiaRequests extends Middleware
                 'name' => $settingService->get('general.site_name', 'My Site'),
                 'tagline' => $settingService->get('general.tagline', ''),
                 'logo' => $settingService->get('general.logo', ''),
+                'favicon' => $settingService->get('general.favicon', ''),
                 'footer' => $settingService->get('general.footer_text', ''),
             ],
             'socialLinks' => $settingService->group('social'),

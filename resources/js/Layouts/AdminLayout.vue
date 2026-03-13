@@ -1,14 +1,20 @@
 <script setup>
-import { ref, provide } from 'vue';
+import { ref, provide, computed } from 'vue';
+import { Head, usePage } from '@inertiajs/vue3';
 import AppSidebarComponent from '@/Components/Admin/Shared/AppSidebarComponent.vue';
 import AppTopbarComponent from '@/Components/Admin/Shared/AppTopbarComponent.vue';
 import FlashMessageComponent from '@/Components/Admin/Shared/FlashMessageComponent.vue';
 
 const sidebarOpen = ref(false);
 provide('sidebarOpen', sidebarOpen);
+
+const site = computed(() => usePage().props.site || {});
 </script>
 
 <template>
+    <Head v-if="site.favicon">
+        <link rel="icon" :href="site.favicon" head-key="favicon" />
+    </Head>
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
         <!-- Mobile backdrop -->
         <Transition
