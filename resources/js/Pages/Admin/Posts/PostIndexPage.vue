@@ -63,11 +63,13 @@ const confirmModal = ref(false);
 const confirmAction = ref(null);
 const confirmTitle = ref('');
 const confirmMessage = ref('');
+const confirmButtonText = ref('Confirm');
 
-const showConfirm = (title, message, action) => {
+const showConfirm = (title, message, action, buttonText = 'Confirm') => {
     confirmTitle.value = title;
     confirmMessage.value = message;
     confirmAction.value = action;
+    confirmButtonText.value = buttonText;
     confirmModal.value = true;
 };
 
@@ -76,13 +78,34 @@ const onConfirm = () => {
     if (confirmAction.value) confirmAction.value();
 };
 
+const bulkDraft = () => {
+    showConfirm(
+        'Set to Draft',
+        `Are you sure you want to set ${selected.value.length} post(s) to draft?`,
+        () => router.post('/admin/posts/bulk-draft', { ids: selected.value }, {
+            onSuccess: () => { selected.value = []; },
+        })
+    );
+};
+
+const bulkPublish = () => {
+    showConfirm(
+        'Publish Posts',
+        `Are you sure you want to publish ${selected.value.length} post(s)?`,
+        () => router.post('/admin/posts/bulk-publish', { ids: selected.value }, {
+            onSuccess: () => { selected.value = []; },
+        })
+    );
+};
+
 const bulkDelete = () => {
     showConfirm(
         'Delete Posts',
         `Are you sure you want to delete ${selected.value.length} post(s)? This cannot be undone.`,
         () => router.post('/admin/posts/bulk-destroy', { ids: selected.value }, {
             onSuccess: () => { selected.value = []; },
-        })
+        }),
+        'Delete'
     );
 };
 
@@ -127,6 +150,14 @@ const deletePost = (id) => {
                     <option value="">All Categories</option>
                     <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
                 </select>
+                <button v-if="selected.length && can('edit posts')" @click="bulkDraft"
+                    class="rounded-md bg-gray-500 px-3 py-2 text-sm font-medium text-white hover:bg-gray-600">
+                    Draft ({{ selected.length }})
+                </button>
+                <button v-if="selected.length && can('publish posts')" @click="bulkPublish"
+                    class="rounded-md bg-green-600 px-3 py-2 text-sm font-medium text-white hover:bg-green-700">
+                    Publish ({{ selected.length }})
+                </button>
                 <button v-if="selected.length && can('delete posts')" @click="bulkDelete"
                     class="rounded-md bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-700">
                     Delete ({{ selected.length }})
@@ -149,7 +180,7 @@ const deletePost = (id) => {
                             </th>
                             <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Author</th>
                             <th @click="toggleSort('updated_at')" class="cursor-pointer px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 select-none">
-                                Updated{{ sortIcon('updated_at') }}
+                                Last Updated{{ sortIcon('updated_at') }}
                             </th>
                             <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Actions</th>
                         </tr>
@@ -163,6 +194,11 @@ const deletePost = (id) => {
                                 <Link :href="`/admin/posts/${post.id}/edit`" class="text-sm font-medium text-cyan-600 hover:text-cyan-500 dark:text-cyan-400 dark:hover:text-cyan-300">
                                     {{ post.title }}
                                 </Link>
+                                <span v-if="post.missing_alt_text" title="Images missing alt text" class="ml-1.5 inline-flex items-center text-amber-500 dark:text-amber-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4">
+                                        <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 6a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 6zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                                    </svg>
+                                </span>
                             </td>
                             <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
                                 {{ post.categories?.map(c => c.name).join(', ') || '—' }}
@@ -171,12 +207,21 @@ const deletePost = (id) => {
                                 <StatusBadgeComponent :status="post.status" />
                             </td>
                             <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ post.author?.name }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ new Date(post.updated_at).toLocaleDateString() }}</td>
+                            <td class="px-4 py-3">
+                                <div class="text-sm text-gray-500 dark:text-gray-400">{{ new Date(post.updated_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) }}</div>
+                                <div class="text-xs text-gray-400 dark:text-gray-500">{{ post.editor?.name || post.author?.name }}</div>
+                            </td>
                             <td class="px-4 py-3 text-right">
                                 <a v-if="post.status === 'published' && post.slug" :href="`/blog/${post.slug}`" target="_blank"
                                     class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mr-3">View</a>
                                 <Link v-if="can('edit posts')" :href="`/admin/posts/${post.id}/edit`"
                                     class="text-sm text-cyan-600 hover:text-cyan-500 dark:text-cyan-400 dark:hover:text-cyan-300 mr-3">Edit</Link>
+                                <button v-if="can('create posts')" @click="router.post(`/admin/posts/${post.id}/duplicate`)"
+                                    class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mr-3" title="Duplicate">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="inline h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                </button>
                                 <button v-if="can('delete posts')" @click="deletePost(post.id)"
                                     class="text-sm text-red-600 hover:text-red-500 dark:text-red-400 dark:hover:text-red-300">Delete</button>
                             </td>
@@ -201,7 +246,7 @@ const deletePost = (id) => {
             :show="confirmModal"
             :title="confirmTitle"
             :message="confirmMessage"
-            confirm-text="Delete"
+            :confirm-text="confirmButtonText"
             @confirm="onConfirm"
             @cancel="confirmModal = false"
         />

@@ -12,7 +12,7 @@ class PostRepository implements PostRepositoryInterface
     public function paginateWithFilters(array $filters): LengthAwarePaginator
     {
         return PostModel::query()
-            ->with(['author', 'categories', 'tags'])
+            ->with(['author', 'editor', 'categories', 'tags'])
             ->when($filters['search'] ?? null, fn ($q, $s) => $q->where('title', 'like', "%{$s}%"))
             ->when($filters['status'] ?? null, fn ($q, $s) => $q->where('status', $s))
             ->when($filters['category_id'] ?? null, fn ($q, $id) => $q->whereHas('categories', fn ($q) => $q->where('categories.id', $id)))
@@ -64,6 +64,17 @@ class PostRepository implements PostRepositoryInterface
     public function bulkDelete(array $ids): void
     {
         PostModel::whereIn('id', $ids)->delete();
+    }
+
+    public function bulkUpdateStatus(array $ids, string $status, ?string $publishedAt = null): void
+    {
+        $data = ['status' => $status];
+
+        if ($publishedAt !== null) {
+            $data['published_at'] = $publishedAt;
+        }
+
+        PostModel::whereIn('id', $ids)->update($data);
     }
 
     public function recentPublished(int $limit): Collection

@@ -9,6 +9,7 @@ import MediaPickerComponent from '@/Components/Admin/Forms/MediaPickerComponent.
 import TagInputComponent from '@/Components/Admin/Forms/TagInputComponent.vue';
 import CategoryInputComponent from '@/Components/Admin/Forms/CategoryInputComponent.vue';
 import PageBuilderComponent from '@/Components/Admin/PageBuilder/PageBuilderComponent.vue';
+import RevisionHistoryComponent from '@/Components/Admin/Shared/RevisionHistoryComponent.vue';
 
 const props = defineProps({
     post: Object,
@@ -104,6 +105,8 @@ const submit = () => {
                     </div>
 
                     <MediaPickerComponent v-model="form.featured_image" />
+
+                    <RevisionHistoryComponent type="posts" :id="post.id" />
                 </div>
             </div>
         </form>

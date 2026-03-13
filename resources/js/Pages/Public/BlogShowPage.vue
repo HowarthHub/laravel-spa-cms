@@ -25,6 +25,40 @@ const isBlocks = computed(() =>
     Array.isArray(props.post.content) && props.post.content[0]?.id && props.post.content[0]?.type
 );
 
+function extractTextFromValue(value) {
+    if (!value) {
+        return '';
+    }
+    if (typeof value === 'string') {
+        return value.replace(/<[^>]*>/g, ' ');
+    }
+    if (Array.isArray(value)) {
+        return value.map(extractTextFromValue).join(' ');
+    }
+    if (typeof value === 'object') {
+        if (value.type && value.content) {
+            return extractTextFromValue(value.content);
+        }
+        if (value.text) {
+            return value.text;
+        }
+        return Object.values(value).map(extractTextFromValue).join(' ');
+    }
+    return '';
+}
+
+const readingTime = computed(() => {
+    if (!props.post.content) {
+        return null;
+    }
+
+    const text = extractTextFromValue(props.post.content);
+    const wordCount = text.split(/\s+/).filter(Boolean).length;
+    const minutes = Math.max(1, Math.ceil(wordCount / 200));
+
+    return `${minutes} min read`;
+});
+
 function formatDate(dateStr) {
     return new Date(dateStr).toLocaleDateString('en-GB', {
         day: 'numeric',
@@ -48,6 +82,7 @@ function formatDate(dateStr) {
                 <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-4">
                     <time v-if="post.published_at" :datetime="post.published_at">{{ formatDate(post.published_at) }}</time>
                     <span v-if="post.author">· {{ post.author.name }}</span>
+                    <span v-if="readingTime">· {{ readingTime }}</span>
                 </div>
 
                 <h1 class="text-4xl font-bold text-gray-900 mb-6">{{ post.title }}</h1>

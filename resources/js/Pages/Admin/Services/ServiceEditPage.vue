@@ -8,6 +8,7 @@ import SeoPanelComponent from '@/Components/Admin/Forms/SeoPanelComponent.vue';
 import PublishPanelComponent from '@/Components/Admin/Forms/PublishPanelComponent.vue';
 import MediaPickerComponent from '@/Components/Admin/Forms/MediaPickerComponent.vue';
 import PageBuilderComponent from '@/Components/Admin/PageBuilder/PageBuilderComponent.vue';
+import RevisionHistoryComponent from '@/Components/Admin/Shared/RevisionHistoryComponent.vue';
 
 const props = defineProps({
     service: Object,
@@ -161,6 +162,8 @@ const submit = () => {
                     </div>
 
                     <MediaPickerComponent v-model="form.featured_image" />
+
+                    <RevisionHistoryComponent type="services" :id="service.id" />
                 </div>
             </div>
         </form>

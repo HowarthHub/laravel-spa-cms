@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link, router } from '@inertiajs/vue3';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import AppBreadcrumbComponent from '@/Components/Admin/Shared/AppBreadcrumbComponent.vue';
 import EmptyStateComponent from '@/Components/Admin/Shared/EmptyStateComponent.vue';
@@ -88,6 +88,15 @@ const deleteEnquiry = (id) => {
         router.delete(`/admin/enquiries/${id}`);
     });
 };
+
+const exportUrl = computed(() => {
+    const params = new URLSearchParams();
+    if (search.value) params.set('search', search.value);
+    if (status.value) params.set('status', status.value);
+    const qs = params.toString();
+    return '/admin/enquiries/export' + (qs ? '?' + qs : '');
+});
+
 </script>
 
 <template>
@@ -122,6 +131,13 @@ const deleteEnquiry = (id) => {
                     class="rounded-md bg-yellow-600 px-3 py-2 text-sm font-medium text-white hover:bg-yellow-700">
                     Archive ({{ selected.length }})
                 </button>
+                <a :href="exportUrl"
+                    class="ml-auto inline-flex items-center gap-1.5 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Export CSV
+                </a>
             </div>
 
             <div class="overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow">

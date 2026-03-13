@@ -16,4 +16,8 @@ interface PageServiceInterface
     public function delete(PageModel $page): void;
 
     public function bulkDelete(array $ids): void;
+
+    public function bulkDraft(array $ids): void;
+
+    public function bulkPublish(array $ids): void;
 }

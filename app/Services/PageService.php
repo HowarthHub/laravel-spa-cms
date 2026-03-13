@@ -48,4 +48,14 @@ class PageService implements PageServiceInterface
     {
         $this->pageRepository->bulkDelete($ids);
     }
+
+    public function bulkDraft(array $ids): void
+    {
+        $this->pageRepository->bulkUpdateStatus($ids, 'draft');
+    }
+
+    public function bulkPublish(array $ids): void
+    {
+        $this->pageRepository->bulkUpdateStatus($ids, 'published', now()->toDateTimeString());
+    }
 }

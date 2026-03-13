@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasRevisions;
 use Database\Factories\PostModelFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +16,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class PostModel extends Model implements HasMedia
 {
     /** @use HasFactory<PostModelFactory> */
-    use HasFactory, InteractsWithMedia, SoftDeletes;
+    use HasFactory, HasRevisions, InteractsWithMedia, SoftDeletes;
 
     protected static function newFactory(): PostModelFactory
     {
@@ -23,6 +24,11 @@ class PostModel extends Model implements HasMedia
     }
 
     protected $table = 'posts';
+
+    /**
+     * @var array<int, string>
+     */
+    protected $appends = ['missing_alt_text'];
 
     protected $fillable = [
         'title',
@@ -45,6 +51,64 @@ class PostModel extends Model implements HasMedia
             'content' => 'array',
             'published_at' => 'datetime',
         ];
+    }
+
+    public function getMissingAltTextAttribute(): bool
+    {
+        $content = $this->content;
+
+        if (! is_array($content) || empty($content)) {
+            return false;
+        }
+
+        if (isset($content[0]['type'], $content[0]['id'])) {
+            return $this->hasBlocksMissingAlt($content);
+        }
+
+        return $this->hasTiptapNodesMissingAlt($content);
+    }
+
+    /**
+     * @param  array<int, array<string, mixed>>  $blocks
+     */
+    private function hasBlocksMissingAlt(array $blocks): bool
+    {
+        foreach ($blocks as $block) {
+            $type = $block['type'] ?? null;
+            $data = $block['data'] ?? [];
+
+            if ($type === 'image' && ! empty($data['url']) && empty($data['alt'])) {
+                return true;
+            }
+
+            if ($type === 'hero' && ! empty($data['backgroundImage']) && empty($data['alt'])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param  array<string, mixed>  $node
+     */
+    private function hasTiptapNodesMissingAlt(array $node): bool
+    {
+        if (($node['type'] ?? null) === 'image') {
+            $attrs = $node['attrs'] ?? [];
+
+            if (! empty($attrs['src']) && empty($attrs['alt'])) {
+                return true;
+            }
+        }
+
+        foreach ($node['content'] ?? [] as $child) {
+            if (is_array($child) && $this->hasTiptapNodesMissingAlt($child)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function author(): BelongsTo

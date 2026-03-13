@@ -50,6 +50,16 @@ class PostService implements PostServiceInterface
         $this->postRepository->bulkDelete($ids);
     }
 
+    public function bulkDraft(array $ids): void
+    {
+        $this->postRepository->bulkUpdateStatus($ids, 'draft');
+    }
+
+    public function bulkPublish(array $ids): void
+    {
+        $this->postRepository->bulkUpdateStatus($ids, 'published', now()->toDateTimeString());
+    }
+
     public function recentPublished(int $limit = 5): Collection
     {
         return $this->postRepository->recentPublished($limit);

@@ -64,6 +64,40 @@ function duplicateBlock(index) {
 function removeBlock(index) {
     emit('update:modelValue', blocks.value.filter((_, i) => i !== index));
 }
+
+function extractTextFromValue(value) {
+    if (!value) {
+        return '';
+    }
+    if (typeof value === 'string') {
+        return value.replace(/<[^>]*>/g, ' ');
+    }
+    if (Array.isArray(value)) {
+        return value.map(extractTextFromValue).join(' ');
+    }
+    if (typeof value === 'object') {
+        if (value.type && value.content) {
+            return extractTextFromValue(value.content);
+        }
+        if (value.text) {
+            return value.text;
+        }
+        return Object.values(value).map(extractTextFromValue).join(' ');
+    }
+    return '';
+}
+
+const wordCount = computed(() => {
+    if (!blocks.value.length) {
+        return 0;
+    }
+
+    const text = blocks.value
+        .map((block) => extractTextFromValue(block.data))
+        .join(' ');
+
+    return text.split(/\s+/).filter(Boolean).length;
+});
 </script>
 
 <template>
@@ -97,6 +131,10 @@ function removeBlock(index) {
         >
             + Add Block
         </button>
+
+        <p v-if="blocks.length" class="text-xs text-gray-400 dark:text-gray-500 text-right">
+            ~{{ wordCount.toLocaleString() }} words
+        </p>
 
         <BlockTypePickerComponent
             :block-types="blockTypes"

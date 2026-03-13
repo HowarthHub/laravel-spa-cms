@@ -50,6 +50,9 @@ const navItems = computed(() => {
     if (can('manage media')) {
         items.push({ label: 'Media', href: '/admin/media' });
     }
+    if (can('manage redirects')) {
+        items.push({ label: 'Redirects', href: '/admin/redirects' });
+    }
     if (can('manage settings')) {
         items.push({ label: 'Settings', href: '/admin/settings' });
     }

@@ -12,7 +12,7 @@ class PageRepository implements PageRepositoryInterface
     public function paginateWithFilters(array $filters): LengthAwarePaginator
     {
         return PageModel::query()
-            ->with(['author', 'parent'])
+            ->with(['author', 'editor', 'parent'])
             ->when($filters['search'] ?? null, fn ($q, $s) => $q->where('title', 'like', "%{$s}%"))
             ->when($filters['status'] ?? null, fn ($q, $s) => $q->where('status', $s))
             ->latest('updated_at')
@@ -49,5 +49,16 @@ class PageRepository implements PageRepositoryInterface
     public function bulkDelete(array $ids): void
     {
         PageModel::whereIn('id', $ids)->delete();
+    }
+
+    public function bulkUpdateStatus(array $ids, string $status, ?string $publishedAt = null): void
+    {
+        $data = ['status' => $status];
+
+        if ($publishedAt !== null) {
+            $data['published_at'] = $publishedAt;
+        }
+
+        PageModel::whereIn('id', $ids)->update($data);
     }
 }

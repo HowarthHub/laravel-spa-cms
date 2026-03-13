@@ -43,4 +43,14 @@ class ServiceService implements ServiceServiceInterface
     {
         $this->serviceRepository->bulkDelete($ids);
     }
+
+    public function bulkDraft(array $ids): void
+    {
+        $this->serviceRepository->bulkUpdateStatus($ids, 'draft');
+    }
+
+    public function bulkPublish(array $ids): void
+    {
+        $this->serviceRepository->bulkUpdateStatus($ids, 'published', now()->toDateTimeString());
+    }
 }

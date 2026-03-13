@@ -11,7 +11,7 @@ class ServiceRepository implements ServiceRepositoryInterface
     public function paginateWithFilters(array $filters): LengthAwarePaginator
     {
         return ServiceModel::query()
-            ->with(['author'])
+            ->with(['author', 'editor'])
             ->when($filters['search'] ?? null, fn ($q, $s) => $q->where('title', 'like', "%{$s}%"))
             ->when($filters['status'] ?? null, fn ($q, $s) => $q->where('status', $s))
             ->orderBy('sort_order', 'asc')
@@ -44,5 +44,16 @@ class ServiceRepository implements ServiceRepositoryInterface
     public function bulkDelete(array $ids): void
     {
         ServiceModel::whereIn('id', $ids)->delete();
+    }
+
+    public function bulkUpdateStatus(array $ids, string $status, ?string $publishedAt = null): void
+    {
+        $data = ['status' => $status];
+
+        if ($publishedAt !== null) {
+            $data['published_at'] = $publishedAt;
+        }
+
+        ServiceModel::whereIn('id', $ids)->update($data);
     }
 }

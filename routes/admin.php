@@ -6,12 +6,14 @@ use App\Http\Controllers\Admin\EnquiryController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\FormController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\RedirectController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\RevisionController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +28,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('/pages/{page}', [PageController::class, 'update'])->name('pages.update');
     Route::delete('/pages/{page}', [PageController::class, 'destroy'])->name('pages.destroy');
     Route::post('/pages/bulk-destroy', [PageController::class, 'bulkDestroy'])->name('pages.bulk-destroy');
+    Route::post('/pages/bulk-draft', [PageController::class, 'bulkDraft'])->name('pages.bulk-draft');
+    Route::post('/pages/bulk-publish', [PageController::class, 'bulkPublish'])->name('pages.bulk-publish');
+    Route::post('/pages/{page}/duplicate', [PageController::class, 'duplicate'])->name('pages.duplicate');
 
     // Posts
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
@@ -35,6 +40,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
     Route::post('/posts/bulk-destroy', [PostController::class, 'bulkDestroy'])->name('posts.bulk-destroy');
+    Route::post('/posts/bulk-draft', [PostController::class, 'bulkDraft'])->name('posts.bulk-draft');
+    Route::post('/posts/bulk-publish', [PostController::class, 'bulkPublish'])->name('posts.bulk-publish');
+    Route::post('/posts/{post}/duplicate', [PostController::class, 'duplicate'])->name('posts.duplicate');
 
     // Categories
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
@@ -75,6 +83,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('/forms/{form}', [FormController::class, 'update'])->name('forms.update');
     Route::delete('/forms/{form}', [FormController::class, 'destroy'])->name('forms.destroy');
     Route::get('/forms/{form}/submissions', [FormController::class, 'submissions'])->name('forms.submissions');
+    Route::get('/forms/{form}/submissions/export', [FormController::class, 'exportSubmissions'])->name('forms.submissions.export');
     Route::delete('/forms/submissions/{formSubmission}', [FormController::class, 'destroySubmission'])->name('forms.submissions.destroy');
 
     // Services
@@ -85,13 +94,23 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('/services/{service}', [ServiceController::class, 'update'])->name('services.update');
     Route::delete('/services/{service}', [ServiceController::class, 'destroy'])->name('services.destroy');
     Route::post('/services/bulk-destroy', [ServiceController::class, 'bulkDestroy'])->name('services.bulk-destroy');
+    Route::post('/services/bulk-draft', [ServiceController::class, 'bulkDraft'])->name('services.bulk-draft');
+    Route::post('/services/bulk-publish', [ServiceController::class, 'bulkPublish'])->name('services.bulk-publish');
+    Route::post('/services/{service}/duplicate', [ServiceController::class, 'duplicate'])->name('services.duplicate');
 
     // Enquiries
     Route::get('/enquiries', [EnquiryController::class, 'index'])->name('enquiries.index');
+    Route::get('/enquiries/export', [EnquiryController::class, 'export'])->name('enquiries.export');
     Route::get('/enquiries/{enquiry}', [EnquiryController::class, 'show'])->name('enquiries.show');
     Route::put('/enquiries/{enquiry}', [EnquiryController::class, 'update'])->name('enquiries.update');
     Route::delete('/enquiries/{enquiry}', [EnquiryController::class, 'destroy'])->name('enquiries.destroy');
     Route::post('/enquiries/bulk-archive', [EnquiryController::class, 'bulkArchive'])->name('enquiries.bulk-archive');
+
+    // Redirects
+    Route::get('/redirects', [RedirectController::class, 'index'])->name('redirects.index');
+    Route::post('/redirects', [RedirectController::class, 'store'])->name('redirects.store');
+    Route::put('/redirects/{redirect}', [RedirectController::class, 'update'])->name('redirects.update');
+    Route::delete('/redirects/{redirect}', [RedirectController::class, 'destroy'])->name('redirects.destroy');
 
     // Settings
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
@@ -109,6 +128,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+
+    // Revisions
+    Route::get('/{type}/{id}/revisions', [RevisionController::class, 'index'])
+        ->where('type', 'pages|posts|services')
+        ->name('revisions.index');
+    Route::post('/revisions/{revision}/restore', [RevisionController::class, 'restore'])->name('revisions.restore');
 
     // Dark mode toggle
     Route::post('/toggle-dark-mode', [ProfileController::class, 'toggleDarkMode'])->name('profile.toggle-dark-mode');

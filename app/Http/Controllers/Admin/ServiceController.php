@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Services\ServiceBulkDestroyRequest;
+use App\Http\Requests\Admin\Services\ServiceBulkDraftRequest;
+use App\Http\Requests\Admin\Services\ServiceBulkPublishRequest;
 use App\Http\Requests\Admin\Services\ServiceDestroyRequest;
 use App\Http\Requests\Admin\Services\ServiceIndexRequest;
 use App\Http\Requests\Admin\Services\ServiceStoreRequest;
@@ -11,6 +13,7 @@ use App\Http\Requests\Admin\Services\ServiceUpdateRequest;
 use App\Models\ServiceModel;
 use App\Services\Interfaces\ServiceServiceInterface;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -52,6 +55,8 @@ class ServiceController extends Controller
 
     public function update(ServiceUpdateRequest $request, ServiceModel $service): RedirectResponse
     {
+        $service->createRevision();
+
         $this->serviceService->update($service, $request->validated());
 
         return redirect()->route('admin.services.index')->with('success', 'Service updated.');
@@ -69,5 +74,42 @@ class ServiceController extends Controller
         $this->serviceService->bulkDelete($request->validated()['ids']);
 
         return redirect()->route('admin.services.index')->with('success', 'Services deleted.');
+    }
+
+    public function bulkDraft(ServiceBulkDraftRequest $request): RedirectResponse
+    {
+        $this->serviceService->bulkDraft($request->validated()['ids']);
+
+        return redirect()->route('admin.services.index')->with('success', 'Services set to draft.');
+    }
+
+    public function bulkPublish(ServiceBulkPublishRequest $request): RedirectResponse
+    {
+        $this->serviceService->bulkPublish($request->validated()['ids']);
+
+        return redirect()->route('admin.services.index')->with('success', 'Services published.');
+    }
+
+    public function duplicate(ServiceModel $service): RedirectResponse
+    {
+        abort_unless(auth()->user()->can('create services'), 403);
+
+        $slug = Str::slug($service->slug . '-copy');
+
+        $duplicate = ServiceModel::create([
+            ...$service->only([
+                'short_description', 'content', 'icon', 'featured_image',
+                'features', 'cta_text', 'cta_link', 'sort_order',
+                'meta_title', 'meta_description', 'og_image',
+            ]),
+            'title' => "Copy of {$service->title}",
+            'slug' => $slug,
+            'status' => 'draft',
+            'published_at' => null,
+            'author_id' => auth()->id(),
+            'updated_by' => auth()->id(),
+        ]);
+
+        return redirect()->route('admin.services.edit', $duplicate)->with('success', 'Service duplicated.');
     }
 }
