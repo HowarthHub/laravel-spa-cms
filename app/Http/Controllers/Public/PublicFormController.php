@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Models\FormModel;
 use App\Models\FormSubmissionModel;
+use App\Notifications\FormSubmissionNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class PublicFormController extends Controller
 {
@@ -35,12 +37,17 @@ class PublicFormController extends Controller
 
         $validated = $request->validate($rules);
 
-        FormSubmissionModel::create([
+        $submission = FormSubmissionModel::create([
             'form_id' => $form->id,
             'data' => $validated,
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
         ]);
+
+        if ($form->notification_email) {
+            Notification::route('mail', $form->notification_email)
+                ->notify(new FormSubmissionNotification($form, $submission));
+        }
 
         return back()->with('success', $form->success_message ?: 'Thank you for your submission.');
     }

@@ -74,6 +74,7 @@ const socialPlatforms = [
             <meta v-if="meta.description" head-key="description" name="description" :content="meta.description" />
             <meta v-if="meta.ogImage" head-key="og:image" property="og:image" :content="meta.ogImage" />
             <link v-if="meta.canonicalUrl" rel="canonical" :href="meta.canonicalUrl" />
+            <link v-if="site.favicon" rel="icon" :href="site.favicon" head-key="favicon" />
         </Head>
 
         <!-- Header -->
