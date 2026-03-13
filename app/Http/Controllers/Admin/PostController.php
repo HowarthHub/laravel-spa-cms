@@ -109,7 +109,7 @@ class PostController extends Controller
 
         $post->load(['categories', 'tags']);
 
-        $slug = Str::slug($post->slug . '-copy');
+        $slug = Str::slug($post->slug.'-copy');
 
         $duplicate = PostModel::create([
             ...$post->only([

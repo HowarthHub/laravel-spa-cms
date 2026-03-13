@@ -21,7 +21,7 @@ class ServiceService implements ServiceServiceInterface
 
     public function create(array $data): ServiceModel
     {
-        $data['slug'] = !empty($data['slug']) ? $data['slug'] : Str::slug($data['title']);
+        $data['slug'] = ! empty($data['slug']) ? $data['slug'] : Str::slug($data['title']);
         $data['author_id'] = auth()->id();
 
         return $this->serviceRepository->create($data);

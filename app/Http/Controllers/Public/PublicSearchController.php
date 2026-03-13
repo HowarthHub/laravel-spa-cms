@@ -27,7 +27,7 @@ class PublicSearchController extends Controller
         ];
 
         if ($query !== '') {
-            $likeQuery = '%' . $query . '%';
+            $likeQuery = '%'.$query.'%';
 
             $results['pages'] = PageModel::published()
                 ->where(function ($q) use ($likeQuery) {

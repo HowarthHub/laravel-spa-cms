@@ -94,7 +94,7 @@ class ServiceController extends Controller
     {
         abort_unless(auth()->user()->can('create services'), 403);
 
-        $slug = Str::slug($service->slug . '-copy');
+        $slug = Str::slug($service->slug.'-copy');
 
         $duplicate = ServiceModel::create([
             ...$service->only([

@@ -309,8 +309,12 @@ class DemoContentSeeder extends Seeder
             $catIds = collect($catIndexes)->map(fn ($i) => $categories[$i]->id)->all();
             $tagIds = collect($tagIndexes)->map(fn ($i) => $tags[$i]->id)->all();
 
-            if ($catIds) $post->categories()->sync($catIds);
-            if ($tagIds) $post->tags()->sync($tagIds);
+            if ($catIds) {
+                $post->categories()->sync($catIds);
+            }
+            if ($tagIds) {
+                $post->tags()->sync($tagIds);
+            }
         }
 
         // ── Enquiries ─────────────────────────────────────
@@ -327,7 +331,7 @@ class DemoContentSeeder extends Seeder
 
         foreach ($enquiries as $i => $enq) {
             ContactEnquiryModel::create(array_merge($enq, [
-                'ip_address' => '192.168.1.' . ($i + 10),
+                'ip_address' => '192.168.1.'.($i + 10),
                 'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
                 'created_at' => now()->subDays($i * 2),
             ]));
@@ -395,7 +399,7 @@ class DemoContentSeeder extends Seeder
             FormSubmissionModel::create([
                 'form_id' => $contactForm->id,
                 'data' => $data,
-                'ip_address' => '192.168.1.' . (100 + $i),
+                'ip_address' => '192.168.1.'.(100 + $i),
                 'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
                 'created_at' => now()->subDays($i * 3),
             ]);
@@ -587,12 +591,12 @@ class DemoContentSeeder extends Seeder
     {
         return [
             [
-                'id' => 'blk_' . substr(md5($description), 0, 9),
+                'id' => 'blk_'.substr(md5($description), 0, 9),
                 'type' => 'richText',
                 'data' => ['content' => $this->tiptapContent($description)],
             ],
             [
-                'id' => 'blk_' . substr(md5(implode(',', $features)), 0, 9),
+                'id' => 'blk_'.substr(md5(implode(',', $features)), 0, 9),
                 'type' => 'checklist',
                 'data' => [
                     'heading' => 'What\'s Included',

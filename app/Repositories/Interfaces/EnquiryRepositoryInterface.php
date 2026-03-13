@@ -3,6 +3,7 @@
 namespace App\Repositories\Interfaces;
 
 use App\Models\ContactEnquiryModel;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 interface EnquiryRepositoryInterface
@@ -21,5 +22,5 @@ interface EnquiryRepositoryInterface
 
     public function countNew(): int;
 
-    public function recent(int $limit): \Illuminate\Database\Eloquent\Collection;
+    public function recent(int $limit): Collection;
 }
