@@ -5,7 +5,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
+    <div v-scroll-animate class="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
         <h2 v-if="data.heading" class="text-2xl font-bold text-gray-900 mb-6">{{ data.heading }}</h2>
         <ul v-if="data.items?.length" class="space-y-3">
             <li v-for="(item, index) in data.items" :key="index" class="flex items-start gap-3">

@@ -22,7 +22,7 @@ function formatDate(dateStr) {
 </script>
 
 <template>
-    <article class="group overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-lg animate-fade-in-up" :class="`stagger-${index + 1}`">
+    <article v-scroll-animate :class="`stagger-${index + 1}`" class="group overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-lg">
         <Link :href="`/blog/${post.slug}`">
             <div v-if="post.featured_image" class="aspect-video overflow-hidden">
                 <img :src="post.featured_image" :alt="post.title" class="h-full w-full object-cover transition-transform group-hover:scale-105" />

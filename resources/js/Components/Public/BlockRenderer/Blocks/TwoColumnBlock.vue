@@ -7,7 +7,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <div v-scroll-animate class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
             <div>
                 <TiptapRendererComponent v-if="data.left" :content="data.left" />

@@ -77,7 +77,7 @@ function formatDate(dateStr) {
             </div>
 
             <!-- Header -->
-            <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-12" :class="{ 'pb-12': !isBlocks }">
+            <div v-scroll-animate class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-12" :class="{ 'pb-12': !isBlocks }">
                 <!-- Meta -->
                 <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-4">
                     <time v-if="post.published_at" :datetime="post.published_at">{{ formatDate(post.published_at) }}</time>
@@ -118,9 +118,9 @@ function formatDate(dateStr) {
             <!-- Related Posts -->
             <div v-if="relatedPosts.length" class="border-t border-gray-200 bg-gray-50">
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-8">Related Posts</h2>
+                    <h2 v-scroll-animate class="text-2xl font-bold text-gray-900 mb-8">Related Posts</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <PostCardComponent v-for="related in relatedPosts" :key="related.id" :post="related" />
+                        <PostCardComponent v-for="(related, i) in relatedPosts" :key="related.id" :post="related" :index="i" />
                     </div>
                 </div>
             </div>

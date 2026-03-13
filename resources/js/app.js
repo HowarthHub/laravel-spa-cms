@@ -5,6 +5,7 @@ import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { useDarkMode } from '@/Composables/useDarkMode.js';
+import { vScrollAnimate } from '@/Directives/vScrollAnimate.js';
 
 createInertiaApp({
     title: (title) => title ? `${title} - Laravel CMS` : 'Laravel CMS',
@@ -16,6 +17,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         const app = createApp({ render: () => h(App, props) })
             .use(plugin)
+            .directive('scroll-animate', vScrollAnimate)
             .mount(el);
 
         // Initialise dark mode watcher

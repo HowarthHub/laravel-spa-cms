@@ -5,7 +5,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
+    <div v-scroll-animate class="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
         <blockquote class="rounded-xl border border-gray-200 bg-white p-8 shadow-sm text-center">
             <p v-if="data.quote" class="text-lg italic text-gray-700 leading-relaxed">"{{ data.quote }}"</p>
             <div class="mt-6 flex items-center justify-center gap-4">
