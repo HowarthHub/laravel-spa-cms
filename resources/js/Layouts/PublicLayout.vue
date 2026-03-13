@@ -155,15 +155,25 @@ const socialPlatforms = [
                     <template v-for="item in navigation" :key="item.id">
                         <!-- Item with children -->
                         <div v-if="item.children?.length">
-                            <button
-                                @click="toggleMobileDropdown(item.id)"
-                                class="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                            >
-                                {{ item.label }}
-                                <svg class="h-4 w-4 transition-transform" :class="{ 'rotate-180': mobileDropdownOpen === item.id }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
+                            <div class="flex items-center justify-between rounded-md hover:bg-gray-50">
+                                <a v-if="isExternal(resolveUrl(item))" :href="resolveUrl(item)" :target="item.target || '_blank'" rel="noopener noreferrer" class="flex-1 px-3 py-2 text-sm font-medium text-gray-700" @click="mobileMenuOpen = false">
+                                    {{ item.label }}
+                                </a>
+                                <Link v-else-if="resolveUrl(item) !== '#'" :href="resolveUrl(item)" class="flex-1 px-3 py-2 text-sm font-medium text-gray-700" @click="mobileMenuOpen = false">
+                                    {{ item.label }}
+                                </Link>
+                                <span v-else class="flex-1 px-3 py-2 text-sm font-medium text-gray-700">
+                                    {{ item.label }}
+                                </span>
+                                <button
+                                    @click="toggleMobileDropdown(item.id)"
+                                    class="px-3 py-2 text-gray-400 hover:text-gray-700"
+                                >
+                                    <svg class="h-4 w-4 transition-transform" :class="{ 'rotate-180': mobileDropdownOpen === item.id }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </div>
                             <div v-if="mobileDropdownOpen === item.id" class="pl-4 space-y-1">
                                 <template v-for="child in item.children" :key="child.id">
                                     <a v-if="isExternal(resolveUrl(child))" :href="resolveUrl(child)" :target="child.target || '_blank'" rel="noopener noreferrer" class="block rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-50" @click="mobileMenuOpen = false">
