@@ -23,7 +23,7 @@ const buttonClasses = computed(() => {
 </script>
 
 <template>
-    <div :class="variantClasses" class="px-4 py-16 sm:px-6 lg:px-8">
+    <div v-scroll-animate="'scale-in'" :class="variantClasses" class="px-4 py-16 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-3xl text-center">
             <h2 v-if="data.heading" class="text-3xl font-bold sm:text-4xl">{{ data.heading }}</h2>
             <p v-if="data.text" class="mx-auto mt-4 max-w-xl text-lg opacity-90">{{ data.text }}</p>

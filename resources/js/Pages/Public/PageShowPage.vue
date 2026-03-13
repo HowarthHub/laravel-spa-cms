@@ -76,7 +76,7 @@ function fieldKey(label) {
         <div v-if="page.featured_image" class="relative h-64 sm:h-80 lg:h-96 overflow-hidden bg-gray-900">
             <img :src="page.featured_image" :alt="page.title" class="h-full w-full object-cover opacity-60" />
             <div class="absolute inset-0 flex items-center justify-center">
-                <h1 class="text-4xl sm:text-5xl font-bold text-white text-center px-4">{{ page.title }}</h1>
+                <h1 v-scroll-animate class="text-4xl sm:text-5xl font-bold text-white text-center px-4">{{ page.title }}</h1>
             </div>
         </div>
 
@@ -96,7 +96,7 @@ function fieldKey(label) {
                 <div :class="isFullWidth ? 'mx-auto max-w-7xl px-4 sm:px-6 lg:px-8' : ''">
                     <h2 class="text-2xl font-bold text-gray-900 mb-8">Latest Posts</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <PostCardComponent v-for="post in posts.data" :key="post.id" :post="post" />
+                        <PostCardComponent v-for="(post, i) in posts.data" :key="post.id" :post="post" :index="i" />
                     </div>
                 </div>
             </div>
@@ -106,7 +106,7 @@ function fieldKey(label) {
                 <div :class="isFullWidth ? 'mx-auto max-w-7xl px-4 sm:px-6 lg:px-8' : ''">
                     <h2 class="text-2xl font-bold text-gray-900 mb-8">Our Services</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <ServiceCardComponent v-for="service in services" :key="service.id" :service="service" />
+                        <ServiceCardComponent v-for="(service, i) in services" :key="service.id" :service="service" :index="i" />
                     </div>
                 </div>
             </div>
@@ -114,7 +114,7 @@ function fieldKey(label) {
             <!-- Contact Form (contact template) -->
             <div v-if="template === 'contact' && form" class="mt-12">
                 <div :class="isFullWidth ? 'mx-auto max-w-2xl px-4 sm:px-6 lg:px-8' : ''">
-                    <form @submit.prevent="submitForm" class="rounded-xl border border-gray-200 bg-gray-50 p-6 sm:p-8 space-y-5">
+                    <form v-scroll-animate @submit.prevent="submitForm" class="rounded-xl border border-gray-200 bg-gray-50 p-6 sm:p-8 space-y-5">
                         <div v-for="field in form.fields" :key="field.label">
                             <!-- Checkbox -->
                             <div v-if="field.type === 'checkbox'" class="flex items-start gap-3">

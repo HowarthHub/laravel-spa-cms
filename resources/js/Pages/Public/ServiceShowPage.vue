@@ -30,7 +30,7 @@ const isBlocks = computed(() =>
             </div>
 
             <!-- Header -->
-            <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 pt-12" :class="{ 'pb-12': !isBlocks }">
+            <div v-scroll-animate class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 pt-12" :class="{ 'pb-12': !isBlocks }">
                 <h1 class="text-4xl font-bold text-gray-900 mb-6">{{ service.title }}</h1>
 
                 <p v-if="service.short_description" class="text-lg text-gray-600" :class="{ 'mb-8': !isBlocks }">
@@ -62,7 +62,7 @@ const isBlocks = computed(() =>
             <!-- Footer (CTA + back link) -->
             <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 pb-12">
                 <!-- CTA -->
-                <div v-if="service.cta_text && service.cta_link" class="mt-12">
+                <div v-if="service.cta_text && service.cta_link" v-scroll-animate class="mt-12">
                     <a :href="service.cta_link" class="inline-flex items-center rounded-md bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors">
                         {{ service.cta_text }}
                     </a>
