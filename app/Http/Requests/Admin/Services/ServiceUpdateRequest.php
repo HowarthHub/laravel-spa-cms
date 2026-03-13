@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin\Services;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ServiceUpdateRequest extends FormRequest
 {
@@ -15,7 +16,7 @@ class ServiceUpdateRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'slug' => ['nullable', 'string', 'max:255', 'unique:services,slug,' . $this->route('service')->id],
+            'slug' => ['nullable', 'string', 'max:255', Rule::unique('services', 'slug')->ignore($this->route('service'))],
             'short_description' => ['nullable', 'string', 'max:500'],
             'content' => ['nullable', 'array'],
             'icon' => ['nullable', 'string', 'max:100'],

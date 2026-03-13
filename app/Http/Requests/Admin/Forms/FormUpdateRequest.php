@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin\Forms;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class FormUpdateRequest extends FormRequest
 {
@@ -15,7 +16,7 @@ class FormUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'handle' => ['nullable', 'string', 'max:255', 'unique:forms,handle,' . $this->route('form')->id],
+            'handle' => ['nullable', 'string', 'max:255', Rule::unique('forms', 'handle')->ignore($this->route('form'))],
             'fields' => ['required', 'array'],
             'fields.*' => ['required', 'array'],
             'fields.*.label' => ['required', 'string'],

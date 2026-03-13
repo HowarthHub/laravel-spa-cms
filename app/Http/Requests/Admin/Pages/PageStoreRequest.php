@@ -26,6 +26,7 @@ class PageStoreRequest extends FormRequest
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:500'],
             'og_image' => ['nullable', 'string'],
+            'form_id' => ['nullable', 'integer', 'exists:forms,id'],
         ];
     }
 }

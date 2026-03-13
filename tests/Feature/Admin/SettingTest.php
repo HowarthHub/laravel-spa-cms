@@ -43,6 +43,13 @@ it('preserves tab parameter on redirect', function () {
 
 // --- Auth ---
 
+it('denies index access without manage settings permission', function () {
+    actingAsEditor();
+
+    $this->get(route('admin.settings.index'))
+        ->assertForbidden();
+});
+
 it('denies update without manage settings permission', function () {
     actingAsEditor();
 

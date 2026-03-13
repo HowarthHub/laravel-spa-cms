@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Settings\SettingIndexRequest;
 use App\Http\Requests\Admin\Settings\SettingUpdateRequest;
 use App\Models\PageModel;
 use App\Models\SettingModel;
@@ -17,7 +18,7 @@ class SettingController extends Controller
         private readonly SettingServiceInterface $settingService
     ) {}
 
-    public function index(): Response
+    public function index(SettingIndexRequest $request): Response
     {
         $settings = SettingModel::all()->groupBy('group')->map(function ($group) {
             return $group->mapWithKeys(fn ($s) => [
