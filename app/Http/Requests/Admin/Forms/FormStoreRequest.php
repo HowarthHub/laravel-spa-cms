@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin\Forms;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class FormStoreRequest extends FormRequest
 {
@@ -15,7 +16,7 @@ class FormStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'handle' => ['nullable', 'string', 'max:255', 'unique:forms,handle'],
+            'handle' => ['nullable', 'string', 'max:255', Rule::unique('forms', 'handle')],
             'fields' => ['required', 'array'],
             'fields.*' => ['required', 'array'],
             'fields.*.label' => ['required', 'string'],

@@ -95,6 +95,20 @@ it('renders the create page with active forms listed', function () {
         ->assertInertia(fn ($page) => $page->has('forms', 1));
 });
 
+it('creates a page with a form attachment', function () {
+    actingAsSuperAdmin();
+    $form = FormModel::factory()->create();
+
+    $this->post(route('admin.pages.store'), [
+        'title' => 'Contact Page',
+        'status' => 'draft',
+        'form_id' => $form->id,
+    ]);
+
+    $page = PageModel::where('title', 'Contact Page')->first();
+    expect($page->form_id)->toBe($form->id);
+});
+
 it('validates title is required on store', function () {
     actingAsSuperAdmin();
 

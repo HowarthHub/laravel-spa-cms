@@ -26,11 +26,11 @@ class MenuController extends Controller
         $menus = $this->menuService->getAll();
 
         return Inertia::render('Admin/Menus/MenuIndexPage', [
-            'menus' => $menus->map(fn (MenuModel $m) => [
+            'menus' => $menus->loadCount('items')->map(fn (MenuModel $m) => [
                 'id' => $m->id,
                 'name' => $m->name,
                 'handle' => $m->handle,
-                'items_count' => $m->items()->count(),
+                'items_count' => $m->items_count,
                 'updated_at' => $m->updated_at,
             ]),
         ]);
