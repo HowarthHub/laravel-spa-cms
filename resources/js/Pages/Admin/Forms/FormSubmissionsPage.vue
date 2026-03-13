@@ -59,7 +59,7 @@ const getSubmissionValue = (submission, field) => {
         </template>
 
         <div class="space-y-4">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h1 class="text-xl font-semibold text-gray-900 dark:text-white">
                     {{ form.name }} &mdash; Submissions
                 </h1>
@@ -78,7 +78,7 @@ const getSubmissionValue = (submission, field) => {
                 </div>
             </div>
 
-            <div class="overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow">
+            <div class="overflow-x-auto rounded-lg bg-white dark:bg-gray-800 shadow">
                 <div v-if="submissions.data.length" class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-800/60">
@@ -100,7 +100,7 @@ const getSubmissionValue = (submission, field) => {
                                 <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
                                     {{ new Date(submission.created_at).toLocaleDateString() }}
                                 </td>
-                                <td class="px-4 py-3 text-right">
+                                <td class="whitespace-nowrap px-4 py-3 text-right">
                                     <button v-if="can('manage forms')" @click="deleteSubmission(submission.id)"
                                         class="text-sm text-red-600 hover:text-red-500">Delete</button>
                                 </td>

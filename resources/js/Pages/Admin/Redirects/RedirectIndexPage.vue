@@ -121,7 +121,7 @@ const deleteRedirect = (id) => {
         </template>
 
         <div class="space-y-4">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Redirects</h1>
                 <button
                     v-if="can('manage redirects')"
@@ -166,12 +166,12 @@ const deleteRedirect = (id) => {
                 </form>
             </div>
 
-            <div class="flex items-center gap-3">
+            <div class="flex flex-wrap items-center gap-3">
                 <input v-model="search" type="text" placeholder="Search redirects..."
-                    class="w-64 rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
+                    class="w-full sm:w-64 rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
             </div>
 
-            <div class="overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow">
+            <div class="overflow-x-auto rounded-lg bg-white dark:bg-gray-800 shadow">
                 <table v-if="redirects.data.length" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead class="bg-gray-50 dark:bg-gray-800/60">
                         <tr>
@@ -188,8 +188,8 @@ const deleteRedirect = (id) => {
                             <!-- View row -->
                             <tr v-if="editingId !== redirect.id" class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                 <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-100">{{ redirect.source_path }}</td>
-                                <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ redirect.destination_path }}</td>
-                                <td class="px-4 py-3">
+                                <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ redirect.destination_path }}</td>
+                                <td class="whitespace-nowrap px-4 py-3">
                                     <span class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium"
                                         :class="redirect.status_code === 301
                                             ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
@@ -197,7 +197,7 @@ const deleteRedirect = (id) => {
                                         {{ redirect.status_code }}
                                     </span>
                                 </td>
-                                <td class="px-4 py-3">
+                                <td class="whitespace-nowrap px-4 py-3">
                                     <button v-if="can('manage redirects')" @click="toggleActive(redirect)"
                                         class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none"
                                         :class="redirect.is_active ? 'bg-cyan-600' : 'bg-gray-300 dark:bg-gray-600'">
@@ -206,8 +206,8 @@ const deleteRedirect = (id) => {
                                     </button>
                                     <span v-else class="text-sm text-gray-500 dark:text-gray-400">{{ redirect.is_active ? 'Yes' : 'No' }}</span>
                                 </td>
-                                <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ redirect.hit_count }}</td>
-                                <td class="px-4 py-3 text-right">
+                                <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ redirect.hit_count }}</td>
+                                <td class="whitespace-nowrap px-4 py-3 text-right">
                                     <button v-if="can('manage redirects')" @click="startEdit(redirect)"
                                         class="text-sm text-cyan-600 hover:text-cyan-500 mr-3">Edit</button>
                                     <button v-if="can('manage redirects')" @click="deleteRedirect(redirect.id)"

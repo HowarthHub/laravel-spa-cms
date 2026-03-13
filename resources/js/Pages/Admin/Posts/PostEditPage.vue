@@ -18,10 +18,20 @@ const props = defineProps({
     blockTypes: Object,
 });
 
+function toBlocks(content) {
+    if (Array.isArray(content) && content.length && content[0]?.id && content[0]?.type) {
+        return content;
+    }
+    if (content && typeof content === 'object' && content.type === 'doc') {
+        return [{ id: 'blk_migrated', type: 'richText', data: { content } }];
+    }
+    return [];
+}
+
 const form = useForm({
     title: props.post.title,
     slug: props.post.slug || '',
-    content: Array.isArray(props.post.content) ? props.post.content : [],
+    content: toBlocks(props.post.content),
     excerpt: props.post.excerpt || '',
     status: props.post.status,
     published_at: props.post.published_at ? props.post.published_at.slice(0, 16) : '',

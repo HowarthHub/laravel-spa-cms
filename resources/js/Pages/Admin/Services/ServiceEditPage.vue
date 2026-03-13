@@ -15,11 +15,21 @@ const props = defineProps({
     blockTypes: Object,
 });
 
+function toBlocks(content) {
+    if (Array.isArray(content) && content.length && content[0]?.id && content[0]?.type) {
+        return content;
+    }
+    if (content && typeof content === 'object' && content.type === 'doc') {
+        return [{ id: 'blk_migrated', type: 'richText', data: { content } }];
+    }
+    return [];
+}
+
 const form = useForm({
     title: props.service.title,
     slug: props.service.slug,
     short_description: props.service.short_description || '',
-    content: Array.isArray(props.service.content) ? props.service.content : [],
+    content: toBlocks(props.service.content),
     icon: props.service.icon || '',
     featured_image: props.service.featured_image || '',
     cta_text: props.service.cta_text || '',

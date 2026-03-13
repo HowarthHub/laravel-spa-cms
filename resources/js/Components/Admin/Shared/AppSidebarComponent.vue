@@ -6,6 +6,12 @@ import { usePermissions } from '@/Composables/usePermissions.js';
 const { can, hasRole } = usePermissions();
 const page = usePage();
 
+defineProps({
+    open: { type: Boolean, default: false },
+});
+
+const emit = defineEmits(['close']);
+
 const currentUrl = computed(() => page.url);
 
 const isActive = (path) => currentUrl.value.startsWith(path);
@@ -72,14 +78,26 @@ const isItemActive = (item) => {
 const togglePosts = () => {
     postsOpen.value = !postsOpen.value;
 };
+
+const navigate = () => {
+    emit('close');
+};
 </script>
 
 <template>
-    <aside class="fixed inset-y-0 left-0 z-30 w-64 bg-gray-950 text-white flex flex-col">
-        <div class="flex h-16 items-center px-6 border-b border-gray-800/50">
-            <Link href="/admin" class="text-lg font-bold tracking-tight">
+    <aside
+        class="fixed inset-y-0 left-0 z-40 w-64 bg-gray-950 text-white flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0"
+        :class="open ? 'translate-x-0' : '-translate-x-full'"
+    >
+        <div class="flex h-16 items-center justify-between px-6 border-b border-gray-800/50">
+            <Link href="/admin" class="text-lg font-bold tracking-tight" @click="navigate">
                 {{ page.props.site?.name || 'CMS' }}
             </Link>
+            <button @click="$emit('close')" class="lg:hidden rounded-md p-1 text-gray-400 hover:text-white">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
 
         <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
@@ -112,6 +130,7 @@ const togglePosts = () => {
                             :class="isActive(child.href)
                                 ? 'bg-gray-800/60 text-white'
                                 : 'text-gray-500 hover:bg-gray-800/40 hover:text-white'"
+                            @click="navigate"
                         >
                             {{ child.label }}
                         </Link>
@@ -126,6 +145,7 @@ const togglePosts = () => {
                     :class="isItemActive(item)
                         ? 'bg-gray-800/60 text-white'
                         : 'text-gray-400 hover:bg-gray-800/40 hover:text-white'"
+                    @click="navigate"
                 >
                     <span>{{ item.label }}</span>
                     <span
@@ -156,6 +176,7 @@ const togglePosts = () => {
                 href="/admin/profile"
                 class="flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-800/40 hover:text-white transition-colors"
                 :class="isActive('/admin/profile') ? 'bg-gray-800/60 text-white' : ''"
+                @click="navigate"
             >
                 Profile
             </Link>

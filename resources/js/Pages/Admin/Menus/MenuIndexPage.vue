@@ -46,7 +46,7 @@ const deleteMenu = (id) => {
         </template>
 
         <div class="space-y-4">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Menus</h1>
                 <Link
                     v-if="can('manage menus')"
@@ -57,7 +57,7 @@ const deleteMenu = (id) => {
                 </Link>
             </div>
 
-            <div class="overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow">
+            <div class="overflow-x-auto rounded-lg bg-white dark:bg-gray-800 shadow">
                 <table v-if="menus.length" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead class="bg-gray-50 dark:bg-gray-800/60">
                         <tr>
@@ -74,9 +74,9 @@ const deleteMenu = (id) => {
                                     {{ menu.name }}
                                 </Link>
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 font-mono">{{ menu.handle }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ menu.items_count }}</td>
-                            <td class="px-4 py-3 text-right">
+                            <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-500 dark:text-gray-400 font-mono">{{ menu.handle }}</td>
+                            <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ menu.items_count }}</td>
+                            <td class="whitespace-nowrap px-4 py-3 text-right">
                                 <Link v-if="can('manage menus')" :href="`/admin/menus/${menu.id}/edit`"
                                     class="text-sm text-cyan-600 hover:text-cyan-500 mr-3">Edit</Link>
                                 <button v-if="can('manage menus')" @click="deleteMenu(menu.id)"

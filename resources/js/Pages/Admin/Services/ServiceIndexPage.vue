@@ -120,7 +120,7 @@ const deleteService = (id) => {
         </template>
 
         <div class="space-y-4">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Services</h1>
                 <Link
                     v-if="can('create services')"
@@ -131,9 +131,9 @@ const deleteService = (id) => {
                 </Link>
             </div>
 
-            <div class="flex items-center gap-3">
+            <div class="flex flex-wrap items-center gap-3">
                 <input v-model="search" type="text" placeholder="Search services..."
-                    class="w-64 rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
+                    class="w-full sm:w-64 rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
                 <select v-model="status"
                     class="rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100">
                     <option value="">All Statuses</option>
@@ -154,7 +154,7 @@ const deleteService = (id) => {
                 </button>
             </div>
 
-            <div class="overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow">
+            <div class="overflow-x-auto rounded-lg bg-white dark:bg-gray-800 shadow">
                 <table v-if="services.data.length" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead class="bg-gray-50 dark:bg-gray-800/60">
                         <tr>
@@ -178,7 +178,7 @@ const deleteService = (id) => {
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                         <tr v-for="service in services.data" :key="service.id" class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                            <td v-if="can('delete services')" class="px-4 py-3">
+                            <td v-if="can('delete services')" class="whitespace-nowrap px-4 py-3">
                                 <input type="checkbox" :value="service.id" v-model="selected" class="rounded border-gray-300 dark:border-gray-600" />
                             </td>
                             <td class="px-4 py-3">
@@ -191,17 +191,17 @@ const deleteService = (id) => {
                                     </svg>
                                 </span>
                             </td>
-                            <td class="px-4 py-3 text-sm font-mono text-gray-500 dark:text-gray-400">{{ service.slug }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">{{ service.short_description || '\u2014' }}</td>
-                            <td class="px-4 py-3">
+                            <td class="whitespace-nowrap px-4 py-3 text-sm font-mono text-gray-500 dark:text-gray-400">{{ service.slug }}</td>
+                            <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">{{ service.short_description || '\u2014' }}</td>
+                            <td class="whitespace-nowrap px-4 py-3">
                                 <StatusBadgeComponent :status="service.status" />
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ service.sort_order }}</td>
-                            <td class="px-4 py-3">
+                            <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ service.sort_order }}</td>
+                            <td class="whitespace-nowrap px-4 py-3">
                                 <div class="text-sm text-gray-500 dark:text-gray-400">{{ new Date(service.updated_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) }}</div>
                                 <div class="text-xs text-gray-400 dark:text-gray-500">{{ service.editor?.name || service.author?.name }}</div>
                             </td>
-                            <td class="px-4 py-3 text-right">
+                            <td class="whitespace-nowrap px-4 py-3 text-right">
                                 <a v-if="service.status === 'published' && service.slug" :href="`/services/${service.slug}`" target="_blank"
                                     class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mr-3">View</a>
                                 <Link v-if="can('edit services')" :href="`/admin/services/${service.id}/edit`"
