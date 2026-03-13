@@ -6,11 +6,15 @@ defineProps({
         type: Object,
         required: true,
     },
+    index: {
+        type: Number,
+        default: 0,
+    },
 });
 </script>
 
 <template>
-    <article class="group overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-lg">
+    <article class="group overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-lg animate-fade-in-up" :class="`stagger-${index + 1}`">
         <Link :href="`/services/${service.slug}`">
             <div v-if="service.featured_image" class="aspect-video overflow-hidden">
                 <img :src="service.featured_image" :alt="service.title" class="h-full w-full object-cover transition-transform group-hover:scale-105" />

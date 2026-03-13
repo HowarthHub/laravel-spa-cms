@@ -44,10 +44,11 @@ const statusBadge = (s) => ({
             <!-- Stat Cards -->
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 <Link
-                    v-for="card in statCards"
+                    v-for="(card, i) in statCards"
                     :key="card.key"
                     :href="card.href"
-                    class="overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow hover:shadow-md transition-shadow"
+                    class="overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow hover:shadow-md transition-shadow animate-fade-in-up"
+                    :class="`stagger-${i + 1}`"
                 >
                     <div class="p-5">
                         <div class="flex items-center">

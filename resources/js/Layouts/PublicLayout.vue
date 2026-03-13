@@ -197,7 +197,9 @@ const socialPlatforms = [
 
         <!-- Main Content -->
         <main class="grow">
-            <slot />
+            <div class="animate-fade-in">
+                <slot />
+            </div>
         </main>
 
         <!-- Footer -->

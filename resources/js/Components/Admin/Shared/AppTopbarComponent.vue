@@ -64,7 +64,7 @@ const logout = () => {
                 />
                 <div
                     v-if="showDropdown"
-                    class="absolute right-0 z-20 mt-1 w-48 rounded-md bg-white dark:bg-gray-800 py-1 shadow-lg ring-1 ring-black/5 dark:ring-white/10"
+                    class="absolute right-0 z-20 mt-1 w-48 rounded-md bg-white dark:bg-gray-800 py-1 shadow-lg ring-1 ring-black/5 dark:ring-white/10 animate-fade-in-down"
                 >
                     <Link
                         href="/admin/profile"

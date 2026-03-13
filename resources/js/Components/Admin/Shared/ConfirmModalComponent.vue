@@ -19,9 +19,17 @@ const buttonClass = {
 
 <template>
     <Teleport to="body">
+        <Transition
+            enter-active-class="transition ease-out duration-200"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="transition ease-in duration-150"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
+        >
         <div v-if="show" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div class="fixed inset-0 bg-black/50 transition-opacity" @click="$emit('cancel')"></div>
-            <div class="relative z-10 w-full max-w-sm rounded-lg bg-white dark:bg-gray-800 p-6 shadow-xl">
+            <div class="fixed inset-0 bg-black/50" @click="$emit('cancel')"></div>
+            <div class="relative z-10 w-full max-w-sm rounded-lg bg-white dark:bg-gray-800 p-6 shadow-xl animate-scale-in">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ title }}</h3>
                 <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ message }}</p>
                 <div class="mt-5 flex justify-end gap-2">
@@ -37,5 +45,6 @@ const buttonClass = {
                 </div>
             </div>
         </div>
+        </Transition>
     </Teleport>
 </template>

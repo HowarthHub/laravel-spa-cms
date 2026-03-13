@@ -34,7 +34,7 @@ defineProps({
             </div>
 
             <div v-if="posts.data.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <PostCardComponent v-for="post in posts.data" :key="post.id" :post="post" />
+                <PostCardComponent v-for="(post, i) in posts.data" :key="post.id" :post="post" :index="i" />
             </div>
 
             <p v-else class="text-gray-600">No posts yet. Check back soon.</p>
