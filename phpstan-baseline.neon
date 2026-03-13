@@ -1,0 +1,259 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Admin/FormController.php
+
+		-
+			message: '#^Empty array passed to foreach\.$#'
+			identifier: foreach.emptyArray
+			count: 1
+			path: app/Http/Controllers/Admin/FormController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:createRevision\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Admin/RevisionController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:restoreRevision\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Admin/RevisionController.php
+
+		-
+			message: '#^Anonymous function should return Illuminate\\Support\\Collection\<string, array\{value\: string\|null, type\: string\}\> but returns Illuminate\\Support\\Collection\<string, array\{value\: string\|null, type\: string\}\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/Admin/SettingController.php
+
+		-
+			message: '#^Argument of an invalid type string supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: app/Http/Controllers/Public/PublicFormController.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>dark_mode" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Middleware/HandleInertiaRequests.php
+
+		-
+			message: '#^Call to function is_array\(\) with string\|null will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 2
+			path: app/Models/PageModel.php
+
+		-
+			message: '#^Method App\\Models\\PageModel\:\:createRevision\(\) should return App\\Models\\RevisionModel but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/PageModel.php
+
+		-
+			message: '#^Method App\\Models\\PageModel\:\:hasBlocksMissingAlt\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/PageModel.php
+
+		-
+			message: '#^Method App\\Models\\PageModel\:\:hasTiptapNodesMissingAlt\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/PageModel.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\Models\\PageModel\:\:\$appends is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$appends\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/PageModel.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 2
+			path: app/Models/PageModel.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 1
+			path: app/Models/PageModel.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Models/PageModel.php
+
+		-
+			message: '#^Variable \$content in empty\(\) is never defined\.$#'
+			identifier: empty.variable
+			count: 2
+			path: app/Models/PageModel.php
+
+		-
+			message: '#^Call to function is_array\(\) with string\|null will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Models/PostModel.php
+
+		-
+			message: '#^Method App\\Models\\PostModel\:\:createRevision\(\) should return App\\Models\\RevisionModel but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/PostModel.php
+
+		-
+			message: '#^Method App\\Models\\PostModel\:\:hasBlocksMissingAlt\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/PostModel.php
+
+		-
+			message: '#^Method App\\Models\\PostModel\:\:hasTiptapNodesMissingAlt\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/PostModel.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\Models\\PostModel\:\:\$appends is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$appends\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/PostModel.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 1
+			path: app/Models/PostModel.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Models/PostModel.php
+
+		-
+			message: '#^Variable \$content in empty\(\) is never defined\.$#'
+			identifier: empty.variable
+			count: 1
+			path: app/Models/PostModel.php
+
+		-
+			message: '#^Call to function is_array\(\) with string\|null will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Models/ServiceModel.php
+
+		-
+			message: '#^Method App\\Models\\ServiceModel\:\:createRevision\(\) should return App\\Models\\RevisionModel but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/ServiceModel.php
+
+		-
+			message: '#^Method App\\Models\\ServiceModel\:\:hasBlocksMissingAlt\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/ServiceModel.php
+
+		-
+			message: '#^Method App\\Models\\ServiceModel\:\:hasTiptapNodesMissingAlt\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/ServiceModel.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\Models\\ServiceModel\:\:\$appends is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$appends\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/ServiceModel.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 1
+			path: app/Models/ServiceModel.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Models/ServiceModel.php
+
+		-
+			message: '#^Variable \$content in empty\(\) is never defined\.$#'
+			identifier: empty.variable
+			count: 1
+			path: app/Models/ServiceModel.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$children\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/MenuService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/MenuService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$label\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/MenuService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$linkable_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/MenuService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$linkable_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/MenuService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$target\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/MenuService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/MenuService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/MenuService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$group\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/SettingService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$key\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/SettingService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$value\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/SettingService.php

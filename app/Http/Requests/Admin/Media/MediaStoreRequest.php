@@ -20,7 +20,7 @@ class MediaStoreRequest extends FormRequest
         ));
 
         return [
-            'file' => ['required', 'file', "max:{$maxKb}", "mimetypes:" . implode(',', config('cms.media.allowed_mimes'))],
+            'file' => ['required', 'file', "max:{$maxKb}", 'mimetypes:'.implode(',', config('cms.media.allowed_mimes'))],
         ];
     }
 }

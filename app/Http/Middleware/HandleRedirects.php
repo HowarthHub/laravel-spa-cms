@@ -15,7 +15,7 @@ class HandleRedirects
             return $next($request);
         }
 
-        $path = '/' . ltrim($request->path(), '/');
+        $path = '/'.ltrim($request->path(), '/');
 
         $redirect = RedirectModel::query()
             ->active()

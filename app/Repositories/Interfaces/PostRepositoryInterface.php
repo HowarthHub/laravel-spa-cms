@@ -3,6 +3,7 @@
 namespace App\Repositories\Interfaces;
 
 use App\Models\PostModel;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 interface PostRepositoryInterface
@@ -21,5 +22,5 @@ interface PostRepositoryInterface
 
     public function bulkUpdateStatus(array $ids, string $status, ?string $publishedAt = null): void;
 
-    public function recentPublished(int $limit): \Illuminate\Database\Eloquent\Collection;
+    public function recentPublished(int $limit): Collection;
 }

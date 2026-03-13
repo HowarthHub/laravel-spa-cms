@@ -88,7 +88,7 @@ class FormController extends Controller
         $headers = array_map(fn (array $field) => $field['label'], $fields);
         $headers[] = 'Created At';
 
-        $filename = 'form-submissions-' . str($form->name)->slug() . '-' . now()->format('Y-m-d') . '.csv';
+        $filename = 'form-submissions-'.str($form->name)->slug().'-'.now()->format('Y-m-d').'.csv';
 
         return response()->streamDownload(function () use ($form, $fields, $headers) {
             $handle = fopen('php://output', 'w');

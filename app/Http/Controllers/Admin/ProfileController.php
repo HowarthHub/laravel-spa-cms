@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Profile\ProfileUpdateRequest;
 use App\Http\Requests\Admin\Profile\PasswordUpdateRequest;
+use App\Http\Requests\Admin\Profile\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
@@ -29,7 +29,7 @@ class ProfileController extends Controller
     public function toggleDarkMode(): RedirectResponse
     {
         $user = auth()->user();
-        $user->update(['dark_mode' => !$user->dark_mode]);
+        $user->update(['dark_mode' => ! $user->dark_mode]);
 
         return redirect()->back();
     }

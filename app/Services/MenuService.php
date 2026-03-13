@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\MenuItemModel;
 use App\Models\MenuModel;
 use App\Repositories\Interfaces\MenuItemRepositoryInterface;
 use App\Repositories\Interfaces\MenuRepositoryInterface;
@@ -88,7 +89,7 @@ class MenuService implements MenuServiceInterface
             $this->menuItemRepository->insert([$record]);
 
             if (! empty($item['children'])) {
-                $newParent = \App\Models\MenuItemModel::where('menu_id', $menuId)
+                $newParent = MenuItemModel::where('menu_id', $menuId)
                     ->where('sort_order', $startOrder + $index)
                     ->where('parent_id', $parentId)
                     ->first();

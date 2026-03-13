@@ -2,63 +2,72 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-
+use App\Models\CategoryModel;
 // Repository Interfaces
+use App\Models\ContactEnquiryModel;
+use App\Models\FormModel;
+use App\Models\FormSubmissionModel;
+use App\Models\MediaItemModel;
+use App\Models\MenuModel;
+use App\Models\PageModel;
+use App\Models\PostModel;
+use App\Models\RedirectModel;
+use App\Models\ServiceModel;
+use App\Models\TagModel;
+use App\Models\UserModel;
+use App\Repositories\CategoryRepository;
+// Repository Implementations
+use App\Repositories\EnquiryRepository;
+use App\Repositories\FormRepository;
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use App\Repositories\Interfaces\EnquiryRepositoryInterface;
+use App\Repositories\Interfaces\FormRepositoryInterface;
+use App\Repositories\Interfaces\MediaRepositoryInterface;
+use App\Repositories\Interfaces\MenuItemRepositoryInterface;
+use App\Repositories\Interfaces\MenuRepositoryInterface;
 use App\Repositories\Interfaces\PageRepositoryInterface;
 use App\Repositories\Interfaces\PostRepositoryInterface;
-use App\Repositories\Interfaces\CategoryRepositoryInterface;
-use App\Repositories\Interfaces\TagRepositoryInterface;
-use App\Repositories\Interfaces\MenuRepositoryInterface;
-use App\Repositories\Interfaces\MenuItemRepositoryInterface;
-use App\Repositories\Interfaces\FormRepositoryInterface;
 use App\Repositories\Interfaces\ServiceRepositoryInterface;
-use App\Repositories\Interfaces\EnquiryRepositoryInterface;
-use App\Repositories\Interfaces\MediaRepositoryInterface;
 use App\Repositories\Interfaces\SettingRepositoryInterface;
+// Service Interfaces
+use App\Repositories\Interfaces\TagRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
-
-// Repository Implementations
+use App\Repositories\MediaRepository;
+use App\Repositories\MenuItemRepository;
+use App\Repositories\MenuRepository;
 use App\Repositories\PageRepository;
 use App\Repositories\PostRepository;
-use App\Repositories\CategoryRepository;
-use App\Repositories\TagRepository;
-use App\Repositories\MenuRepository;
-use App\Repositories\MenuItemRepository;
-use App\Repositories\FormRepository;
 use App\Repositories\ServiceRepository;
-use App\Repositories\EnquiryRepository;
-use App\Repositories\MediaRepository;
 use App\Repositories\SettingRepository;
+use App\Repositories\TagRepository;
 use App\Repositories\UserRepository;
-
-// Service Interfaces
+use App\Services\CategoryService;
+// Service Implementations
+use App\Services\EnquiryService;
+use App\Services\FormService;
+use App\Services\Interfaces\CategoryServiceInterface;
+use App\Services\Interfaces\EnquiryServiceInterface;
+use App\Services\Interfaces\FormServiceInterface;
+use App\Services\Interfaces\MediaServiceInterface;
+use App\Services\Interfaces\MenuServiceInterface;
 use App\Services\Interfaces\PageServiceInterface;
 use App\Services\Interfaces\PostServiceInterface;
-use App\Services\Interfaces\CategoryServiceInterface;
-use App\Services\Interfaces\TagServiceInterface;
-use App\Services\Interfaces\MenuServiceInterface;
-use App\Services\Interfaces\FormServiceInterface;
 use App\Services\Interfaces\ServiceServiceInterface;
-use App\Services\Interfaces\EnquiryServiceInterface;
-use App\Services\Interfaces\MediaServiceInterface;
 use App\Services\Interfaces\SettingServiceInterface;
-use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Interfaces\SlugServiceInterface;
-
-// Service Implementations
+use App\Services\Interfaces\TagServiceInterface;
+use App\Services\Interfaces\UserServiceInterface;
+use App\Services\MediaService;
+use App\Services\MenuService;
 use App\Services\PageService;
 use App\Services\PostService;
-use App\Services\CategoryService;
-use App\Services\TagService;
-use App\Services\MenuService;
-use App\Services\FormService;
 use App\Services\ServiceService;
-use App\Services\EnquiryService;
-use App\Services\MediaService;
 use App\Services\SettingService;
-use App\Services\UserService;
 use App\Services\SlugService;
+use App\Services\TagService;
+use App\Services\UserService;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -96,17 +105,17 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Route model bindings for custom model names
-        \Illuminate\Support\Facades\Route::model('page', \App\Models\PageModel::class);
-        \Illuminate\Support\Facades\Route::model('post', \App\Models\PostModel::class);
-        \Illuminate\Support\Facades\Route::model('category', \App\Models\CategoryModel::class);
-        \Illuminate\Support\Facades\Route::model('tag', \App\Models\TagModel::class);
-        \Illuminate\Support\Facades\Route::model('menu', \App\Models\MenuModel::class);
-        \Illuminate\Support\Facades\Route::model('form', \App\Models\FormModel::class);
-        \Illuminate\Support\Facades\Route::model('service', \App\Models\ServiceModel::class);
-        \Illuminate\Support\Facades\Route::model('formSubmission', \App\Models\FormSubmissionModel::class);
-        \Illuminate\Support\Facades\Route::model('enquiry', \App\Models\ContactEnquiryModel::class);
-        \Illuminate\Support\Facades\Route::model('user', \App\Models\UserModel::class);
-        \Illuminate\Support\Facades\Route::model('mediaItem', \App\Models\MediaItemModel::class);
-        \Illuminate\Support\Facades\Route::model('redirect', \App\Models\RedirectModel::class);
+        Route::model('page', PageModel::class);
+        Route::model('post', PostModel::class);
+        Route::model('category', CategoryModel::class);
+        Route::model('tag', TagModel::class);
+        Route::model('menu', MenuModel::class);
+        Route::model('form', FormModel::class);
+        Route::model('service', ServiceModel::class);
+        Route::model('formSubmission', FormSubmissionModel::class);
+        Route::model('enquiry', ContactEnquiryModel::class);
+        Route::model('user', UserModel::class);
+        Route::model('mediaItem', MediaItemModel::class);
+        Route::model('redirect', RedirectModel::class);
     }
 }

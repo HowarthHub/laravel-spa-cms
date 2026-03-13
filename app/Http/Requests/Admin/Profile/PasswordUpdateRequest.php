@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Admin\Profile;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Hash;
 
 class PasswordUpdateRequest extends FormRequest
 {

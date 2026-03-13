@@ -20,24 +20,24 @@ class SitemapController extends Controller
 
         // Homepage
         $xml .= '<url>';
-        $xml .= '<loc>' . url('/') . '</loc>';
-        $xml .= '<lastmod>' . now()->toW3cString() . '</lastmod>';
+        $xml .= '<loc>'.url('/').'</loc>';
+        $xml .= '<lastmod>'.now()->toW3cString().'</lastmod>';
         $xml .= '<changefreq>daily</changefreq>';
         $xml .= '<priority>1.0</priority>';
         $xml .= '</url>';
 
         // Blog index
         $xml .= '<url>';
-        $xml .= '<loc>' . url('/blog') . '</loc>';
-        $xml .= '<lastmod>' . now()->toW3cString() . '</lastmod>';
+        $xml .= '<loc>'.url('/blog').'</loc>';
+        $xml .= '<lastmod>'.now()->toW3cString().'</lastmod>';
         $xml .= '<changefreq>daily</changefreq>';
         $xml .= '<priority>0.9</priority>';
         $xml .= '</url>';
 
         // Services index
         $xml .= '<url>';
-        $xml .= '<loc>' . url('/services') . '</loc>';
-        $xml .= '<lastmod>' . now()->toW3cString() . '</lastmod>';
+        $xml .= '<loc>'.url('/services').'</loc>';
+        $xml .= '<lastmod>'.now()->toW3cString().'</lastmod>';
         $xml .= '<changefreq>weekly</changefreq>';
         $xml .= '<priority>0.9</priority>';
         $xml .= '</url>';
@@ -45,8 +45,8 @@ class SitemapController extends Controller
         // Pages
         foreach ($pages as $page) {
             $xml .= '<url>';
-            $xml .= '<loc>' . url('/' . $page->slug) . '</loc>';
-            $xml .= '<lastmod>' . $page->updated_at->toW3cString() . '</lastmod>';
+            $xml .= '<loc>'.url('/'.$page->slug).'</loc>';
+            $xml .= '<lastmod>'.$page->updated_at->toW3cString().'</lastmod>';
             $xml .= '<changefreq>weekly</changefreq>';
             $xml .= '<priority>0.8</priority>';
             $xml .= '</url>';
@@ -55,8 +55,8 @@ class SitemapController extends Controller
         // Services
         foreach ($services as $service) {
             $xml .= '<url>';
-            $xml .= '<loc>' . url('/services/' . $service->slug) . '</loc>';
-            $xml .= '<lastmod>' . $service->updated_at->toW3cString() . '</lastmod>';
+            $xml .= '<loc>'.url('/services/'.$service->slug).'</loc>';
+            $xml .= '<lastmod>'.$service->updated_at->toW3cString().'</lastmod>';
             $xml .= '<changefreq>weekly</changefreq>';
             $xml .= '<priority>0.7</priority>';
             $xml .= '</url>';
@@ -65,8 +65,8 @@ class SitemapController extends Controller
         // Posts
         foreach ($posts as $post) {
             $xml .= '<url>';
-            $xml .= '<loc>' . url('/blog/' . $post->slug) . '</loc>';
-            $xml .= '<lastmod>' . $post->updated_at->toW3cString() . '</lastmod>';
+            $xml .= '<loc>'.url('/blog/'.$post->slug).'</loc>';
+            $xml .= '<lastmod>'.$post->updated_at->toW3cString().'</lastmod>';
             $xml .= '<changefreq>weekly</changefreq>';
             $xml .= '<priority>0.6</priority>';
             $xml .= '</url>';

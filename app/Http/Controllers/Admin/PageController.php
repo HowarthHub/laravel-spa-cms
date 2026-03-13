@@ -108,7 +108,7 @@ class PageController extends Controller
     {
         abort_unless(auth()->user()->can('create pages'), 403);
 
-        $slug = Str::slug($page->slug . '-copy');
+        $slug = Str::slug($page->slug.'-copy');
 
         $duplicate = PageModel::create([
             ...$page->only([
