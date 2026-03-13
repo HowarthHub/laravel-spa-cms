@@ -16,4 +16,8 @@ interface ServiceServiceInterface
     public function delete(ServiceModel $service): void;
 
     public function bulkDelete(array $ids): void;
+
+    public function bulkDraft(array $ids): void;
+
+    public function bulkPublish(array $ids): void;
 }

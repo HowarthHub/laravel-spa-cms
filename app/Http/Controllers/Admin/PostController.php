@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Posts\PostBulkDestroyRequest;
+use App\Http\Requests\Admin\Posts\PostBulkDraftRequest;
+use App\Http\Requests\Admin\Posts\PostBulkPublishRequest;
 use App\Http\Requests\Admin\Posts\PostDestroyRequest;
 use App\Http\Requests\Admin\Posts\PostIndexRequest;
 use App\Http\Requests\Admin\Posts\PostStoreRequest;
@@ -13,6 +15,7 @@ use App\Services\Interfaces\CategoryServiceInterface;
 use App\Services\Interfaces\PostServiceInterface;
 use App\Services\Interfaces\TagServiceInterface;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -65,6 +68,8 @@ class PostController extends Controller
 
     public function update(PostUpdateRequest $request, PostModel $post): RedirectResponse
     {
+        $post->createRevision();
+
         $this->postService->update($post, $request->validated());
 
         return redirect()->route('admin.posts.index')->with('success', 'Post updated.');
@@ -82,5 +87,46 @@ class PostController extends Controller
         $this->postService->bulkDelete($request->validated()['ids']);
 
         return redirect()->route('admin.posts.index')->with('success', 'Posts deleted.');
+    }
+
+    public function bulkDraft(PostBulkDraftRequest $request): RedirectResponse
+    {
+        $this->postService->bulkDraft($request->validated()['ids']);
+
+        return redirect()->route('admin.posts.index')->with('success', 'Posts set to draft.');
+    }
+
+    public function bulkPublish(PostBulkPublishRequest $request): RedirectResponse
+    {
+        $this->postService->bulkPublish($request->validated()['ids']);
+
+        return redirect()->route('admin.posts.index')->with('success', 'Posts published.');
+    }
+
+    public function duplicate(PostModel $post): RedirectResponse
+    {
+        abort_unless(auth()->user()->can('create posts'), 403);
+
+        $post->load(['categories', 'tags']);
+
+        $slug = Str::slug($post->slug . '-copy');
+
+        $duplicate = PostModel::create([
+            ...$post->only([
+                'content', 'excerpt', 'featured_image',
+                'meta_title', 'meta_description', 'og_image',
+            ]),
+            'title' => "Copy of {$post->title}",
+            'slug' => $slug,
+            'status' => 'draft',
+            'published_at' => null,
+            'author_id' => auth()->id(),
+            'updated_by' => auth()->id(),
+        ]);
+
+        $duplicate->categories()->sync($post->categories->pluck('id'));
+        $duplicate->tags()->sync($post->tags->pluck('id'));
+
+        return redirect()->route('admin.posts.edit', $duplicate)->with('success', 'Post duplicated.');
     }
 }

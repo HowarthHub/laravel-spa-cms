@@ -13,6 +13,7 @@ use App\Services\Interfaces\FormServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FormController extends Controller
 {
@@ -79,5 +80,42 @@ class FormController extends Controller
         $formSubmission->delete();
 
         return redirect()->route('admin.forms.submissions', $formId)->with('success', 'Submission deleted.');
+    }
+
+    public function exportSubmissions(FormModel $form): StreamedResponse
+    {
+        $fields = $form->fields ?? [];
+        $headers = array_map(fn (array $field) => $field['label'], $fields);
+        $headers[] = 'Created At';
+
+        $filename = 'form-submissions-' . str($form->name)->slug() . '-' . now()->format('Y-m-d') . '.csv';
+
+        return response()->streamDownload(function () use ($form, $fields, $headers) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, $headers);
+
+            $form->submissions()
+                ->latest()
+                ->chunk(500, function ($submissions) use ($handle, $fields) {
+                    foreach ($submissions as $submission) {
+                        $row = [];
+                        foreach ($fields as $field) {
+                            $value = $submission->data[$field['label']] ?? '';
+                            if (is_bool($value)) {
+                                $value = $value ? 'Yes' : 'No';
+                            }
+                            $row[] = $value;
+                        }
+                        $row[] = $submission->created_at->format('Y-m-d H:i:s');
+
+                        fputcsv($handle, $row);
+                    }
+                });
+
+            fclose($handle);
+        }, $filename, [
+            'Content-Type' => 'text/csv',
+        ]);
     }
 }

@@ -107,5 +107,6 @@ class AppServiceProvider extends ServiceProvider
         \Illuminate\Support\Facades\Route::model('enquiry', \App\Models\ContactEnquiryModel::class);
         \Illuminate\Support\Facades\Route::model('user', \App\Models\UserModel::class);
         \Illuminate\Support\Facades\Route::model('mediaItem', \App\Models\MediaItemModel::class);
+        \Illuminate\Support\Facades\Route::model('redirect', \App\Models\RedirectModel::class);
     }
 }

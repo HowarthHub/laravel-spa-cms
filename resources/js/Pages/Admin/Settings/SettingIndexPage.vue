@@ -101,63 +101,125 @@ const groupFields = computed(() => {
                         </h2>
 
                         <div v-for="field in groupFields" :key="field.key" class="space-y-1">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ field.label }}</label>
+                            <!-- Maintenance mode toggle (special rendering) -->
+                            <template v-if="field.key === 'general.maintenance_mode'">
+                                <div class="rounded-md border p-4" :class="form.settings[field.key] === '1' ? 'border-amber-300 dark:border-amber-600 bg-amber-50 dark:bg-amber-900/20' : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50'">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <label class="block text-sm font-medium" :class="form.settings[field.key] === '1' ? 'text-amber-800 dark:text-amber-300' : 'text-gray-700 dark:text-gray-300'">
+                                                Maintenance Mode
+                                            </label>
+                                            <p class="text-xs mt-0.5" :class="form.settings[field.key] === '1' ? 'text-amber-600 dark:text-amber-400' : 'text-gray-400 dark:text-gray-500'">
+                                                When active, visitors will see a maintenance page. Admin users can still access the site.
+                                            </p>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            @click="form.settings[field.key] = form.settings[field.key] === '1' ? '0' : '1'"
+                                            class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2"
+                                            :class="form.settings[field.key] === '1' ? 'bg-amber-500 focus:ring-amber-500' : 'bg-gray-300 dark:bg-gray-600 focus:ring-cyan-500'"
+                                        >
+                                            <span
+                                                class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                                                :class="form.settings[field.key] === '1' ? 'translate-x-5' : 'translate-x-0'"
+                                            />
+                                        </button>
+                                    </div>
+                                    <p v-if="form.settings[field.key] === '1'" class="mt-2 text-xs font-medium text-amber-700 dark:text-amber-400">
+                                        The site is currently in maintenance mode
+                                    </p>
+                                </div>
+                            </template>
 
-                            <!-- Image picker -->
-                            <MediaPickerComponent
-                                v-if="field.type === 'image'"
-                                :modelValue="form.settings[field.key]"
-                                @update:modelValue="form.settings[field.key] = $event"
-                                :label="''"
-                            />
+                            <!-- Maintenance message (only shown when maintenance mode is on) -->
+                            <template v-else-if="field.key === 'general.maintenance_message'">
+                                <div v-if="form.settings['general.maintenance_mode'] === '1'" class="space-y-1">
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ field.label }}</label>
+                                    <textarea
+                                        v-model="form.settings[field.key]"
+                                        rows="3"
+                                        class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm dark:text-gray-100 shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none"
+                                        placeholder="Message shown to visitors during maintenance"
+                                    />
+                                    <p class="text-xs text-gray-400 dark:text-gray-500">
+                                        This message will be displayed on the maintenance page
+                                    </p>
+                                </div>
+                            </template>
 
-                            <!-- Code (tracking scripts etc) -->
-                            <textarea
-                                v-else-if="field.type === 'code'"
-                                v-model="form.settings[field.key]"
-                                rows="6"
-                                class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm dark:text-gray-100 shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none font-mono text-xs"
-                                placeholder="Paste your tracking code here (e.g. Google Analytics, GTM)"
-                            />
+                            <template v-else>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ field.label }}</label>
 
-                            <!-- Textarea -->
-                            <textarea
-                                v-else-if="field.type === 'textarea'"
-                                v-model="form.settings[field.key]"
-                                rows="4"
-                                class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm dark:text-gray-100 shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none"
-                            />
+                                <!-- Image picker -->
+                                <MediaPickerComponent
+                                    v-if="field.type === 'image'"
+                                    :modelValue="form.settings[field.key]"
+                                    @update:modelValue="form.settings[field.key] = $event"
+                                    :label="''"
+                                />
 
-                            <!-- Homepage page picker -->
-                            <select
-                                v-else-if="field.key === 'general.homepage'"
-                                v-model="form.settings[field.key]"
-                                class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm dark:text-gray-100 shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none"
-                            >
-                                <option value="">None</option>
-                                <option v-for="page in pages" :key="page.id" :value="String(page.id)">{{ page.title }}</option>
-                            </select>
-                            <p v-if="field.key === 'general.homepage'" class="text-xs text-gray-400 dark:text-gray-500">
-                                The selected page will be served at / and its slug will be hidden
-                            </p>
+                                <!-- Code (tracking scripts etc) -->
+                                <textarea
+                                    v-else-if="field.type === 'code'"
+                                    v-model="form.settings[field.key]"
+                                    rows="6"
+                                    class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm dark:text-gray-100 shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none font-mono text-xs"
+                                    placeholder="Paste your tracking code here (e.g. Google Analytics, GTM)"
+                                />
 
-                            <!-- Text input (default) -->
-                            <input
-                                v-else
-                                v-model="form.settings[field.key]"
-                                type="text"
-                                class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm dark:text-gray-100 shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none"
-                            />
+                                <!-- Textarea -->
+                                <textarea
+                                    v-else-if="field.type === 'textarea'"
+                                    v-model="form.settings[field.key]"
+                                    rows="4"
+                                    class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm dark:text-gray-100 shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none"
+                                />
 
-                            <p v-if="field.key === 'seo.meta_title_template'" class="text-xs text-gray-400 dark:text-gray-500">
-                                Use %title% and %site_name% as placeholders
-                            </p>
-                            <p v-if="field.key === 'seo.meta_description'" class="text-xs text-gray-400 dark:text-gray-500">
-                                Default meta description used for the homepage and as a fallback for pages without one
-                            </p>
-                            <p v-if="field.key === 'mail.password'" class="text-xs text-gray-400 dark:text-gray-500">
-                                Stored as plain text — use app password or API key
-                            </p>
+                                <!-- Homepage page picker -->
+                                <select
+                                    v-else-if="field.key === 'general.homepage'"
+                                    v-model="form.settings[field.key]"
+                                    class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm dark:text-gray-100 shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none"
+                                >
+                                    <option value="">None</option>
+                                    <option v-for="page in pages" :key="page.id" :value="String(page.id)">{{ page.title }}</option>
+                                </select>
+                                <p v-if="field.key === 'general.homepage'" class="text-xs text-gray-400 dark:text-gray-500">
+                                    The selected page will be served at / and its slug will be hidden
+                                </p>
+
+                                <!-- Boolean toggle (generic) -->
+                                <button
+                                    v-else-if="field.type === 'boolean'"
+                                    type="button"
+                                    @click="form.settings[field.key] = form.settings[field.key] === '1' ? '0' : '1'"
+                                    class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                                    :class="form.settings[field.key] === '1' ? 'bg-cyan-600' : 'bg-gray-300 dark:bg-gray-600'"
+                                >
+                                    <span
+                                        class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                                        :class="form.settings[field.key] === '1' ? 'translate-x-5' : 'translate-x-0'"
+                                    />
+                                </button>
+
+                                <!-- Text input (default) -->
+                                <input
+                                    v-else
+                                    v-model="form.settings[field.key]"
+                                    type="text"
+                                    class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm dark:text-gray-100 shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none"
+                                />
+
+                                <p v-if="field.key === 'seo.meta_title_template'" class="text-xs text-gray-400 dark:text-gray-500">
+                                    Use %title% and %site_name% as placeholders
+                                </p>
+                                <p v-if="field.key === 'seo.meta_description'" class="text-xs text-gray-400 dark:text-gray-500">
+                                    Default meta description used for the homepage and as a fallback for pages without one
+                                </p>
+                                <p v-if="field.key === 'mail.password'" class="text-xs text-gray-400 dark:text-gray-500">
+                                    Stored as plain text — use app password or API key
+                                </p>
+                            </template>
                         </div>
                     </div>
                 </div>

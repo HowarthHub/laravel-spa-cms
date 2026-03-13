@@ -21,4 +21,6 @@ interface PageRepositoryInterface
     public function delete(PageModel $page): void;
 
     public function bulkDelete(array $ids): void;
+
+    public function bulkUpdateStatus(array $ids, string $status, ?string $publishedAt = null): void;
 }

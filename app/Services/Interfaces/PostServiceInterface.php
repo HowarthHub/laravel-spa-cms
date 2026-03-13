@@ -18,5 +18,9 @@ interface PostServiceInterface
 
     public function bulkDelete(array $ids): void;
 
+    public function bulkDraft(array $ids): void;
+
+    public function bulkPublish(array $ids): void;
+
     public function recentPublished(int $limit = 5): Collection;
 }

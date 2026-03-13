@@ -10,8 +10,10 @@ use App\Http\Requests\Admin\Enquiries\EnquiryUpdateRequest;
 use App\Models\ContactEnquiryModel;
 use App\Services\Interfaces\EnquiryServiceInterface;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class EnquiryController extends Controller
 {
@@ -63,5 +65,46 @@ class EnquiryController extends Controller
         $this->enquiryService->bulkArchive($request->validated()['ids']);
 
         return redirect()->route('admin.enquiries.index')->with('success', 'Enquiries archived.');
+    }
+
+    public function export(Request $request): StreamedResponse
+    {
+        $filename = 'enquiries-' . now()->format('Y-m-d') . '.csv';
+
+        return response()->streamDownload(function () use ($request) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, ['Name', 'Email', 'Phone', 'Subject', 'Message', 'Status', 'Created At']);
+
+            ContactEnquiryModel::query()
+                ->when($request->input('search'), function ($query, $search) {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%")
+                            ->orWhere('subject', 'like', "%{$search}%");
+                    });
+                })
+                ->when($request->input('status'), function ($query, $status) {
+                    $query->where('status', $status);
+                })
+                ->latest()
+                ->chunk(500, function ($enquiries) use ($handle) {
+                    foreach ($enquiries as $enquiry) {
+                        fputcsv($handle, [
+                            $enquiry->name,
+                            $enquiry->email,
+                            $enquiry->phone,
+                            $enquiry->subject,
+                            $enquiry->message,
+                            $enquiry->status,
+                            $enquiry->created_at->format('Y-m-d H:i:s'),
+                        ]);
+                    }
+                });
+
+            fclose($handle);
+        }, $filename, [
+            'Content-Type' => 'text/csv',
+        ]);
     }
 }

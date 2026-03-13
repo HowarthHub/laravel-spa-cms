@@ -1,6 +1,6 @@
 <script setup>
-import { Head, Link, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
+import { computed, ref } from 'vue';
 
 const props = defineProps({
     meta: {
@@ -14,6 +14,14 @@ const site = computed(() => page.props.site || {});
 const socialLinks = computed(() => page.props.socialLinks || {});
 const navigation = computed(() => page.props.navigation || []);
 const currentYear = new Date().getFullYear();
+const searchQuery = ref('');
+
+function submitSearch() {
+    const q = searchQuery.value.trim();
+    if (q) {
+        router.get('/search', { q });
+    }
+}
 
 function resolveUrl(item) {
     let url = item.url || '#';
@@ -100,6 +108,15 @@ const socialPlatforms = [
                             </Link>
                         </template>
                     </nav>
+
+                    <form @submit.prevent="submitSearch" class="hidden md:flex items-center ml-4">
+                        <input
+                            v-model="searchQuery"
+                            type="search"
+                            placeholder="Search..."
+                            class="w-40 rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                        />
+                    </form>
                 </div>
             </div>
         </header>

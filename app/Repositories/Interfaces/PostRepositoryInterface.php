@@ -19,5 +19,7 @@ interface PostRepositoryInterface
 
     public function bulkDelete(array $ids): void;
 
+    public function bulkUpdateStatus(array $ids, string $status, ?string $publishedAt = null): void;
+
     public function recentPublished(int $limit): \Illuminate\Database\Eloquent\Collection;
 }
