@@ -1,59 +1,147 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel SPA CMS
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A production-ready CMS boilerplate built with Laravel 12, Inertia.js v2, Vue 3, and Tailwind CSS v4. Clone it, restyle the public frontend, ship.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Page Builder** — 10 drag-and-drop block types (hero, rich text, image, columns, CTA, features, testimonials, checklist, spacer)
+- **Blog** — posts with categories, tags, featured images, SEO metadata
+- **Services** — service directory with full CRUD
+- **Dynamic Forms** — drag-and-drop form builder with email notifications on submission
+- **Media Library** — upload, browse, auto-generated thumbnails and previews
+- **Navigation** — hierarchical menu builder with drag-and-drop ordering
+- **Contact Enquiries** — status tracking, admin notes, CSV export
+- **User Management** — role-based access control (admin, editor, author)
+- **Settings** — site name, logo, favicon, SEO defaults, social links, schema markup, maintenance mode
+- **Revisions** — version history for pages, posts, and services
+- **Scheduled Publishing** — set a future publish date, content goes live automatically
+- **URL Redirects** — manage 301/302 redirects for SEO
+- **Search** — full-text search across all content types
+- **XML Sitemap** — auto-generated
+- **Dark Mode** — per-user toggle in admin panel
+- **Mobile Responsive** — admin and public frontend
+- **Scroll Animations** — subtle entrance animations on public pages
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Layer | Technology |
+|-------|-----------|
+| Backend | Laravel 12, PHP 8.4+ |
+| Frontend | Vue 3, Inertia.js v2 |
+| Styling | Tailwind CSS v4 |
+| Database | MySQL 8.4 |
+| Dev Environment | Laravel Sail (Docker) |
+| Build | Vite 7 |
+| Testing | Pest (220 tests, 1163 assertions) |
+| CI | GitHub Actions (Pint, Larastan, vue-tsc, Pest, Vite) |
+| Media | Spatie Media Library |
+| Auth | Spatie Permission |
 
-## Learning Laravel
+## Quick Start
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+```bash
+# Clone the repo
+git clone <repo-url> my-project
+cd my-project
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# Install dependencies
+composer install
+npm install
 
-## Laravel Sponsors
+# Start Docker containers
+vendor/bin/sail up -d
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# Setup environment
+cp .env.example .env
+vendor/bin/sail artisan key:generate
 
-### Premium Partners
+# Run migrations and seed demo content
+vendor/bin/sail artisan migrate --seed
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+# Build frontend assets
+vendor/bin/sail npm run build
 
-## Contributing
+# Open in browser
+vendor/bin/sail open
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Default admin login is created by the seeder — check `database/seeders/AdminUserSeeder.php` for credentials.
 
-## Code of Conduct
+## Development
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+# Start dev server with hot reload
+vendor/bin/sail npm run dev
 
-## Security Vulnerabilities
+# Run tests
+vendor/bin/sail artisan test --compact
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Code style (auto-fix)
+vendor/bin/sail bin pint
+
+# Static analysis
+vendor/bin/sail bin phpstan analyse --memory-limit=512M
+
+# Vue/TS type check
+vendor/bin/sail npm run type-check
+```
+
+## Architecture
+
+```
+Controller -> FormRequest -> Service -> Repository -> Model
+```
+
+- **Controllers** handle HTTP, delegate to services
+- **Form Requests** validate all input (52 classes)
+- **Services** contain business logic (12 services)
+- **Repositories** handle data access (12 repositories)
+- **Models** define relationships and casts (15 models)
+
+## Page Builder
+
+Pages can use a block-based editor with 10 block types:
+
+| Block | Description |
+|-------|-------------|
+| Hero | Full-width banner with heading, subheading, CTA |
+| Rich Text | TipTap WYSIWYG editor |
+| Image | Single image with alt text and caption |
+| Two Column | Side-by-side rich text columns |
+| Three Column | Three rich text columns |
+| Call to Action | CTA banner with button and colour variants |
+| Feature Grid | Grid of feature cards with icons |
+| Testimonial | Quote with author, role, and avatar |
+| Checklist | List of checkable items |
+| Spacer | Vertical spacing (small/medium/large) |
+
+Content is stored as a flat JSON array of blocks. Legacy TipTap content is auto-detected and rendered with the old renderer — no migration needed.
+
+## Customising Per Client
+
+1. **Restyle the public frontend** — edit components in `resources/js/Pages/Public/` and `resources/js/Components/Public/`
+2. **Update branding** — site name, logo, favicon, colours via admin Settings panel
+3. **Add block types** — register in `config/cms.php`, create editor + renderer components
+4. **Configure mail** — update `.env` with SMTP credentials for form notifications
+
+## Configuration
+
+All CMS settings live in `config/cms.php`:
+- Page templates
+- Block types
+- Pagination defaults
+- Media upload limits and allowed MIME types
+
+## CI Pipeline
+
+GitHub Actions runs on push to `main`/`dev` and PRs to `main`:
+
+1. **Pint** — PHP code style
+2. **Larastan** — PHP static analysis (level 4)
+3. **vue-tsc** — Vue/TypeScript type checking
+4. **Pest** — Full test suite with MySQL
+5. **Vite** — Frontend build verification
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Proprietary. All rights reserved.
