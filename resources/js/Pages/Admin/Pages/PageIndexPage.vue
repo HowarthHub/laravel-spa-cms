@@ -162,6 +162,8 @@ const deletePage = (id) => {
                             <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ page.author?.name }}</td>
                             <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ new Date(page.updated_at).toLocaleDateString() }}</td>
                             <td class="px-4 py-3 text-right">
+                                <a v-if="page.status === 'published' && page.slug" :href="`/${page.slug}`" target="_blank"
+                                    class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mr-3">View</a>
                                 <Link v-if="can('edit pages')" :href="`/admin/pages/${page.id}/edit`"
                                     class="text-sm text-cyan-600 hover:text-cyan-500 dark:text-cyan-400 dark:hover:text-cyan-300 mr-3">Edit</Link>
                                 <button v-if="can('delete pages')" @click="deletePage(page.id)"

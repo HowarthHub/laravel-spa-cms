@@ -2,22 +2,23 @@
 import { Head, useForm } from '@inertiajs/vue3';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import AppBreadcrumbComponent from '@/Components/Admin/Shared/AppBreadcrumbComponent.vue';
-import TiptapEditorComponent from '@/Components/Admin/Forms/TiptapEditorComponent.vue';
 import SlugInputComponent from '@/Components/Admin/Forms/SlugInputComponent.vue';
 import SeoPanelComponent from '@/Components/Admin/Forms/SeoPanelComponent.vue';
 import PublishPanelComponent from '@/Components/Admin/Forms/PublishPanelComponent.vue';
 import MediaPickerComponent from '@/Components/Admin/Forms/MediaPickerComponent.vue';
 import TagInputComponent from '@/Components/Admin/Forms/TagInputComponent.vue';
 import CategoryInputComponent from '@/Components/Admin/Forms/CategoryInputComponent.vue';
+import PageBuilderComponent from '@/Components/Admin/PageBuilder/PageBuilderComponent.vue';
 
 const props = defineProps({
     categories: Array,
     tags: Array,
+    blockTypes: Object,
 });
 
 const form = useForm({
     title: '',
-    content: null,
+    content: [],
     excerpt: '',
     status: 'draft',
     published_at: '',
@@ -64,7 +65,7 @@ const submit = () => {
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Content</label>
-                        <TiptapEditorComponent v-model="form.content" />
+                        <PageBuilderComponent v-model="form.content" :block-types="blockTypes" />
                     </div>
 
                     <div>
@@ -90,7 +91,6 @@ const submit = () => {
 
                     <div class="rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 space-y-4">
                         <CategoryInputComponent v-model="form.category_ids" :available-categories="categories" />
-
                         <TagInputComponent v-model="form.tag_ids" :available-tags="tags" />
                     </div>
 

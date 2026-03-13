@@ -1,7 +1,7 @@
 <?php
 
-test('the application redirects guests to login', function () {
+test('the public homepage is accessible', function () {
     $response = $this->get('/');
 
-    $response->assertRedirect('/login');
+    $response->assertOk();
 });

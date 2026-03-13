@@ -106,11 +106,22 @@ class DemoContentSeeder extends Seeder
                 'slug' => 'services',
                 'content' => $this->tiptapContent('We offer web development, design, SEO, and digital marketing services tailored to your business needs.'),
                 'excerpt' => 'Explore our full range of services.',
-                'template' => 'full-width',
+                'template' => 'services',
                 'status' => 'published',
                 'published_at' => now()->subMonths(2),
                 'meta_title' => 'Our Services',
                 'meta_description' => 'Web development, design, SEO and digital marketing services.',
+            ],
+            [
+                'title' => 'Why Choose Us',
+                'slug' => 'why-choose-us',
+                'content' => $this->servicesPageBlocks(),
+                'excerpt' => 'Discover why businesses trust us to deliver results.',
+                'template' => 'page-builder',
+                'status' => 'published',
+                'published_at' => now()->subMonths(1),
+                'meta_title' => 'Why Choose Us',
+                'meta_description' => 'See what sets us apart — our process, testimonials, and the results we deliver.',
             ],
             [
                 'title' => 'Contact Us',
@@ -396,9 +407,11 @@ class DemoContentSeeder extends Seeder
                 'title' => 'Web Development',
                 'slug' => 'web-development',
                 'short_description' => 'Bespoke web applications built with modern frameworks and best practices.',
-                'content' => $this->tiptapContent('We build fast, scalable web applications using Laravel, Vue.js, and other cutting-edge technologies. From simple brochure sites to complex platforms, we deliver clean code and exceptional user experiences.'),
+                'content' => $this->serviceBlocks(
+                    'We build fast, scalable web applications using Laravel, Vue.js, and other cutting-edge technologies. From simple brochure sites to complex platforms, we deliver clean code and exceptional user experiences.',
+                    ['Custom Laravel applications', 'API development & integration', 'Database design & optimisation', 'Performance tuning', 'Ongoing maintenance & support'],
+                ),
                 'icon' => 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
-                'features' => ['Custom Laravel applications', 'API development & integration', 'Database design & optimisation', 'Performance tuning', 'Ongoing maintenance & support'],
                 'cta_text' => 'Start Your Project',
                 'cta_link' => '/contact-us',
                 'sort_order' => 0,
@@ -411,9 +424,11 @@ class DemoContentSeeder extends Seeder
                 'title' => 'Web Design',
                 'slug' => 'web-design',
                 'short_description' => 'Beautiful, responsive designs that engage your audience and drive conversions.',
-                'content' => $this->tiptapContent('Our design process puts your users first. We create stunning, mobile-responsive designs that not only look great but convert visitors into customers. Every design is crafted to reflect your brand identity.'),
+                'content' => $this->serviceBlocks(
+                    'Our design process puts your users first. We create stunning, mobile-responsive designs that not only look great but convert visitors into customers. Every design is crafted to reflect your brand identity.',
+                    ['UI/UX design', 'Mobile-first responsive layouts', 'Brand identity & style guides', 'Wireframing & prototyping', 'Accessibility compliance'],
+                ),
                 'icon' => 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z',
-                'features' => ['UI/UX design', 'Mobile-first responsive layouts', 'Brand identity & style guides', 'Wireframing & prototyping', 'Accessibility compliance'],
                 'cta_text' => 'View Our Portfolio',
                 'cta_link' => '/contact-us',
                 'sort_order' => 1,
@@ -426,9 +441,11 @@ class DemoContentSeeder extends Seeder
                 'title' => 'SEO & Digital Marketing',
                 'slug' => 'seo-digital-marketing',
                 'short_description' => 'Get found online with our proven search engine optimisation strategies.',
-                'content' => $this->tiptapContent('We help businesses climb the search rankings with data-driven SEO strategies. From technical SEO audits to content marketing and link building, we deliver measurable results that grow your organic traffic.'),
+                'content' => $this->serviceBlocks(
+                    'We help businesses climb the search rankings with data-driven SEO strategies. From technical SEO audits to content marketing and link building, we deliver measurable results that grow your organic traffic.',
+                    ['Technical SEO audits', 'Keyword research & strategy', 'Content marketing', 'Local SEO optimisation', 'Monthly reporting & analytics'],
+                ),
                 'icon' => 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z',
-                'features' => ['Technical SEO audits', 'Keyword research & strategy', 'Content marketing', 'Local SEO optimisation', 'Monthly reporting & analytics'],
                 'cta_text' => 'Improve Your Rankings',
                 'cta_link' => '/contact-us',
                 'sort_order' => 2,
@@ -441,9 +458,11 @@ class DemoContentSeeder extends Seeder
                 'title' => 'E-commerce Solutions',
                 'slug' => 'ecommerce-solutions',
                 'short_description' => 'Powerful online shops that make selling easy and secure.',
-                'content' => $this->tiptapContent('Whether you are launching your first online shop or scaling an existing one, we build e-commerce platforms that are fast, secure, and easy to manage. We integrate with all major payment providers and shipping services.'),
+                'content' => $this->serviceBlocks(
+                    'Whether you are launching your first online shop or scaling an existing one, we build e-commerce platforms that are fast, secure, and easy to manage. We integrate with all major payment providers and shipping services.',
+                    ['Custom e-commerce platforms', 'Payment gateway integration', 'Inventory management', 'Order tracking & fulfilment', 'Security & PCI compliance'],
+                ),
                 'icon' => 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z',
-                'features' => ['Custom e-commerce platforms', 'Payment gateway integration', 'Inventory management', 'Order tracking & fulfilment', 'Security & PCI compliance'],
                 'cta_text' => 'Launch Your Shop',
                 'cta_link' => '/contact-us',
                 'sort_order' => 3,
@@ -456,9 +475,11 @@ class DemoContentSeeder extends Seeder
                 'title' => 'Hosting & Support',
                 'slug' => 'hosting-and-support',
                 'short_description' => 'Reliable hosting and ongoing support to keep your site running smoothly.',
-                'content' => $this->tiptapContent('We provide managed hosting packages with 99.9% uptime, daily backups, security monitoring, and ongoing technical support. Focus on running your business while we take care of the technical side.'),
+                'content' => $this->serviceBlocks(
+                    'We provide managed hosting packages with 99.9% uptime, daily backups, security monitoring, and ongoing technical support. Focus on running your business while we take care of the technical side.',
+                    ['Managed cloud hosting', 'Daily automated backups', 'SSL certificates & security', '24/7 uptime monitoring', 'Priority technical support'],
+                ),
                 'icon' => 'M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2',
-                'features' => ['Managed cloud hosting', 'Daily automated backups', 'SSL certificates & security', '24/7 uptime monitoring', 'Priority technical support'],
                 'cta_text' => 'Get Started',
                 'cta_link' => '/contact-us',
                 'sort_order' => 4,
@@ -471,9 +492,11 @@ class DemoContentSeeder extends Seeder
                 'title' => 'Mobile App Development',
                 'slug' => 'mobile-app-development',
                 'short_description' => 'Cross-platform mobile apps that your customers will love.',
-                'content' => $this->tiptapContent('We are currently expanding our mobile development offering. Stay tuned for more details on our cross-platform app development services.'),
+                'content' => $this->serviceBlocks(
+                    'We are currently expanding our mobile development offering. Stay tuned for more details on our cross-platform app development services.',
+                    ['Cross-platform development', 'Native performance', 'App store submission', 'Push notifications', 'Analytics integration'],
+                ),
                 'icon' => 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z',
-                'features' => ['Cross-platform development', 'Native performance', 'App store submission', 'Push notifications', 'Analytics integration'],
                 'cta_text' => 'Enquire Now',
                 'cta_link' => '/contact-us',
                 'sort_order' => 5,
@@ -493,9 +516,10 @@ class DemoContentSeeder extends Seeder
         $mainItems = [
             ['label' => 'Home', 'url' => '/', 'sort_order' => 0],
             ['label' => 'About', 'url' => '/pages/about-us', 'sort_order' => 1],
-            ['label' => 'Services', 'url' => '/pages/services', 'sort_order' => 2],
-            ['label' => 'Blog', 'url' => '/blog', 'sort_order' => 3],
-            ['label' => 'Contact', 'url' => '/pages/contact-us', 'sort_order' => 4],
+            ['label' => 'Why Choose Us', 'url' => '/why-choose-us', 'sort_order' => 2],
+            ['label' => 'Services', 'url' => '/pages/services', 'sort_order' => 3],
+            ['label' => 'Blog', 'url' => '/blog', 'sort_order' => 4],
+            ['label' => 'Contact', 'url' => '/pages/contact-us', 'sort_order' => 5],
         ];
 
         $menuItemModels = [];
@@ -517,7 +541,7 @@ class DemoContentSeeder extends Seeder
         foreach ($serviceSubItems as $sub) {
             MenuItemModel::create(array_merge($sub, [
                 'menu_id' => $mainMenu->id,
-                'parent_id' => $menuItemModels[2]->id, // Services parent
+                'parent_id' => $menuItemModels[3]->id, // Services parent
                 'type' => 'custom',
                 'target' => '_self',
             ]));
@@ -551,6 +575,151 @@ class DemoContentSeeder extends Seeder
                     'content' => [
                         ['type' => 'text', 'text' => $text],
                     ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param  list<string>  $features
+     */
+    private function serviceBlocks(string $description, array $features): array
+    {
+        return [
+            [
+                'id' => 'blk_' . substr(md5($description), 0, 9),
+                'type' => 'richText',
+                'data' => ['content' => $this->tiptapContent($description)],
+            ],
+            [
+                'id' => 'blk_' . substr(md5(implode(',', $features)), 0, 9),
+                'type' => 'checklist',
+                'data' => [
+                    'heading' => 'What\'s Included',
+                    'items' => $features,
+                ],
+            ],
+        ];
+    }
+
+    private function servicesPageBlocks(): array
+    {
+        return [
+            // 1. Hero
+            [
+                'id' => 'blk_hero01',
+                'type' => 'hero',
+                'data' => [
+                    'heading' => 'Digital Solutions That Deliver',
+                    'subheading' => 'We build fast, modern websites and applications that help businesses grow.',
+                    'backgroundImage' => '',
+                    'ctaText' => 'Get a Free Quote',
+                    'ctaLink' => '/contact-us',
+                ],
+            ],
+            // 2. Spacer (small)
+            [
+                'id' => 'blk_spacer01',
+                'type' => 'spacer',
+                'data' => ['size' => 'small'],
+            ],
+            // 3. Rich Text
+            [
+                'id' => 'blk_richtext01',
+                'type' => 'richText',
+                'data' => [
+                    'content' => $this->tiptapContent('We are a full-service digital agency based in the UK. Whether you need a simple brochure site or a complex web application, our team has the expertise to bring your vision to life.'),
+                ],
+            ],
+            // 4. Feature Grid
+            [
+                'id' => 'blk_features01',
+                'type' => 'featureGrid',
+                'data' => [
+                    'features' => [
+                        ['icon' => '💻', 'title' => 'Web Development', 'description' => 'Bespoke web applications built with Laravel, Vue.js, and modern best practices.'],
+                        ['icon' => '🎨', 'title' => 'Web Design', 'description' => 'Beautiful, responsive designs that engage your audience and drive conversions.'],
+                        ['icon' => '🔍', 'title' => 'SEO & Marketing', 'description' => 'Data-driven strategies to improve your search rankings and online visibility.'],
+                        ['icon' => '🛒', 'title' => 'E-commerce', 'description' => 'Powerful online shops with secure payments and easy stock management.'],
+                        ['icon' => '☁️', 'title' => 'Hosting & Support', 'description' => 'Managed hosting with 99.9% uptime, daily backups, and priority support.'],
+                        ['icon' => '📱', 'title' => 'Mobile Apps', 'description' => 'Cross-platform mobile apps that your customers will love.'],
+                    ],
+                ],
+            ],
+            // 5. Image
+            [
+                'id' => 'blk_image01',
+                'type' => 'image',
+                'data' => [
+                    'src' => 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80',
+                    'alt' => 'Our team collaborating on a project',
+                    'caption' => 'Our team working together to deliver exceptional results.',
+                ],
+            ],
+            // 6. Two Columns
+            [
+                'id' => 'blk_twocol01',
+                'type' => 'twoColumn',
+                'data' => [
+                    'left' => $this->tiptapContent('With over five years of experience, we have helped dozens of businesses launch and grow their online presence. Every project is built to perform — fast load times, clean code, and SEO-ready from day one.'),
+                    'right' => $this->tiptapContent('We work closely with each client to understand their goals and deliver tailored solutions. From initial wireframes through to launch and beyond, we are with you every step of the way.'),
+                ],
+            ],
+            // 7. Three Columns
+            [
+                'id' => 'blk_threecol01',
+                'type' => 'threeColumn',
+                'data' => [
+                    'columns' => [
+                        $this->tiptapContent('Discovery — We learn about your business, goals, and audience to create a tailored strategy.'),
+                        $this->tiptapContent('Build — Our developers and designers bring the plan to life with clean code and pixel-perfect design.'),
+                        $this->tiptapContent('Launch & Grow — We deploy, monitor, and continuously improve to maximise your results.'),
+                    ],
+                ],
+            ],
+            // 8. Checklist
+            [
+                'id' => 'blk_checklist01',
+                'type' => 'checklist',
+                'data' => [
+                    'heading' => 'Why Clients Choose Us',
+                    'items' => [
+                        'No jargon — we explain everything in plain English',
+                        'Fixed-price quotes with no hidden costs',
+                        'UK-based team with direct access to your developer',
+                        'Fully responsive, mobile-first builds as standard',
+                        'Ongoing support packages available',
+                        'SEO-optimised from day one',
+                    ],
+                ],
+            ],
+            // 9. Spacer (medium)
+            [
+                'id' => 'blk_spacer02',
+                'type' => 'spacer',
+                'data' => ['size' => 'medium'],
+            ],
+            // 10. Testimonial
+            [
+                'id' => 'blk_testimonial01',
+                'type' => 'testimonial',
+                'data' => [
+                    'quote' => 'They completely transformed our online presence. Our new site loads faster, looks stunning, and has already increased our enquiries by 40%.',
+                    'author' => 'Sophie Clarke',
+                    'role' => 'Director, BlueWave Digital',
+                    'avatar' => '',
+                ],
+            ],
+            // 11. Call to Action
+            [
+                'id' => 'blk_cta01',
+                'type' => 'callToAction',
+                'data' => [
+                    'heading' => 'Ready to Start Your Project?',
+                    'text' => 'Get in touch today for a free consultation and quote. No obligation, no jargon — just honest advice.',
+                    'buttonText' => 'Contact Us',
+                    'buttonLink' => '/contact-us',
+                    'variant' => 'blue',
                 ],
             ],
         ];

@@ -3,24 +3,24 @@ import { Head, useForm } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import AppBreadcrumbComponent from '@/Components/Admin/Shared/AppBreadcrumbComponent.vue';
-import TiptapEditorComponent from '@/Components/Admin/Forms/TiptapEditorComponent.vue';
 import SlugInputComponent from '@/Components/Admin/Forms/SlugInputComponent.vue';
 import SeoPanelComponent from '@/Components/Admin/Forms/SeoPanelComponent.vue';
 import PublishPanelComponent from '@/Components/Admin/Forms/PublishPanelComponent.vue';
 import MediaPickerComponent from '@/Components/Admin/Forms/MediaPickerComponent.vue';
+import PageBuilderComponent from '@/Components/Admin/PageBuilder/PageBuilderComponent.vue';
 
 const props = defineProps({
     service: Object,
+    blockTypes: Object,
 });
 
 const form = useForm({
     title: props.service.title,
     slug: props.service.slug,
     short_description: props.service.short_description || '',
-    content: props.service.content,
+    content: Array.isArray(props.service.content) ? props.service.content : [],
     icon: props.service.icon || '',
     featured_image: props.service.featured_image || '',
-    features: props.service.features || [],
     cta_text: props.service.cta_text || '',
     cta_link: props.service.cta_link || '',
     sort_order: props.service.sort_order ?? 0,
@@ -32,22 +32,6 @@ const form = useForm({
 });
 
 const shortDescriptionCount = computed(() => (form.short_description || '').length);
-
-const addFeature = () => {
-    form.features.push('');
-};
-
-const removeFeature = (index) => {
-    form.features.splice(index, 1);
-};
-
-const moveFeature = (index, direction) => {
-    const newIndex = index + direction;
-    if (newIndex < 0 || newIndex >= form.features.length) return;
-    const temp = form.features[index];
-    form.features[index] = form.features[newIndex];
-    form.features[newIndex] = temp;
-};
 
 const submit = () => {
     form.put(`/admin/services/${props.service.id}`);
@@ -68,6 +52,13 @@ const submit = () => {
         <form @submit.prevent="submit" class="space-y-6">
             <div class="flex items-center justify-between">
                 <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Edit Service</h1>
+                <a v-if="service.status === 'published' && service.slug" :href="`/services/${service.slug}`" target="_blank"
+                    class="inline-flex items-center gap-1.5 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    View on site
+                </a>
             </div>
 
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -105,43 +96,8 @@ const submit = () => {
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Content</label>
-                        <TiptapEditorComponent v-model="form.content" />
+                        <PageBuilderComponent v-model="form.content" :block-types="blockTypes" />
                         <p v-if="form.errors.content" class="mt-1 text-sm text-red-600">{{ form.errors.content }}</p>
-                    </div>
-
-                    <!-- Features -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Features</label>
-                        <div class="space-y-2">
-                            <div v-for="(feature, index) in form.features" :key="index" class="flex items-center gap-2">
-                                <input
-                                    v-model="form.features[index]"
-                                    type="text"
-                                    placeholder="Enter a feature..."
-                                    class="flex-1 rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100"
-                                />
-                                <button type="button" @click="moveFeature(index, -1)" :disabled="index === 0"
-                                    class="rounded p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed"
-                                    title="Move up">
-                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" /></svg>
-                                </button>
-                                <button type="button" @click="moveFeature(index, 1)" :disabled="index === form.features.length - 1"
-                                    class="rounded p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed"
-                                    title="Move down">
-                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                                </button>
-                                <button type="button" @click="removeFeature(index)"
-                                    class="rounded p-1 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
-                                    title="Remove feature">
-                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                                </button>
-                            </div>
-                        </div>
-                        <button type="button" @click="addFeature"
-                            class="mt-2 inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600">
-                            Add Feature
-                        </button>
-                        <p v-if="form.errors.features" class="mt-1 text-sm text-red-600">{{ form.errors.features }}</p>
                     </div>
 
                     <SeoPanelComponent

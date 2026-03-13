@@ -36,6 +36,7 @@ class PageController extends Controller
     {
         return Inertia::render('Admin/Pages/PageCreatePage', [
             'templates' => config('cms.templates'),
+            'blockTypes' => config('cms.block_types'),
             'pages' => PageModel::orderBy('title')->get(['id', 'title', 'slug']),
             'forms' => FormModel::where('is_active', true)->orderBy('name')->get(['id', 'name']),
             'homepageId' => SettingModel::getCached('general', 'homepage'),
@@ -54,6 +55,7 @@ class PageController extends Controller
         return Inertia::render('Admin/Pages/PageEditPage', [
             'page' => $page,
             'templates' => config('cms.templates'),
+            'blockTypes' => config('cms.block_types'),
             'pages' => PageModel::where('id', '!=', $page->id)
                 ->orderBy('title')
                 ->get(['id', 'title', 'slug']),

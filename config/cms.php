@@ -2,10 +2,17 @@
 
 return [
     'templates' => [
-        'default'    => 'Default',
-        'full-width' => 'Full Width',
-        'landing'    => 'Landing Page',
-        'contact'    => 'Contact Page',
+        'default'      => 'Default',
+        'page-builder' => 'Page Builder',
+        'landing'      => 'Landing Page',
+        'contact'      => 'Contact Page',
+        'blog'         => 'Blog',
+        'services'     => 'Services',
+    ],
+
+    'public_per_page' => [
+        'posts'    => 12,
+        'services' => 12,
     ],
 
     'per_page' => [
@@ -16,6 +23,19 @@ return [
         'forms'     => 20,
         'services'  => 20,
         'users'     => 20,
+    ],
+
+    'block_types' => [
+        'hero'         => ['label' => 'Hero Banner'],
+        'richText'     => ['label' => 'Rich Text'],
+        'image'        => ['label' => 'Image'],
+        'twoColumn'    => ['label' => 'Two Columns'],
+        'threeColumn'  => ['label' => 'Three Columns'],
+        'callToAction' => ['label' => 'Call to Action'],
+        'featureGrid'  => ['label' => 'Feature Grid'],
+        'testimonial'  => ['label' => 'Testimonial'],
+        'spacer'       => ['label' => 'Spacer'],
+        'checklist'    => ['label' => 'Checklist'],
     ],
 
     'media' => [
