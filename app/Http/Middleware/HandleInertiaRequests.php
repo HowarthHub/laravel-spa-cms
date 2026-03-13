@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\MenuModel;
+use App\Services\Interfaces\SettingServiceInterface;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -16,6 +18,8 @@ class HandleInertiaRequests extends Middleware
 
     public function share(Request $request): array
     {
+        $settingService = app(SettingServiceInterface::class);
+
         return [
             ...parent::share($request),
             'auth' => [
@@ -32,6 +36,20 @@ class HandleInertiaRequests extends Middleware
             'enquiryCount' => $request->user()
                 ? \App\Models\ContactEnquiryModel::where('status', 'new')->count()
                 : 0,
+            'site' => [
+                'name' => $settingService->get('general.site_name', 'My Site'),
+                'tagline' => $settingService->get('general.tagline', ''),
+                'logo' => $settingService->get('general.logo', ''),
+                'footer' => $settingService->get('general.footer_text', ''),
+            ],
+            'socialLinks' => $settingService->group('social'),
+            'navigation' => fn () => MenuModel::where('handle', 'main')
+                ->first()
+                ?->items()
+                ->whereNull('parent_id')
+                ->with('children')
+                ->orderBy('sort_order')
+                ->get() ?? [],
         ];
     }
 }

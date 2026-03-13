@@ -26,10 +26,26 @@ class SitemapController extends Controller
         $xml .= '<priority>1.0</priority>';
         $xml .= '</url>';
 
+        // Blog index
+        $xml .= '<url>';
+        $xml .= '<loc>' . url('/blog') . '</loc>';
+        $xml .= '<lastmod>' . now()->toW3cString() . '</lastmod>';
+        $xml .= '<changefreq>daily</changefreq>';
+        $xml .= '<priority>0.9</priority>';
+        $xml .= '</url>';
+
+        // Services index
+        $xml .= '<url>';
+        $xml .= '<loc>' . url('/services') . '</loc>';
+        $xml .= '<lastmod>' . now()->toW3cString() . '</lastmod>';
+        $xml .= '<changefreq>weekly</changefreq>';
+        $xml .= '<priority>0.9</priority>';
+        $xml .= '</url>';
+
         // Pages
         foreach ($pages as $page) {
             $xml .= '<url>';
-            $xml .= '<loc>' . url('/pages/' . $page->slug) . '</loc>';
+            $xml .= '<loc>' . url('/' . $page->slug) . '</loc>';
             $xml .= '<lastmod>' . $page->updated_at->toW3cString() . '</lastmod>';
             $xml .= '<changefreq>weekly</changefreq>';
             $xml .= '<priority>0.8</priority>';

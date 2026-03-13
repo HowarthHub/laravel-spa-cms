@@ -30,7 +30,9 @@ class ServiceController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('Admin/Services/ServiceCreatePage');
+        return Inertia::render('Admin/Services/ServiceCreatePage', [
+            'blockTypes' => config('cms.block_types'),
+        ]);
     }
 
     public function store(ServiceStoreRequest $request): RedirectResponse
@@ -44,6 +46,7 @@ class ServiceController extends Controller
     {
         return Inertia::render('Admin/Services/ServiceEditPage', [
             'service' => $service,
+            'blockTypes' => config('cms.block_types'),
         ]);
     }
 

@@ -173,6 +173,8 @@ const deletePost = (id) => {
                             <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ post.author?.name }}</td>
                             <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ new Date(post.updated_at).toLocaleDateString() }}</td>
                             <td class="px-4 py-3 text-right">
+                                <a v-if="post.status === 'published' && post.slug" :href="`/blog/${post.slug}`" target="_blank"
+                                    class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mr-3">View</a>
                                 <Link v-if="can('edit posts')" :href="`/admin/posts/${post.id}/edit`"
                                     class="text-sm text-cyan-600 hover:text-cyan-500 dark:text-cyan-400 dark:hover:text-cyan-300 mr-3">Edit</Link>
                                 <button v-if="can('delete posts')" @click="deletePost(post.id)"

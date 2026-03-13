@@ -91,6 +91,17 @@ class PageModel extends Model implements HasMedia
         return $query->where('status', 'scheduled')->where('published_at', '>', now());
     }
 
+    public function getContentFormatAttribute(): string
+    {
+        $content = $this->content;
+
+        if (is_array($content) && ! empty($content) && isset($content[0]['type'], $content[0]['id'])) {
+            return 'blocks';
+        }
+
+        return 'tiptap';
+    }
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('featured_image')->singleFile();

@@ -40,6 +40,7 @@ class PostController extends Controller
         return Inertia::render('Admin/Posts/PostCreatePage', [
             'categories' => $this->categoryService->getAll(),
             'tags' => $this->tagService->getAll(),
+            'blockTypes' => config('cms.block_types'),
         ]);
     }
 
@@ -58,6 +59,7 @@ class PostController extends Controller
             'post' => $post,
             'categories' => $this->categoryService->getAll(),
             'tags' => $this->tagService->getAll(),
+            'blockTypes' => config('cms.block_types'),
         ]);
     }
 

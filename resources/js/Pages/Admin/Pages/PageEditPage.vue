@@ -8,10 +8,12 @@ import SlugInputComponent from '@/Components/Admin/Forms/SlugInputComponent.vue'
 import SeoPanelComponent from '@/Components/Admin/Forms/SeoPanelComponent.vue';
 import PublishPanelComponent from '@/Components/Admin/Forms/PublishPanelComponent.vue';
 import MediaPickerComponent from '@/Components/Admin/Forms/MediaPickerComponent.vue';
+import PageBuilderComponent from '@/Components/Admin/PageBuilder/PageBuilderComponent.vue';
 
 const props = defineProps({
     page: Object,
     templates: Object,
+    blockTypes: Object,
     pages: Array,
     forms: Array,
     homepageId: [String, Number],
@@ -42,6 +44,8 @@ const slugPrefix = computed(() => {
     return parent ? `/${parent.slug}` : '';
 });
 
+const usePageBuilder = computed(() => form.template === 'page-builder');
+
 const submit = () => {
     form.put(`/admin/pages/${props.page.id}`);
 };
@@ -61,6 +65,13 @@ const submit = () => {
         <form @submit.prevent="submit" class="space-y-6">
             <div class="flex items-center justify-between">
                 <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Edit Page</h1>
+                <a v-if="page.status === 'published' && page.slug" :href="`/${page.slug}`" target="_blank"
+                    class="inline-flex items-center gap-1.5 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    View on site
+                </a>
             </div>
 
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -88,7 +99,12 @@ const submit = () => {
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Content</label>
-                        <TiptapEditorComponent v-model="form.content" />
+                        <PageBuilderComponent
+                            v-if="usePageBuilder"
+                            v-model="form.content"
+                            :block-types="blockTypes"
+                        />
+                        <TiptapEditorComponent v-else v-model="form.content" />
                         <p v-if="form.errors.content" class="mt-1 text-sm text-red-600">{{ form.errors.content }}</p>
                     </div>
 
