@@ -89,7 +89,7 @@ const roleBadge = (r) => ({
         </template>
 
         <div class="space-y-4">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Users</h1>
                 <Link v-if="can('manage users')" href="/admin/users/create"
                     class="inline-flex items-center rounded-md bg-cyan-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-cyan-700">
@@ -97,9 +97,9 @@ const roleBadge = (r) => ({
                 </Link>
             </div>
 
-            <div class="flex items-center gap-3">
+            <div class="flex flex-wrap items-center gap-3">
                 <input v-model="search" type="text" placeholder="Search name or email..."
-                    class="w-64 rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
+                    class="w-full sm:w-64 rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
                 <select v-model="role"
                     class="rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100">
                     <option value="">All Roles</option>
@@ -107,7 +107,7 @@ const roleBadge = (r) => ({
                 </select>
             </div>
 
-            <div class="overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow">
+            <div class="overflow-x-auto rounded-lg bg-white dark:bg-gray-800 shadow">
                 <table v-if="users.data.length" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead class="bg-gray-50 dark:bg-gray-800/60">
                         <tr>
@@ -132,23 +132,23 @@ const roleBadge = (r) => ({
                                     {{ user.name }}
                                 </Link>
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ user.email }}</td>
-                            <td class="px-4 py-3">
+                            <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ user.email }}</td>
+                            <td class="whitespace-nowrap px-4 py-3">
                                 <span v-for="r in user.roles" :key="r.id" :class="roleBadge(r.name)"
                                     class="inline-flex rounded-full px-2 py-0.5 text-xs font-medium capitalize">
                                     {{ r.name }}
                                 </span>
                             </td>
-                            <td class="px-4 py-3">
+                            <td class="whitespace-nowrap px-4 py-3">
                                 <span :class="user.is_active ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'"
                                     class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold">
                                     {{ user.is_active ? 'Active' : 'Inactive' }}
                                 </span>
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                            <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
                                 {{ user.last_login_at ? new Date(user.last_login_at).toLocaleDateString() : 'Never' }}
                             </td>
-                            <td class="px-4 py-3 text-right">
+                            <td class="whitespace-nowrap px-4 py-3 text-right">
                                 <Link v-if="can('manage users')" :href="`/admin/users/${user.id}/edit`"
                                     class="text-sm text-cyan-600 hover:text-cyan-500 mr-3">Edit</Link>
                                 <button v-if="can('manage users')" @click="deleteUser(user.id)"

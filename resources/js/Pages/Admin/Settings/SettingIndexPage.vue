@@ -73,15 +73,15 @@ const groupFields = computed(() => {
                 </button>
             </div>
 
-            <div class="flex gap-6">
+            <div class="flex flex-col gap-6 lg:flex-row">
                 <!-- Tab sidebar -->
-                <nav class="w-48 shrink-0 space-y-1">
+                <nav class="flex gap-1 overflow-x-auto lg:w-48 lg:shrink-0 lg:flex-col lg:gap-0 lg:space-y-1 lg:overflow-visible">
                     <button
                         v-for="tab in tabs"
                         :key="tab.key"
                         type="button"
                         @click="activeTab = tab.key"
-                        class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors"
+                        class="flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors lg:w-full"
                         :class="activeTab === tab.key
                             ? 'bg-cyan-50 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400'
                             : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'"

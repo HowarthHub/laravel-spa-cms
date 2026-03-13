@@ -107,7 +107,7 @@ const exportUrl = computed(() => {
         </template>
 
         <div class="space-y-4">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="flex items-center gap-3">
                     <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Enquiries</h1>
                     <span v-if="newCount" class="inline-flex items-center rounded-full bg-cyan-500 px-2.5 py-0.5 text-xs font-semibold text-white">
@@ -116,9 +116,9 @@ const exportUrl = computed(() => {
                 </div>
             </div>
 
-            <div class="flex items-center gap-3">
+            <div class="flex flex-wrap items-center gap-3">
                 <input v-model="search" type="text" placeholder="Search name, email, subject..."
-                    class="w-64 rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
+                    class="w-full sm:w-64 rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
                 <select v-model="status"
                     class="rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100">
                     <option value="">All Statuses</option>
@@ -140,7 +140,7 @@ const exportUrl = computed(() => {
                 </a>
             </div>
 
-            <div class="overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow">
+            <div class="overflow-x-auto rounded-lg bg-white dark:bg-gray-800 shadow">
                 <table v-if="enquiries.data.length" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead class="bg-gray-50 dark:bg-gray-800/60">
                         <tr>
@@ -162,7 +162,7 @@ const exportUrl = computed(() => {
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                         <tr v-for="enq in enquiries.data" :key="enq.id" class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                            <td v-if="can('manage enquiries')" class="px-4 py-3">
+                            <td v-if="can('manage enquiries')" class="whitespace-nowrap px-4 py-3">
                                 <input type="checkbox" :value="enq.id" v-model="selected" class="rounded border-gray-300 dark:border-gray-600" />
                             </td>
                             <td class="px-4 py-3">
@@ -171,14 +171,14 @@ const exportUrl = computed(() => {
                                 </Link>
                                 <p class="text-xs text-gray-400 dark:text-gray-500">{{ enq.email }}</p>
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                            <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
                                 <span :class="{ 'font-semibold': enq.status === 'new' }">{{ enq.subject || '(no subject)' }}</span>
                             </td>
-                            <td class="px-4 py-3">
+                            <td class="whitespace-nowrap px-4 py-3">
                                 <StatusBadgeComponent :status="enq.status" />
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ new Date(enq.created_at).toLocaleDateString() }}</td>
-                            <td class="px-4 py-3 text-right">
+                            <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{{ new Date(enq.created_at).toLocaleDateString() }}</td>
+                            <td class="whitespace-nowrap px-4 py-3 text-right">
                                 <Link :href="`/admin/enquiries/${enq.id}`"
                                     class="text-sm text-cyan-600 hover:text-cyan-500 mr-3">View</Link>
                                 <button v-if="can('manage enquiries')" @click="deleteEnquiry(enq.id)"

@@ -59,7 +59,7 @@ const deleteForm = (id) => {
         </template>
 
         <div class="space-y-4">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Forms</h1>
                 <Link v-if="can('manage forms')" href="/admin/forms/create"
                     class="rounded-md bg-cyan-600 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-700">
@@ -67,12 +67,12 @@ const deleteForm = (id) => {
                 </Link>
             </div>
 
-            <div class="flex items-center gap-3">
+            <div class="flex flex-wrap items-center gap-3">
                 <input v-model="search" type="text" placeholder="Search forms..."
-                    class="w-64 rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
+                    class="w-full sm:w-64 rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100" />
             </div>
 
-            <div class="overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow">
+            <div class="overflow-x-auto rounded-lg bg-white dark:bg-gray-800 shadow">
                 <table v-if="forms.data.length" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead class="bg-gray-50 dark:bg-gray-800/60">
                         <tr>
@@ -91,18 +91,18 @@ const deleteForm = (id) => {
                                     {{ f.name }}
                                 </Link>
                             </td>
-                            <td class="px-4 py-3">
+                            <td class="whitespace-nowrap px-4 py-3">
                                 <code class="text-sm font-mono text-gray-600 dark:text-gray-300">{{ f.handle }}</code>
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                            <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
                                 {{ f.fields ? f.fields.length : 0 }}
                             </td>
-                            <td class="px-4 py-3">
+                            <td class="whitespace-nowrap px-4 py-3">
                                 <Link :href="`/admin/forms/${f.id}/submissions`" class="text-sm text-cyan-600 hover:text-cyan-500">
                                     {{ f.submissions_count ?? 0 }}
                                 </Link>
                             </td>
-                            <td class="px-4 py-3">
+                            <td class="whitespace-nowrap px-4 py-3">
                                 <span v-if="f.is_active"
                                     class="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900/30 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:text-green-400">
                                     Active
@@ -112,7 +112,7 @@ const deleteForm = (id) => {
                                     Inactive
                                 </span>
                             </td>
-                            <td class="px-4 py-3 text-right">
+                            <td class="whitespace-nowrap px-4 py-3 text-right">
                                 <Link :href="`/admin/forms/${f.id}/edit`"
                                     class="text-sm text-cyan-600 hover:text-cyan-500 mr-3">Edit</Link>
                                 <Link :href="`/admin/forms/${f.id}/submissions`"

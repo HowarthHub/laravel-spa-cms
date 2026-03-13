@@ -15,11 +15,14 @@ const socialLinks = computed(() => page.props.socialLinks || {});
 const navigation = computed(() => page.props.navigation || []);
 const currentYear = new Date().getFullYear();
 const searchQuery = ref('');
+const mobileMenuOpen = ref(false);
+const mobileDropdownOpen = ref(null);
 
 function submitSearch() {
     const q = searchQuery.value.trim();
     if (q) {
         router.get('/search', { q });
+        mobileMenuOpen.value = false;
     }
 }
 
@@ -51,6 +54,10 @@ function isExternal(url) {
     return url && (url.startsWith('http://') || url.startsWith('https://'));
 }
 
+function toggleMobileDropdown(id) {
+    mobileDropdownOpen.value = mobileDropdownOpen.value === id ? null : id;
+}
+
 const socialPlatforms = [
     { key: 'facebook', label: 'Facebook' },
     { key: 'instagram', label: 'Instagram' },
@@ -78,6 +85,7 @@ const socialPlatforms = [
                         <span class="text-xl font-bold text-gray-900">{{ site.name }}</span>
                     </Link>
 
+                    <!-- Desktop nav -->
                     <nav v-if="navigation.length" class="hidden md:flex items-center gap-6">
                         <template v-for="item in navigation" :key="item.id">
                             <div v-if="item.children?.length" class="relative group flex items-center">
@@ -109,14 +117,73 @@ const socialPlatforms = [
                         </template>
                     </nav>
 
-                    <form @submit.prevent="submitSearch" class="hidden md:flex items-center ml-4">
+                    <div class="flex items-center gap-3">
+                        <!-- Desktop search -->
+                        <form @submit.prevent="submitSearch" class="hidden md:flex items-center">
+                            <input
+                                v-model="searchQuery"
+                                type="search"
+                                placeholder="Search..."
+                                class="w-40 rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                            />
+                        </form>
+
+                        <!-- Mobile hamburger -->
+                        <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden rounded-md p-2 text-gray-700 hover:bg-gray-100">
+                            <svg v-if="!mobileMenuOpen" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            <svg v-else class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile menu -->
+                <div v-if="mobileMenuOpen" class="md:hidden border-t border-gray-200 py-4 space-y-2">
+                    <!-- Mobile search -->
+                    <form @submit.prevent="submitSearch" class="mb-3">
                         <input
                             v-model="searchQuery"
                             type="search"
                             placeholder="Search..."
-                            class="w-40 rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                            class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                         />
                     </form>
+
+                    <template v-for="item in navigation" :key="item.id">
+                        <!-- Item with children -->
+                        <div v-if="item.children?.length">
+                            <button
+                                @click="toggleMobileDropdown(item.id)"
+                                class="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                            >
+                                {{ item.label }}
+                                <svg class="h-4 w-4 transition-transform" :class="{ 'rotate-180': mobileDropdownOpen === item.id }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div v-if="mobileDropdownOpen === item.id" class="pl-4 space-y-1">
+                                <template v-for="child in item.children" :key="child.id">
+                                    <a v-if="isExternal(resolveUrl(child))" :href="resolveUrl(child)" :target="child.target || '_blank'" rel="noopener noreferrer" class="block rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-50" @click="mobileMenuOpen = false">
+                                        {{ child.label }}
+                                    </a>
+                                    <Link v-else :href="resolveUrl(child)" class="block rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-50" @click="mobileMenuOpen = false">
+                                        {{ child.label }}
+                                    </Link>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Simple item -->
+                        <a v-else-if="isExternal(resolveUrl(item))" :href="resolveUrl(item)" :target="item.target || '_blank'" rel="noopener noreferrer" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50" @click="mobileMenuOpen = false">
+                            {{ item.label }}
+                        </a>
+                        <Link v-else :href="resolveUrl(item)" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50" @click="mobileMenuOpen = false">
+                            {{ item.label }}
+                        </Link>
+                    </template>
                 </div>
             </div>
         </header>

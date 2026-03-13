@@ -3,6 +3,8 @@ import { Link, router, usePage } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import { useDarkMode } from '@/Composables/useDarkMode.js';
 
+const emit = defineEmits(['toggleSidebar']);
+
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const showDropdown = ref(false);
@@ -14,9 +16,17 @@ const logout = () => {
 </script>
 
 <template>
-    <header class="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-gray-200 dark:border-gray-800/50 bg-white dark:bg-gray-950 px-6">
-        <div>
-            <slot name="breadcrumb" />
+    <header class="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-gray-200 dark:border-gray-800/50 bg-white dark:bg-gray-950 px-4 sm:px-6">
+        <div class="flex items-center gap-3">
+            <!-- Mobile hamburger -->
+            <button @click="$emit('toggleSidebar')" class="lg:hidden rounded-md p-1.5 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <div class="hidden sm:block">
+                <slot name="breadcrumb" />
+            </div>
         </div>
 
         <div class="flex items-center gap-2">
@@ -41,7 +51,7 @@ const logout = () => {
                     @click="showDropdown = !showDropdown"
                     class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
-                    <span class="font-medium">{{ user?.name }}</span>
+                    <span class="font-medium hidden sm:inline">{{ user?.name }}</span>
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
