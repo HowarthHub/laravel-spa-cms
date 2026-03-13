@@ -22,10 +22,18 @@ const icons = {
 
 <template>
     <Teleport to="body">
+        <Transition
+            enter-active-class="transition ease-out duration-200"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="transition ease-in duration-150"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
+        >
         <div v-if="show" class="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div class="fixed inset-0 bg-black/50" @click="emit('close')"></div>
 
-            <div class="relative z-10 w-full max-w-lg rounded-lg bg-white dark:bg-gray-800 shadow-xl">
+            <div class="relative z-10 w-full max-w-lg rounded-lg bg-white dark:bg-gray-800 shadow-xl animate-scale-in">
                 <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 px-5 py-3">
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Add Block</h2>
                     <button type="button" @click="emit('close')" class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300">
@@ -51,5 +59,6 @@ const icons = {
                 </div>
             </div>
         </div>
+        </Transition>
     </Teleport>
 </template>

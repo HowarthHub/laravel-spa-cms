@@ -33,7 +33,7 @@ defineProps({
             </div>
 
             <div v-if="services.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <ServiceCardComponent v-for="service in services" :key="service.id" :service="service" />
+                <ServiceCardComponent v-for="(service, i) in services" :key="service.id" :service="service" :index="i" />
             </div>
 
             <p v-else class="text-gray-600">No services available at the moment.</p>

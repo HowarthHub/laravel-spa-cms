@@ -12,7 +12,7 @@ defineProps({
             alt=""
             class="absolute inset-0 h-full w-full object-cover opacity-50"
         />
-        <div class="relative z-10 px-4 text-center">
+        <div class="relative z-10 px-4 text-center animate-fade-in-up">
             <h1 v-if="data.heading" class="text-4xl font-bold text-white sm:text-5xl lg:text-6xl">{{ data.heading }}</h1>
             <p v-if="data.subheading" class="mx-auto mt-4 max-w-2xl text-lg text-gray-200 sm:text-xl">{{ data.subheading }}</p>
             <a

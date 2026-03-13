@@ -11,11 +11,20 @@ provide('sidebarOpen', sidebarOpen);
 <template>
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
         <!-- Mobile backdrop -->
-        <div
-            v-if="sidebarOpen"
-            class="fixed inset-0 z-30 bg-black/50 lg:hidden"
-            @click="sidebarOpen = false"
-        />
+        <Transition
+            enter-active-class="transition ease-out duration-200"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="transition ease-in duration-150"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
+        >
+            <div
+                v-if="sidebarOpen"
+                class="fixed inset-0 z-30 bg-black/50 lg:hidden"
+                @click="sidebarOpen = false"
+            />
+        </Transition>
 
         <AppSidebarComponent :open="sidebarOpen" @close="sidebarOpen = false" />
 
@@ -28,7 +37,9 @@ provide('sidebarOpen', sidebarOpen);
 
             <main class="p-4 sm:p-6">
                 <FlashMessageComponent />
-                <slot />
+                <div class="animate-fade-in-up">
+                    <slot />
+                </div>
             </main>
         </div>
     </div>
