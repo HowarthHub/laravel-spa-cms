@@ -51,7 +51,7 @@ class HandleInertiaRequests extends Middleware
                 ->first()
                 ?->items()
                 ->whereNull('parent_id')
-                ->with('children')
+                ->with(['linkable', 'children.linkable'])
                 ->orderBy('sort_order')
                 ->get() ?? [],
         ];
