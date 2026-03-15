@@ -42,15 +42,13 @@ class MediaItemModel extends Model implements HasMedia
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumbnail')
+            ->nonQueued()
             ->width(400)
-            ->height(300)
-            ->sharpen(10)
-            ->nonQueued();
+            ->height(300);
 
         $this->addMediaConversion('preview')
+            ->nonQueued()
             ->width(800)
-            ->height(600)
-            ->sharpen(10)
-            ->nonQueued();
+            ->height(600);
     }
 }
