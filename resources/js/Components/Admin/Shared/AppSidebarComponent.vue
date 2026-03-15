@@ -16,10 +16,19 @@ const currentUrl = computed(() => page.url);
 
 const isActive = (path) => currentUrl.value.startsWith(path);
 
-// Auto-expand Posts group if on a posts/categories/tags page
-const postsOpen = ref(
-    isActive('/admin/posts') || isActive('/admin/categories') || isActive('/admin/tags')
-);
+// Track which collapsible groups are open
+const openGroups = ref({
+    posts: isActive('/admin/posts') || isActive('/admin/categories') || isActive('/admin/tags'),
+    settings: isActive('/admin/settings') || isActive('/admin/menus') || isActive('/admin/forms') || isActive('/admin/redirects'),
+});
+
+const toggleGroup = (key) => {
+    openGroups.value[key] = !openGroups.value[key];
+};
+
+const isGroupActive = (children) => {
+    return children.some((child) => isActive(child.href));
+};
 
 const navItems = computed(() => {
     const items = [];
@@ -42,13 +51,7 @@ const navItems = computed(() => {
         if (can('manage tags')) {
             children.push({ label: 'Tags', href: '/admin/tags' });
         }
-        items.push({ label: 'Posts', href: '/admin/posts', children });
-    }
-    if (can('manage menus')) {
-        items.push({ label: 'Menus', href: '/admin/menus' });
-    }
-    if (can('manage forms')) {
-        items.push({ label: 'Forms', href: '/admin/forms' });
+        items.push({ label: 'Posts', group: 'posts', children });
     }
     if (can('view enquiries')) {
         items.push({ label: 'Enquiries', href: '/admin/enquiries', badge: page.props.enquiryCount ?? null });
@@ -56,12 +59,23 @@ const navItems = computed(() => {
     if (can('manage media')) {
         items.push({ label: 'Media', href: '/admin/media' });
     }
-    if (can('manage redirects')) {
-        items.push({ label: 'Redirects', href: '/admin/redirects' });
-    }
+
+    // Settings group — menus, forms, redirects, site settings
     if (can('manage settings')) {
-        items.push({ label: 'Settings', href: '/admin/settings' });
+        const children = [];
+        children.push({ label: 'General', href: '/admin/settings' });
+        if (can('manage menus')) {
+            children.push({ label: 'Menus', href: '/admin/menus' });
+        }
+        if (can('manage forms')) {
+            children.push({ label: 'Forms', href: '/admin/forms' });
+        }
+        if (can('manage redirects')) {
+            children.push({ label: 'Redirects', href: '/admin/redirects' });
+        }
+        items.push({ label: 'Settings', group: 'settings', children });
     }
+
     if (can('manage users')) {
         items.push({ label: 'Users', href: '/admin/users' });
     }
@@ -73,10 +87,6 @@ const isItemActive = (item) => {
     if (item.exact) return currentUrl.value === item.href;
     if (item.children) return false;
     return isActive(item.href);
-};
-
-const togglePosts = () => {
-    postsOpen.value = !postsOpen.value;
 };
 
 const navigate = () => {
@@ -101,27 +111,27 @@ const navigate = () => {
         </div>
 
         <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
-            <template v-for="item in navItems" :key="item.href">
-                <!-- Collapsible group (Posts) -->
+            <template v-for="item in navItems" :key="item.label">
+                <!-- Collapsible group -->
                 <div v-if="item.children">
                     <button
                         type="button"
-                        @click="togglePosts"
+                        @click="toggleGroup(item.group)"
                         class="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors"
-                        :class="isActive('/admin/posts') || isActive('/admin/categories') || isActive('/admin/tags')
+                        :class="isGroupActive(item.children)
                             ? 'bg-gray-800/60 text-white'
                             : 'text-gray-400 hover:bg-gray-800/40 hover:text-white'"
                     >
                         <span>{{ item.label }}</span>
                         <svg
                             class="h-4 w-4 transition-transform"
-                            :class="{ 'rotate-90': postsOpen }"
+                            :class="{ 'rotate-90': openGroups[item.group] }"
                             fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         >
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
                     </button>
-                    <div v-show="postsOpen" class="mt-0.5 space-y-0.5 pl-4">
+                    <div v-show="openGroups[item.group]" class="mt-0.5 space-y-0.5 pl-4">
                         <Link
                             v-for="child in item.children"
                             :key="child.href"
