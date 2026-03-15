@@ -119,6 +119,17 @@ const socialPlatforms = [
                     </nav>
 
                     <div class="flex items-center gap-3">
+                        <!-- Header CTA -->
+                        <a
+                            v-if="site.headerCtaText && site.headerCtaUrl"
+                            :href="site.headerCtaUrl"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="hidden md:inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 transition-colors"
+                        >
+                            {{ site.headerCtaText }}
+                        </a>
+
                         <!-- Desktop search -->
                         <form @submit.prevent="submitSearch" class="hidden md:flex items-center">
                             <input
@@ -143,6 +154,18 @@ const socialPlatforms = [
 
                 <!-- Mobile menu -->
                 <div v-if="mobileMenuOpen" class="md:hidden border-t border-gray-200 py-4 space-y-2">
+                    <!-- Mobile CTA -->
+                    <a
+                        v-if="site.headerCtaText && site.headerCtaUrl"
+                        :href="site.headerCtaUrl"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="block rounded-md bg-blue-600 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-700"
+                        @click="mobileMenuOpen = false"
+                    >
+                        {{ site.headerCtaText }}
+                    </a>
+
                     <!-- Mobile search -->
                     <form @submit.prevent="submitSearch" class="mb-3">
                         <input

@@ -31,6 +31,8 @@ return new class extends Migration
             ['group' => 'general', 'key' => 'contact_email', 'value' => '', 'type' => 'text'],
             ['group' => 'general', 'key' => 'phone', 'value' => '', 'type' => 'text'],
             ['group' => 'general', 'key' => 'address', 'value' => '', 'type' => 'textarea'],
+            ['group' => 'general', 'key' => 'header_cta_text', 'value' => '', 'type' => 'text'],
+            ['group' => 'general', 'key' => 'header_cta_url', 'value' => '', 'type' => 'text'],
             ['group' => 'general', 'key' => 'homepage', 'value' => '', 'type' => 'text'],
             ['group' => 'general', 'key' => 'footer_text', 'value' => '', 'type' => 'textarea'],
 

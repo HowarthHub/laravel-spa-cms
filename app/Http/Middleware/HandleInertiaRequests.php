@@ -43,6 +43,8 @@ class HandleInertiaRequests extends Middleware
                 'logo' => $settingService->get('general.logo', ''),
                 'favicon' => $settingService->get('general.favicon', ''),
                 'footer' => $settingService->get('general.footer_text', ''),
+                'headerCtaText' => $settingService->get('general.header_cta_text', ''),
+                'headerCtaUrl' => $settingService->get('general.header_cta_url', ''),
             ],
             'socialLinks' => $settingService->group('social'),
             'navigation' => fn () => MenuModel::where('handle', 'main')
