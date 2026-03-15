@@ -13,7 +13,7 @@ it('renders homepage with published page when homepage is set', function () {
     $this->get(route('public.home'))
         ->assertOk()
         ->assertInertia(fn ($inertia) => $inertia
-            ->component('Public/PageShowPage')
+            ->component('Public/HomePage')
             ->where('page.title', 'Welcome Home')
         );
 });
@@ -51,12 +51,11 @@ it('returns 404 for missing page slug', function () {
 });
 
 it('includes posts when page uses blog template', function () {
-    $page = PageModel::factory()->published()->create(['template' => 'blog']);
+    $page = PageModel::factory()->published()->create(['slug' => 'blog', 'template' => 'blog']);
     PostModel::factory()->published()->count(3)->create();
     PostModel::factory()->create(['status' => 'draft']);
-    SettingModel::where('group', 'general')->where('key', 'homepage')->update(['value' => $page->id]);
 
-    $this->get(route('public.home'))
+    $this->get(route('public.page.show', 'blog'))
         ->assertOk()
         ->assertInertia(fn ($inertia) => $inertia
             ->has('posts.data', 3)
@@ -64,12 +63,11 @@ it('includes posts when page uses blog template', function () {
 });
 
 it('includes services when page uses services template', function () {
-    $page = PageModel::factory()->published()->create(['template' => 'services']);
+    $page = PageModel::factory()->published()->create(['slug' => 'services', 'template' => 'services']);
     ServiceModel::factory()->published()->count(2)->create();
     ServiceModel::factory()->create(['status' => 'draft']);
-    SettingModel::where('group', 'general')->where('key', 'homepage')->update(['value' => $page->id]);
 
-    $this->get(route('public.home'))
+    $this->get(route('public.page.show', 'services'))
         ->assertOk()
         ->assertInertia(fn ($inertia) => $inertia
             ->has('services', 2)
@@ -79,17 +77,25 @@ it('includes services when page uses services template', function () {
 it('includes form when page uses contact template', function () {
     $form = FormModel::factory()->create();
     $page = PageModel::factory()->published()->create([
+        'slug' => 'contact',
         'template' => 'contact',
         'form_id' => $form->id,
     ]);
-    SettingModel::where('group', 'general')->where('key', 'homepage')->update(['value' => $page->id]);
 
-    $this->get(route('public.home'))
+    $this->get(route('public.page.show', 'contact'))
         ->assertOk()
         ->assertInertia(fn ($inertia) => $inertia
             ->has('form')
             ->where('form.id', $form->id)
         );
+});
+
+it('redirects homepage slug to root', function () {
+    $page = PageModel::factory()->published()->create(['slug' => 'home']);
+    SettingModel::where('group', 'general')->where('key', 'homepage')->update(['value' => $page->id]);
+
+    $this->get(route('public.page.show', 'home'))
+        ->assertRedirect('/');
 });
 
 it('includes seo meta props', function () {
