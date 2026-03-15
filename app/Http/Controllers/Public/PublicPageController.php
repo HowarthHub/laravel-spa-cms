@@ -7,6 +7,7 @@ use App\Models\PageModel;
 use App\Models\PostModel;
 use App\Models\ServiceModel;
 use App\Services\Interfaces\SettingServiceInterface;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -24,21 +25,23 @@ class PublicPageController extends Controller
             ? PageModel::published()->find($homepageId)
             : null;
 
-        if (! $page) {
-            return Inertia::render('Public/HomePage', [
-                'page' => null,
-                'meta' => $this->buildMeta('Home'),
-            ]);
-        }
-
-        return $this->renderPage($page);
+        return Inertia::render('Public/HomePage', [
+            'page' => $page,
+            'meta' => $this->buildMeta($page?->meta_title ?: $page?->title ?: 'Home', $page?->meta_description),
+        ]);
     }
 
-    public function show(string $slug): Response
+    public function show(string $slug): Response|RedirectResponse
     {
+        $homepageId = $this->settingService->get('general.homepage');
         $page = PageModel::published()
             ->where('slug', $slug)
             ->firstOrFail();
+
+        // Redirect homepage slug to / to avoid duplicate content
+        if ($homepageId && (string) $page->id === $homepageId) {
+            return redirect('/');
+        }
 
         return $this->renderPage($page);
     }
