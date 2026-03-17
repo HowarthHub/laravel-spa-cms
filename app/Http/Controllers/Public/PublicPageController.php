@@ -35,7 +35,31 @@ class PublicPageController extends Controller
     {
         $homepageId = $this->settingService->get('general.homepage');
         $page = PageModel::published()
+            ->with('parent')
             ->where('slug', $slug)
+            ->firstOrFail();
+
+        // Redirect homepage slug to / to avoid duplicate content
+        if ($homepageId && (string) $page->id === $homepageId) {
+            return redirect('/');
+        }
+
+        // Redirect child pages to their nested URL
+        if ($page->parent_id && $page->parent) {
+            return redirect($page->url_path, 301);
+        }
+
+        return $this->renderPage($page);
+    }
+
+    public function showChild(string $parent, string $child): Response|RedirectResponse
+    {
+        $homepageId = $this->settingService->get('general.homepage');
+
+        $page = PageModel::published()
+            ->with('parent')
+            ->where('slug', $child)
+            ->whereHas('parent', fn ($q) => $q->where('slug', $parent))
             ->firstOrFail();
 
         // Redirect homepage slug to / to avoid duplicate content

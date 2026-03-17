@@ -32,7 +32,7 @@ function resolveUrl(item) {
     if (item.linkable_type && item.linkable) {
         const type = item.linkable_type;
         if (type.includes('PageModel')) {
-            return `/${item.linkable.slug}`;
+            return item.linkable.url_path || `/${item.linkable.slug}`;
         }
         if (type.includes('PostModel')) {
             return `/blog/${item.linkable.slug}`;

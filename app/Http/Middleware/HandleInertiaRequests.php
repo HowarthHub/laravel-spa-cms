@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\ContactEnquiryModel;
 use App\Models\MenuModel;
+use App\Models\PageModel;
 use App\Services\Interfaces\SettingServiceInterface;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -51,7 +52,10 @@ class HandleInertiaRequests extends Middleware
                 ->first()
                 ?->items()
                 ->whereNull('parent_id')
-                ->with(['linkable', 'children.linkable'])
+                ->with([
+                    'linkable' => fn ($morphTo) => $morphTo->morphWith([PageModel::class => ['parent']]),
+                    'children.linkable' => fn ($morphTo) => $morphTo->morphWith([PageModel::class => ['parent']]),
+                ])
                 ->orderBy('sort_order')
                 ->get() ?? [],
         ];

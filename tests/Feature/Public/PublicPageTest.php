@@ -98,6 +98,58 @@ it('redirects homepage slug to root', function () {
         ->assertRedirect('/');
 });
 
+// --- Child pages ---
+
+it('renders a child page at nested URL', function () {
+    $parent = PageModel::factory()->published()->create(['slug' => 'about']);
+    $child = PageModel::factory()->published()->create([
+        'slug' => 'team',
+        'title' => 'Our Team',
+        'parent_id' => $parent->id,
+    ]);
+
+    $this->get('/about/team')
+        ->assertOk()
+        ->assertInertia(fn ($inertia) => $inertia
+            ->component('Public/PageShowPage')
+            ->where('page.title', 'Our Team')
+        );
+});
+
+it('redirects child page from flat URL to nested URL', function () {
+    $parent = PageModel::factory()->published()->create(['slug' => 'about']);
+    $child = PageModel::factory()->published()->create([
+        'slug' => 'team',
+        'parent_id' => $parent->id,
+    ]);
+
+    $this->get('/team')
+        ->assertRedirect('/about/team');
+});
+
+it('returns 404 for child page under wrong parent', function () {
+    $parent = PageModel::factory()->published()->create(['slug' => 'about']);
+    $child = PageModel::factory()->published()->create([
+        'slug' => 'team',
+        'parent_id' => $parent->id,
+    ]);
+
+    $this->get('/services/team')
+        ->assertNotFound();
+});
+
+it('returns 404 for draft child page', function () {
+    $parent = PageModel::factory()->published()->create(['slug' => 'about']);
+    PageModel::factory()->create([
+        'slug' => 'team',
+        'status' => 'draft',
+        'parent_id' => $parent->id,
+    ]);
+
+    $this->get('/about/team')
+        ->assertNotFound();
+});
+
 it('includes seo meta props', function () {
     $page = PageModel::factory()->published()->create([
         'slug' => 'test-page',
