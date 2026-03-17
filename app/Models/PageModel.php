@@ -29,7 +29,7 @@ class PageModel extends Model implements HasMedia
     /**
      * @var array<int, string>
      */
-    protected $appends = ['missing_alt_text'];
+    protected $appends = ['missing_alt_text', 'url_path'];
 
     protected $fillable = [
         'title',
@@ -154,6 +154,21 @@ class PageModel extends Model implements HasMedia
         }
 
         return false;
+    }
+
+    public function getUrlPathAttribute(): string
+    {
+        if ($this->parent_id && $this->relationLoaded('parent') && $this->parent) {
+            return "/{$this->parent->slug}/{$this->slug}";
+        }
+
+        if ($this->parent_id && ! $this->relationLoaded('parent')) {
+            $parent = self::find($this->parent_id, ['slug']);
+
+            return $parent ? "/{$parent->slug}/{$this->slug}" : "/{$this->slug}";
+        }
+
+        return "/{$this->slug}";
     }
 
     public function getContentFormatAttribute(): string

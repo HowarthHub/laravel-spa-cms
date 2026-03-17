@@ -183,7 +183,7 @@ const deletePage = (id) => {
                             </td>
                             <td class="px-4 py-3">
                                 <Link :href="`/admin/pages/${page.id}/edit`" class="text-sm font-medium text-cyan-600 hover:text-cyan-500 dark:text-cyan-400 dark:hover:text-cyan-300">
-                                    {{ page.title }}
+                                    <span v-if="page.parent" class="text-gray-400 dark:text-gray-500">{{ page.parent.title }} / </span>{{ page.title }}
                                 </Link>
                                 <span v-if="page.missing_alt_text" title="Images missing alt text" class="ml-1.5 inline-flex items-center text-amber-500 dark:text-amber-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4">
@@ -201,7 +201,7 @@ const deletePage = (id) => {
                                 <div class="text-xs text-gray-400 dark:text-gray-500">{{ page.editor?.name || page.author?.name }}</div>
                             </td>
                             <td class="whitespace-nowrap px-4 py-3 text-right">
-                                <a v-if="page.status === 'published' && page.slug" :href="`/${page.slug}`" target="_blank"
+                                <a v-if="page.status === 'published' && page.slug" :href="page.url_path" target="_blank"
                                     class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mr-3">View</a>
                                 <Link v-if="can('edit pages')" :href="`/admin/pages/${page.id}/edit`"
                                     class="text-sm text-cyan-600 hover:text-cyan-500 dark:text-cyan-400 dark:hover:text-cyan-300 mr-3">Edit</Link>

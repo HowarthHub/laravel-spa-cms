@@ -20,3 +20,4 @@ Route::get('/services/{slug}', [PublicServiceController::class, 'show'])->name('
 Route::post('/forms/{form}/submit', [PublicFormController::class, 'submit'])->name('public.form.submit');
 
 Route::get('/{slug}', [PublicPageController::class, 'show'])->name('public.page.show');
+Route::get('/{parent}/{child}', [PublicPageController::class, 'showChild'])->name('public.page.show.child');
