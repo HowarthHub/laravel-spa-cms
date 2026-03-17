@@ -68,6 +68,9 @@ class PageModel extends Model implements HasMedia
         return $this->belongsTo(UserModel::class, 'updated_by');
     }
 
+    /**
+     * @return BelongsTo<self, $this>
+     */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_id');
@@ -163,9 +166,9 @@ class PageModel extends Model implements HasMedia
         }
 
         if ($this->parent_id && ! $this->relationLoaded('parent')) {
-            $parent = self::find($this->parent_id, ['slug']);
+            $parentSlug = self::query()->where('id', $this->parent_id)->value('slug');
 
-            return $parent ? "/{$parent->slug}/{$this->slug}" : "/{$this->slug}";
+            return $parentSlug ? "/{$parentSlug}/{$this->slug}" : "/{$this->slug}";
         }
 
         return "/{$this->slug}";
