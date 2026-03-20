@@ -2,7 +2,6 @@
 
 use App\Models\FormModel;
 use App\Models\FormSubmissionModel;
-use App\Models\UserModel;
 
 it('lists all form submissions for authorised user', function () {
     actingAsSuperAdmin();
