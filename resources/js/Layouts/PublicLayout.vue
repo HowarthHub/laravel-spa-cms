@@ -32,13 +32,12 @@ function resolveUrl(item) {
     if (item.linkable_type && item.linkable) {
         const type = item.linkable_type;
         if (type.includes('PageModel')) {
-            return item.linkable.url_path || `/${item.linkable.slug}`;
+            if (item.linkable.url_path) return item.linkable.url_path;
+            if (item.linkable.parent) return `/${item.linkable.parent.slug}/${item.linkable.slug}`;
+            return `/${item.linkable.slug}`;
         }
         if (type.includes('PostModel')) {
             return `/blog/${item.linkable.slug}`;
-        }
-        if (type.includes('ServiceModel')) {
-            return `/services/${item.linkable.slug}`;
         }
     }
 
@@ -256,8 +255,21 @@ const socialPlatforms = [
                     </div>
 
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-900">Connect</h3>
+                        <h3 class="text-sm font-semibold text-gray-900">Contact</h3>
                         <ul class="mt-4 space-y-2">
+                            <li v-if="site.email">
+                                <a :href="`mailto:${site.email}`" class="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                                    {{ site.email }}
+                                </a>
+                            </li>
+                            <li v-if="site.phone">
+                                <a :href="`tel:${site.phone.replace(/\s/g, '')}`" class="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                                    {{ site.phone }}
+                                </a>
+                            </li>
+                            <li v-if="site.address" class="text-sm text-gray-600 whitespace-pre-line">
+                                {{ site.address }}
+                            </li>
                             <template v-for="platform in socialPlatforms" :key="platform.key">
                                 <li v-if="socialLinks[platform.key]">
                                     <a :href="socialLinks[platform.key]" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900 transition-colors">

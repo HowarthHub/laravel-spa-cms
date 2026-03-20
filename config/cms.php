@@ -7,12 +7,10 @@ return [
         'landing' => 'Landing Page',
         'contact' => 'Contact Page',
         'blog' => 'Blog',
-        'services' => 'Services',
     ],
 
     'public_per_page' => [
         'posts' => 12,
-        'services' => 12,
     ],
 
     'per_page' => [
@@ -21,7 +19,6 @@ return [
         'enquiries' => 25,
         'media' => 40,
         'forms' => 20,
-        'services' => 20,
         'users' => 20,
     ],
 
@@ -36,6 +33,7 @@ return [
         'testimonial' => ['label' => 'Testimonial'],
         'spacer' => ['label' => 'Spacer'],
         'checklist' => ['label' => 'Checklist'],
+        'cardGrid' => ['label' => 'Card Grid'],
     ],
 
     'media' => [

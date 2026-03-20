@@ -9,7 +9,7 @@ defineProps({
     },
     results: {
         type: Object,
-        default: () => ({ pages: [], posts: [], services: [] }),
+        default: () => ({ pages: [], posts: [] }),
     },
     meta: {
         type: Object,
@@ -24,7 +24,6 @@ function snippet(item) {
 const sections = [
     { key: 'pages', label: 'Pages', urlPrefix: '/' },
     { key: 'posts', label: 'Posts', urlPrefix: '/blog/' },
-    { key: 'services', label: 'Services', urlPrefix: '/services/' },
 ];
 </script>
 
@@ -40,7 +39,7 @@ const sections = [
 
             <template v-if="query">
                 <div
-                    v-if="!results.pages.length && !results.posts.length && !results.services.length"
+                    v-if="!results.pages.length && !results.posts.length"
                     class="rounded-lg border border-gray-200 bg-gray-50 p-12 text-center"
                 >
                     <p class="text-lg text-gray-600">No results found for "{{ query }}".</p>

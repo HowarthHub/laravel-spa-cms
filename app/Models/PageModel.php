@@ -33,6 +33,7 @@ class PageModel extends Model implements HasMedia
 
     protected $fillable = [
         'title',
+        'pre_heading',
         'slug',
         'content',
         'excerpt',

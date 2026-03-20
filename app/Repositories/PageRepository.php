@@ -15,7 +15,7 @@ class PageRepository implements PageRepositoryInterface
             ->with(['author', 'editor', 'parent'])
             ->when($filters['search'] ?? null, fn ($q, $s) => $q->where('title', 'like', "%{$s}%"))
             ->when($filters['status'] ?? null, fn ($q, $s) => $q->where('status', $s))
-            ->latest('updated_at')
+            ->orderByRaw('COALESCE(parent_id, id), parent_id IS NOT NULL, sort_order')
             ->paginate(config('cms.per_page.pages'));
     }
 

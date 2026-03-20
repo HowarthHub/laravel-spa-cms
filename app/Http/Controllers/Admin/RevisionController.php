@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\PageModel;
 use App\Models\PostModel;
 use App\Models\RevisionModel;
-use App\Models\ServiceModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
@@ -20,7 +19,6 @@ class RevisionController extends Controller
         return [
             'pages' => PageModel::class,
             'posts' => PostModel::class,
-            'services' => ServiceModel::class,
         ];
     }
 

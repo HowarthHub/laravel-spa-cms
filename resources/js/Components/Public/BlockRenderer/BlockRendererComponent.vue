@@ -9,6 +9,7 @@ import FeatureGridBlock from './Blocks/FeatureGridBlock.vue';
 import TestimonialBlock from './Blocks/TestimonialBlock.vue';
 import SpacerBlock from './Blocks/SpacerBlock.vue';
 import ChecklistBlock from './Blocks/ChecklistBlock.vue';
+import CardGridBlock from './Blocks/CardGridBlock.vue';
 
 defineProps({
     blocks: { type: Array, required: true },
@@ -25,6 +26,7 @@ const blockComponents = {
     testimonial: TestimonialBlock,
     spacer: SpacerBlock,
     checklist: ChecklistBlock,
+    cardGrid: CardGridBlock,
 };
 </script>
 

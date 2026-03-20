@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Models\PageModel;
 use App\Models\PostModel;
-use App\Models\ServiceModel;
 use App\Services\Interfaces\SettingServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -85,12 +84,6 @@ class PublicPageController extends Controller
                 ->with('author', 'categories')
                 ->latest('published_at')
                 ->paginate(config('cms.public_per_page.posts', 12));
-        }
-
-        if ($template === 'services') {
-            $props['services'] = ServiceModel::published()
-                ->orderBy('sort_order')
-                ->get();
         }
 
         if ($template === 'contact') {

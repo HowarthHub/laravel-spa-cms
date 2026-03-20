@@ -3,8 +3,7 @@ import PublicLayout from '@/Layouts/PublicLayout.vue';
 import TiptapRendererComponent from '@/Components/Public/TiptapRendererComponent.vue';
 import BlockRendererComponent from '@/Components/Public/BlockRenderer/BlockRendererComponent.vue';
 import PostCardComponent from '@/Components/Public/PostCardComponent.vue';
-import ServiceCardComponent from '@/Components/Public/ServiceCardComponent.vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 
 const props = defineProps({
@@ -24,14 +23,18 @@ const props = defineProps({
         type: Object,
         default: null,
     },
-    services: {
-        type: Array,
-        default: null,
-    },
     form: {
         type: [Object, null],
         default: null,
     },
+});
+
+const inertiaPage = usePage();
+
+const heroPreheading = computed(() => {
+    if (props.page.pre_heading) return props.page.pre_heading;
+    if (props.page.parent?.title) return props.page.parent.title;
+    return inertiaPage.props.settings?.site_name || '';
 });
 
 const isFullWidth = computed(() => props.template === 'page-builder' || props.template === 'landing');
@@ -75,7 +78,8 @@ function fieldKey(label) {
         <!-- Featured Image Banner -->
         <div v-if="page.featured_image" class="relative h-64 sm:h-80 lg:h-96 overflow-hidden bg-gray-900">
             <img :src="page.featured_image" :alt="page.title" class="h-full w-full object-cover opacity-60" />
-            <div class="absolute inset-0 flex items-center justify-center">
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <p v-if="heroPreheading" v-scroll-animate class="text-sm sm:text-base font-semibold uppercase tracking-widest text-amber-400 mb-3">{{ heroPreheading }}</p>
                 <h1 v-scroll-animate class="text-4xl sm:text-5xl font-bold text-white text-center px-4">{{ page.title }}</h1>
             </div>
         </div>
@@ -97,16 +101,6 @@ function fieldKey(label) {
                     <h2 class="text-2xl font-bold text-gray-900 mb-8">Latest Posts</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <PostCardComponent v-for="(post, i) in posts.data" :key="post.id" :post="post" :index="i" />
-                    </div>
-                </div>
-            </div>
-
-            <!-- Services (services template) -->
-            <div v-if="template === 'services' && services?.length" class="mt-12">
-                <div :class="isFullWidth ? 'mx-auto max-w-7xl px-4 sm:px-6 lg:px-8' : ''">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-8">Our Services</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <ServiceCardComponent v-for="(service, i) in services" :key="service.id" :service="service" :index="i" />
                     </div>
                 </div>
             </div>

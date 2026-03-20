@@ -11,7 +11,6 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RedirectController;
 use App\Http\Controllers\Admin\RevisionController;
-use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
@@ -86,18 +85,6 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/forms/{form}/submissions/export', [FormController::class, 'exportSubmissions'])->name('forms.submissions.export');
     Route::delete('/forms/submissions/{formSubmission}', [FormController::class, 'destroySubmission'])->name('forms.submissions.destroy');
 
-    // Services
-    Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
-    Route::get('/services/create', [ServiceController::class, 'create'])->name('services.create');
-    Route::post('/services', [ServiceController::class, 'store'])->name('services.store');
-    Route::get('/services/{service}/edit', [ServiceController::class, 'edit'])->name('services.edit');
-    Route::put('/services/{service}', [ServiceController::class, 'update'])->name('services.update');
-    Route::delete('/services/{service}', [ServiceController::class, 'destroy'])->name('services.destroy');
-    Route::post('/services/bulk-destroy', [ServiceController::class, 'bulkDestroy'])->name('services.bulk-destroy');
-    Route::post('/services/bulk-draft', [ServiceController::class, 'bulkDraft'])->name('services.bulk-draft');
-    Route::post('/services/bulk-publish', [ServiceController::class, 'bulkPublish'])->name('services.bulk-publish');
-    Route::post('/services/{service}/duplicate', [ServiceController::class, 'duplicate'])->name('services.duplicate');
-
     // Enquiries
     Route::get('/enquiries', [EnquiryController::class, 'index'])->name('enquiries.index');
     Route::get('/enquiries/export', [EnquiryController::class, 'export'])->name('enquiries.export');
@@ -131,7 +118,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Revisions
     Route::get('/{type}/{id}/revisions', [RevisionController::class, 'index'])
-        ->where('type', 'pages|posts|services')
+        ->where('type', 'pages|posts')
         ->name('revisions.index');
     Route::post('/revisions/{revision}/restore', [RevisionController::class, 'restore'])->name('revisions.restore');
 
