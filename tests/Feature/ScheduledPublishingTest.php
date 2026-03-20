@@ -2,7 +2,6 @@
 
 use App\Models\PageModel;
 use App\Models\PostModel;
-use App\Models\ServiceModel;
 use App\Models\UserModel;
 
 beforeEach(function () {
@@ -33,18 +32,6 @@ it('publishes scheduled pages when publish date has passed', function () {
     $this->artisan('content:publish-scheduled')->assertSuccessful();
 
     expect($page->fresh()->status)->toBe('published');
-});
-
-it('publishes scheduled services when publish date has passed', function () {
-    $service = ServiceModel::factory()->create([
-        'status' => 'scheduled',
-        'published_at' => now()->subMinute(),
-        'author_id' => $this->author->id,
-    ]);
-
-    $this->artisan('content:publish-scheduled')->assertSuccessful();
-
-    expect($service->fresh()->status)->toBe('published');
 });
 
 it('does not publish items scheduled for the future', function () {

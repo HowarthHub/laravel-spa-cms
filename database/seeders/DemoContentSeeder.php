@@ -10,7 +10,6 @@ use App\Models\MenuItemModel;
 use App\Models\MenuModel;
 use App\Models\PageModel;
 use App\Models\PostModel;
-use App\Models\ServiceModel;
 use App\Models\TagModel;
 use App\Models\UserModel;
 use Illuminate\Database\Seeder;
@@ -405,115 +404,6 @@ class DemoContentSeeder extends Seeder
             ]);
         }
 
-        // ── Services ─────────────────────────────────────
-        $services = [
-            [
-                'title' => 'Web Development',
-                'slug' => 'web-development',
-                'short_description' => 'Bespoke web applications built with modern frameworks and best practices.',
-                'content' => $this->serviceBlocks(
-                    'We build fast, scalable web applications using Laravel, Vue.js, and other cutting-edge technologies. From simple brochure sites to complex platforms, we deliver clean code and exceptional user experiences.',
-                    ['Custom Laravel applications', 'API development & integration', 'Database design & optimisation', 'Performance tuning', 'Ongoing maintenance & support'],
-                ),
-                'icon' => 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
-                'cta_text' => 'Start Your Project',
-                'cta_link' => '/contact-us',
-                'sort_order' => 0,
-                'status' => 'published',
-                'published_at' => now()->subMonths(2),
-                'meta_title' => 'Web Development Services',
-                'meta_description' => 'Bespoke web development using Laravel, Vue.js and modern frameworks.',
-            ],
-            [
-                'title' => 'Web Design',
-                'slug' => 'web-design',
-                'short_description' => 'Beautiful, responsive designs that engage your audience and drive conversions.',
-                'content' => $this->serviceBlocks(
-                    'Our design process puts your users first. We create stunning, mobile-responsive designs that not only look great but convert visitors into customers. Every design is crafted to reflect your brand identity.',
-                    ['UI/UX design', 'Mobile-first responsive layouts', 'Brand identity & style guides', 'Wireframing & prototyping', 'Accessibility compliance'],
-                ),
-                'icon' => 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z',
-                'cta_text' => 'View Our Portfolio',
-                'cta_link' => '/contact-us',
-                'sort_order' => 1,
-                'status' => 'published',
-                'published_at' => now()->subMonths(2),
-                'meta_title' => 'Web Design Services',
-                'meta_description' => 'Beautiful, responsive web design that drives conversions.',
-            ],
-            [
-                'title' => 'SEO & Digital Marketing',
-                'slug' => 'seo-digital-marketing',
-                'short_description' => 'Get found online with our proven search engine optimisation strategies.',
-                'content' => $this->serviceBlocks(
-                    'We help businesses climb the search rankings with data-driven SEO strategies. From technical SEO audits to content marketing and link building, we deliver measurable results that grow your organic traffic.',
-                    ['Technical SEO audits', 'Keyword research & strategy', 'Content marketing', 'Local SEO optimisation', 'Monthly reporting & analytics'],
-                ),
-                'icon' => 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z',
-                'cta_text' => 'Improve Your Rankings',
-                'cta_link' => '/contact-us',
-                'sort_order' => 2,
-                'status' => 'published',
-                'published_at' => now()->subMonths(2),
-                'meta_title' => 'SEO & Digital Marketing Services',
-                'meta_description' => 'Data-driven SEO and digital marketing to grow your online presence.',
-            ],
-            [
-                'title' => 'E-commerce Solutions',
-                'slug' => 'ecommerce-solutions',
-                'short_description' => 'Powerful online shops that make selling easy and secure.',
-                'content' => $this->serviceBlocks(
-                    'Whether you are launching your first online shop or scaling an existing one, we build e-commerce platforms that are fast, secure, and easy to manage. We integrate with all major payment providers and shipping services.',
-                    ['Custom e-commerce platforms', 'Payment gateway integration', 'Inventory management', 'Order tracking & fulfilment', 'Security & PCI compliance'],
-                ),
-                'icon' => 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z',
-                'cta_text' => 'Launch Your Shop',
-                'cta_link' => '/contact-us',
-                'sort_order' => 3,
-                'status' => 'published',
-                'published_at' => now()->subWeeks(3),
-                'meta_title' => 'E-commerce Development Services',
-                'meta_description' => 'Custom e-commerce solutions for businesses of all sizes.',
-            ],
-            [
-                'title' => 'Hosting & Support',
-                'slug' => 'hosting-and-support',
-                'short_description' => 'Reliable hosting and ongoing support to keep your site running smoothly.',
-                'content' => $this->serviceBlocks(
-                    'We provide managed hosting packages with 99.9% uptime, daily backups, security monitoring, and ongoing technical support. Focus on running your business while we take care of the technical side.',
-                    ['Managed cloud hosting', 'Daily automated backups', 'SSL certificates & security', '24/7 uptime monitoring', 'Priority technical support'],
-                ),
-                'icon' => 'M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2',
-                'cta_text' => 'Get Started',
-                'cta_link' => '/contact-us',
-                'sort_order' => 4,
-                'status' => 'published',
-                'published_at' => now()->subWeeks(2),
-                'meta_title' => 'Hosting & Support Services',
-                'meta_description' => 'Managed hosting with 99.9% uptime and priority support.',
-            ],
-            [
-                'title' => 'Mobile App Development',
-                'slug' => 'mobile-app-development',
-                'short_description' => 'Cross-platform mobile apps that your customers will love.',
-                'content' => $this->serviceBlocks(
-                    'We are currently expanding our mobile development offering. Stay tuned for more details on our cross-platform app development services.',
-                    ['Cross-platform development', 'Native performance', 'App store submission', 'Push notifications', 'Analytics integration'],
-                ),
-                'icon' => 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z',
-                'cta_text' => 'Enquire Now',
-                'cta_link' => '/contact-us',
-                'sort_order' => 5,
-                'status' => 'draft',
-            ],
-        ];
-
-        foreach ($services as $service) {
-            ServiceModel::create(array_merge($service, [
-                'author_id' => $authorId,
-            ]));
-        }
-
         // ── Menus ──────────────────────────────────────────
         $mainMenu = MenuModel::create(['name' => 'Main Navigation', 'handle' => 'main']);
 
@@ -579,28 +469,6 @@ class DemoContentSeeder extends Seeder
                     'content' => [
                         ['type' => 'text', 'text' => $text],
                     ],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @param  list<string>  $features
-     */
-    private function serviceBlocks(string $description, array $features): array
-    {
-        return [
-            [
-                'id' => 'blk_'.substr(md5($description), 0, 9),
-                'type' => 'richText',
-                'data' => ['content' => $this->tiptapContent($description)],
-            ],
-            [
-                'id' => 'blk_'.substr(md5(implode(',', $features)), 0, 9),
-                'type' => 'checklist',
-                'data' => [
-                    'heading' => 'What\'s Included',
-                    'items' => $features,
                 ],
             ],
         ];

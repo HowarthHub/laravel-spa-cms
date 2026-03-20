@@ -15,6 +15,7 @@ class PageStoreRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
+            'pre_heading' => ['nullable', 'string', 'max:255'],
             'content' => ['nullable', 'array'],
             'excerpt' => ['nullable', 'string', 'max:500'],
             'template' => ['nullable', 'string', 'max:100'],

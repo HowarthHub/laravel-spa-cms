@@ -20,6 +20,7 @@ const props = defineProps({
 
 const form = useForm({
     title: '',
+    pre_heading: '',
     content: null,
     excerpt: '',
     template: 'default',
@@ -39,12 +40,13 @@ const slugPrefix = computed(() => {
     return parent ? `/${parent.slug}` : '';
 });
 
-const usePageBuilder = computed(() => form.template === 'page-builder');
+const pageBuilderTemplates = ['page-builder', 'landing'];
+const usePageBuilder = computed(() => pageBuilderTemplates.includes(form.template));
 
 watch(() => form.template, (newTemplate, oldTemplate) => {
-    if (newTemplate === 'page-builder' && oldTemplate !== 'page-builder') {
+    if (pageBuilderTemplates.includes(newTemplate) && !pageBuilderTemplates.includes(oldTemplate)) {
         form.content = [];
-    } else if (newTemplate !== 'page-builder' && oldTemplate === 'page-builder') {
+    } else if (!pageBuilderTemplates.includes(newTemplate) && pageBuilderTemplates.includes(oldTemplate)) {
         form.content = null;
     }
 });
@@ -84,6 +86,19 @@ const submit = () => {
                             :class="{ 'border-red-500': form.errors.title }"
                         />
                         <p v-if="form.errors.title" class="mt-1 text-sm text-red-600">{{ form.errors.title }}</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Pre-heading</label>
+                        <input
+                            v-model="form.pre_heading"
+                            type="text"
+                            placeholder="Defaults to site name if empty"
+                            class="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none dark:bg-gray-700 dark:text-gray-100"
+                            :class="{ 'border-red-500': form.errors.pre_heading }"
+                        />
+                        <p v-if="form.errors.pre_heading" class="mt-1 text-sm text-red-600">{{ form.errors.pre_heading }}</p>
+                        <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">Gold text shown above the page title in the hero banner</p>
                     </div>
 
                     <SlugInputComponent v-model="form.slug" :title="form.title" :prefix="slugPrefix" />

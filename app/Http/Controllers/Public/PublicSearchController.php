@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Models\PageModel;
 use App\Models\PostModel;
-use App\Models\ServiceModel;
 use App\Services\Interfaces\SettingServiceInterface;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -23,7 +22,6 @@ class PublicSearchController extends Controller
         $results = [
             'pages' => [],
             'posts' => [],
-            'services' => [],
         ];
 
         if ($query !== '') {
@@ -48,14 +46,6 @@ class PublicSearchController extends Controller
                 ->limit(10)
                 ->get();
 
-            $results['services'] = ServiceModel::published()
-                ->where(function ($q) use ($likeQuery) {
-                    $q->where('title', 'LIKE', $likeQuery)
-                        ->orWhere('short_description', 'LIKE', $likeQuery);
-                })
-                ->select('id', 'title', 'slug', 'short_description')
-                ->limit(10)
-                ->get();
         }
 
         return Inertia::render('Public/SearchResultsPage', [

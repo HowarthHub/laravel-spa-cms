@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\PageModel;
 use App\Models\PostModel;
-use App\Models\ServiceModel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
@@ -22,7 +21,7 @@ class PublishScheduledContentCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Publish scheduled pages, posts, and services whose publish date has passed';
+    protected $description = 'Publish scheduled pages and posts whose publish date has passed';
 
     /**
      * Execute the console command.
@@ -33,7 +32,6 @@ class PublishScheduledContentCommand extends Command
 
         $count += $this->publishScheduled(PageModel::class);
         $count += $this->publishScheduled(PostModel::class);
-        $count += $this->publishScheduled(ServiceModel::class);
 
         $this->info("Published {$count} item(s).");
 
@@ -43,17 +41,17 @@ class PublishScheduledContentCommand extends Command
     /**
      * Publish all scheduled items for the given model class.
      *
-     * @param  class-string<PageModel|PostModel|ServiceModel>  $modelClass
+     * @param  class-string<PageModel|PostModel>  $modelClass
      */
     private function publishScheduled(string $modelClass): int
     {
-        /** @var Collection<int, PageModel|PostModel|ServiceModel> $items */
+        /** @var Collection<int, PageModel|PostModel> $items */
         $items = $modelClass::query()
             ->where('status', 'scheduled')
             ->where('published_at', '<=', now())
             ->get();
 
-        $items->each(function (PageModel|PostModel|ServiceModel $item): void {
+        $items->each(function (PageModel|PostModel $item): void {
             $item->update(['status' => 'published']);
         });
 

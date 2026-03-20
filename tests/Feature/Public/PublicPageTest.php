@@ -3,7 +3,6 @@
 use App\Models\FormModel;
 use App\Models\PageModel;
 use App\Models\PostModel;
-use App\Models\ServiceModel;
 use App\Models\SettingModel;
 
 it('renders homepage with published page when homepage is set', function () {
@@ -59,18 +58,6 @@ it('includes posts when page uses blog template', function () {
         ->assertOk()
         ->assertInertia(fn ($inertia) => $inertia
             ->has('posts.data', 3)
-        );
-});
-
-it('includes services when page uses services template', function () {
-    $page = PageModel::factory()->published()->create(['slug' => 'services', 'template' => 'services']);
-    ServiceModel::factory()->published()->count(2)->create();
-    ServiceModel::factory()->create(['status' => 'draft']);
-
-    $this->get(route('public.page.show', 'services'))
-        ->assertOk()
-        ->assertInertia(fn ($inertia) => $inertia
-            ->has('services', 2)
         );
 });
 

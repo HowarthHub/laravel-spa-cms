@@ -10,6 +10,7 @@ import FeatureGridBlockEditor from './Blocks/FeatureGridBlockEditor.vue';
 import TestimonialBlockEditor from './Blocks/TestimonialBlockEditor.vue';
 import SpacerBlockEditor from './Blocks/SpacerBlockEditor.vue';
 import ChecklistBlockEditor from './Blocks/ChecklistBlockEditor.vue';
+import CardGridBlockEditor from './Blocks/CardGridBlockEditor.vue';
 
 const props = defineProps({
     block: { type: Object, required: true },
@@ -31,6 +32,7 @@ const editorComponents = {
     testimonial: TestimonialBlockEditor,
     spacer: SpacerBlockEditor,
     checklist: ChecklistBlockEditor,
+    cardGrid: CardGridBlockEditor,
 };
 </script>
 

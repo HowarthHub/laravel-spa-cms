@@ -33,6 +33,7 @@ const defaultData = {
     testimonial: () => ({ quote: '', author: '', role: '', avatar: '' }),
     spacer: () => ({ size: 'medium' }),
     checklist: () => ({ heading: '', items: [''] }),
+    cardGrid: () => ({ heading: '', subheading: '', columns: 3, cards: [{ image: '', title: '', subtitle: '', description: '', extended: '', link: '' }] }),
 };
 
 function addBlock(type) {

@@ -39,9 +39,6 @@ const navItems = computed(() => {
     if (can('view pages')) {
         items.push({ label: 'Pages', href: '/admin/pages' });
     }
-    if (can('manage services')) {
-        items.push({ label: 'Services', href: '/admin/services' });
-    }
     if (can('view posts')) {
         const children = [];
         children.push({ label: 'All Posts', href: '/admin/posts' });
