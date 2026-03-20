@@ -40,7 +40,6 @@ const form = useForm({
     tag_ids: props.post.tags?.map(t => t.id) || [],
     meta_title: props.post.meta_title || '',
     meta_description: props.post.meta_description || '',
-    og_image: props.post.og_image || '',
 });
 
 const submit = () => {
@@ -97,7 +96,6 @@ const submit = () => {
                     <SeoPanelComponent
                         v-model:meta-title="form.meta_title"
                         v-model:meta-description="form.meta_description"
-                        v-model:og-image="form.og_image"
                     />
                 </div>
 

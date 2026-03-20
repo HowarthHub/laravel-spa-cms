@@ -26,7 +26,6 @@ class PageUpdateRequest extends FormRequest
             'featured_image' => ['nullable', 'string'],
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:500'],
-            'og_image' => ['nullable', 'string'],
             'form_id' => ['nullable', 'integer', 'exists:forms,id'],
         ];
     }

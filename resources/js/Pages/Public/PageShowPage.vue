@@ -37,7 +37,7 @@ const heroPreheading = computed(() => {
     return inertiaPage.props.settings?.site_name || '';
 });
 
-const isFullWidth = computed(() => props.template === 'page-builder' || props.template === 'landing');
+const isFullWidth = computed(() => props.template === 'page-builder');
 
 const isBlocks = computed(() => {
     const c = props.page.content;

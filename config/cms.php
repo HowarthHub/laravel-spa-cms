@@ -4,7 +4,6 @@ return [
     'templates' => [
         'default' => 'Default',
         'page-builder' => 'Page Builder',
-        'landing' => 'Landing Page',
         'contact' => 'Contact Page',
         'blog' => 'Blog',
     ],

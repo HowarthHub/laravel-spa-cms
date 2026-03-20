@@ -51,7 +51,7 @@ const navItems = computed(() => {
         items.push({ label: 'Posts', group: 'posts', children });
     }
     if (can('view enquiries')) {
-        items.push({ label: 'Enquiries', href: '/admin/enquiries', badge: page.props.enquiryCount ?? null });
+        items.push({ label: 'Enquiries', href: '/admin/enquiries' });
     }
     if (can('manage media')) {
         items.push({ label: 'Media', href: '/admin/media' });

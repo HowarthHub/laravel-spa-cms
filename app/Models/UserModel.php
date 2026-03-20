@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\CustomResetPasswordNotification;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -55,5 +56,11 @@ class UserModel extends Authenticatable
     public function pages(): HasMany
     {
         return $this->hasMany(PageModel::class, 'author_id');
+    }
+
+    public function sendPasswordResetNotification($token): void
+    {
+        $url = url('/reset-password/'.$token.'?email='.urlencode($this->email));
+        $this->notify(new CustomResetPasswordNotification($url));
     }
 }

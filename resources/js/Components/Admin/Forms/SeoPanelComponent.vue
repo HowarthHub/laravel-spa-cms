@@ -4,10 +4,9 @@ import { ref } from 'vue';
 defineProps({
     metaTitle: { type: String, default: '' },
     metaDescription: { type: String, default: '' },
-    ogImage: { type: String, default: '' },
 });
 
-defineEmits(['update:metaTitle', 'update:metaDescription', 'update:ogImage']);
+defineEmits(['update:metaTitle', 'update:metaDescription']);
 
 const open = ref(false);
 </script>
@@ -43,15 +42,6 @@ const open = ref(false);
                     @input="$emit('update:metaDescription', $event.target.value)"
                     maxlength="500"
                     rows="3"
-                    class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm dark:text-gray-100 shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none"
-                />
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">OG Image URL</label>
-                <input
-                    type="text"
-                    :value="ogImage"
-                    @input="$emit('update:ogImage', $event.target.value)"
                     class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm dark:text-gray-100 shadow-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none"
                 />
             </div>

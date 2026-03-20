@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\UserModel;
-use Illuminate\Auth\Notifications\ResetPassword;
+use App\Notifications\CustomResetPasswordNotification;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
 
@@ -19,7 +19,7 @@ it('sends a reset link for a valid email', function () {
     $this->post(route('password.email'), ['email' => $user->email])
         ->assertSessionHasNoErrors();
 
-    Notification::assertSentTo($user, ResetPassword::class);
+    Notification::assertSentTo($user, CustomResetPasswordNotification::class);
 });
 
 it('does not reveal whether an email exists', function () {

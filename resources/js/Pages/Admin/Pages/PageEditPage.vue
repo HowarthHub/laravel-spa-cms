@@ -34,7 +34,6 @@ const form = useForm({
     featured_image: props.page.featured_image || '',
     meta_title: props.page.meta_title || '',
     meta_description: props.page.meta_description || '',
-    og_image: props.page.og_image || '',
 });
 
 const isHomepage = computed(() => String(props.homepageId) === String(props.page.id));
@@ -46,7 +45,7 @@ const slugPrefix = computed(() => {
     return parent ? `/${parent.slug}` : '';
 });
 
-const pageBuilderTemplates = ['page-builder', 'landing'];
+const pageBuilderTemplates = ['page-builder'];
 const usePageBuilder = computed(() => {
     if (pageBuilderTemplates.includes(form.template)) return true;
     return Array.isArray(form.content) && form.content.length > 0 && form.content[0]?.id && form.content[0]?.type;
@@ -140,7 +139,6 @@ const submit = () => {
                     <SeoPanelComponent
                         v-model:meta-title="form.meta_title"
                         v-model:meta-description="form.meta_description"
-                        v-model:og-image="form.og_image"
                     />
                 </div>
 

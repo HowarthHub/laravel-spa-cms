@@ -16,8 +16,12 @@ const props = defineProps({
 });
 
 const fields = props.form.fields || [];
+const expandedId = ref(null);
 
-// Confirm modal
+const toggleExpand = (id) => {
+    expandedId.value = expandedId.value === id ? null : id;
+};
+
 const confirmModal = ref(false);
 const confirmAction = ref(null);
 
@@ -33,13 +37,14 @@ const onConfirm = () => {
 
 const deleteSubmission = (id) => {
     showConfirm(() => {
-        router.delete(`/admin/forms/${props.form.id}/submissions/${id}`);
+        router.delete(`/admin/forms/submissions/${id}`);
     });
 };
 
 const getSubmissionValue = (submission, field) => {
     if (!submission.data) return '';
-    const value = submission.data[field.label];
+    const key = field.label.toLowerCase().replace(/\s+/g, '_');
+    const value = submission.data[key];
     if (value === true) return 'Yes';
     if (value === false) return 'No';
     return value || '';
@@ -92,19 +97,34 @@ const getSubmissionValue = (submission, field) => {
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                            <tr v-for="submission in submissions.data" :key="submission.id" class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                                <td v-for="field in fields" :key="field.label"
-                                    class="px-4 py-3 text-sm text-gray-600 dark:text-gray-300 max-w-xs truncate">
-                                    {{ getSubmissionValue(submission, field) }}
-                                </td>
-                                <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                                    {{ new Date(submission.created_at).toLocaleDateString() }}
-                                </td>
-                                <td class="whitespace-nowrap px-4 py-3 text-right">
-                                    <button v-if="can('manage forms')" @click="deleteSubmission(submission.id)"
-                                        class="text-sm text-red-600 hover:text-red-500">Delete</button>
-                                </td>
-                            </tr>
+                            <template v-for="submission in submissions.data" :key="submission.id">
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer" @click="toggleExpand(submission.id)">
+                                    <td v-for="field in fields" :key="field.label"
+                                        class="px-4 py-3 text-sm text-gray-600 dark:text-gray-300 max-w-xs truncate">
+                                        {{ getSubmissionValue(submission, field) }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                                        {{ new Date(submission.created_at).toLocaleDateString() }}
+                                    </td>
+                                    <td class="whitespace-nowrap px-4 py-3 text-right">
+                                        <button v-if="can('manage forms')" @click.stop="deleteSubmission(submission.id)"
+                                            class="text-sm text-red-600 hover:text-red-500">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr v-if="expandedId === submission.id">
+                                    <td :colspan="fields.length + 2" class="bg-gray-50 dark:bg-gray-700/30 px-6 py-4">
+                                        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div v-for="field in fields" :key="field.label">
+                                                <dt class="text-xs font-medium uppercase text-gray-500 dark:text-gray-400">{{ field.label }}</dt>
+                                                <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100 whitespace-pre-wrap">{{ getSubmissionValue(submission, field) || '—' }}</dd>
+                                            </div>
+                                        </dl>
+                                        <p class="mt-3 text-xs text-gray-400 dark:text-gray-500">
+                                            Submitted {{ new Date(submission.created_at).toLocaleString() }}
+                                        </p>
+                                    </td>
+                                </tr>
+                            </template>
                         </tbody>
                     </table>
                 </div>

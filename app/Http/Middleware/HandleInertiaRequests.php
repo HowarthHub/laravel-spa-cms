@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\ContactEnquiryModel;
 use App\Models\MenuModel;
 use App\Models\PageModel;
 use App\Services\Interfaces\SettingServiceInterface;
@@ -35,9 +34,6 @@ class HandleInertiaRequests extends Middleware
                 'error' => session('error'),
                 'warning' => session('warning'),
             ],
-            'enquiryCount' => $request->user()
-                ? ContactEnquiryModel::where('status', 'new')->count()
-                : 0,
             'site' => [
                 'name' => $settingService->get('general.site_name', 'My Site'),
                 'tagline' => $settingService->get('general.tagline', ''),
