@@ -13,7 +13,9 @@ Route::get('/search', PublicSearchController::class)->name('public.search');
 Route::get('/blog', [PublicPostController::class, 'index'])->name('public.blog.index');
 Route::get('/blog/{slug}', [PublicPostController::class, 'show'])->name('public.blog.show');
 
-Route::post('/forms/{form}/submit', [PublicFormController::class, 'submit'])->name('public.form.submit');
+Route::post('/forms/{form}/submit', [PublicFormController::class, 'submit'])
+    ->middleware('throttle:5,1')
+    ->name('public.form.submit');
 
 Route::get('/{slug}', [PublicPageController::class, 'show'])->name('public.page.show');
 Route::get('/{parent}/{child}', [PublicPageController::class, 'showChild'])->name('public.page.show.child');

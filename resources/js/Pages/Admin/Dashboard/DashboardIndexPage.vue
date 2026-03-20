@@ -31,6 +31,12 @@ const statusBadge = (s) => ({
     replied: 'bg-emerald-500 text-white',
     archived: 'bg-amber-500 text-white',
 })[s] || 'bg-gray-500 text-white';
+
+const getSummary = (submission) => {
+    if (!submission.data) return 'No data';
+    const values = Object.values(submission.data).filter(v => typeof v === 'string' && v.length > 0);
+    return values.slice(0, 2).join(' — ') || 'No data';
+};
 </script>
 
 <template>
@@ -84,9 +90,9 @@ const statusBadge = (s) => ({
                     class="inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700">
                     Media Library
                 </Link>
-                <Link v-if="can('view enquiries')" href="/admin/enquiries?status=new"
+                <Link v-if="can('view enquiries')" href="/admin/enquiries"
                     class="inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700">
-                    View New Enquiries
+                    View Enquiries
                 </Link>
             </div>
 
@@ -122,21 +128,16 @@ const statusBadge = (s) => ({
                         <Link href="/admin/enquiries" class="text-xs text-cyan-600 hover:text-cyan-500 dark:text-cyan-400 dark:hover:text-cyan-300">View all</Link>
                     </div>
                     <div v-if="recentEnquiries.length" class="divide-y divide-gray-200 dark:divide-gray-700">
-                        <Link v-for="enquiry in recentEnquiries" :key="enquiry.id" :href="`/admin/enquiries/${enquiry.id}`"
-                            class="flex items-center justify-between px-6 py-3 hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <div v-for="enquiry in recentEnquiries" :key="enquiry.id"
+                            class="flex items-center justify-between px-6 py-3">
                             <div class="min-w-0 flex-1">
-                                <p class="truncate text-sm font-medium text-gray-900 dark:text-gray-100" :class="{ 'font-semibold': enquiry.status === 'new' }">
-                                    {{ enquiry.name }}
+                                <p class="truncate text-sm font-medium text-gray-900 dark:text-gray-100">
+                                    {{ getSummary(enquiry) }}
                                 </p>
-                                <p class="truncate text-xs text-gray-400 dark:text-gray-500">{{ enquiry.subject || enquiry.email }}</p>
+                                <p class="truncate text-xs text-gray-400 dark:text-gray-500">{{ enquiry.form?.name || 'Form' }}</p>
                             </div>
-                            <div class="ml-4 flex items-center gap-2">
-                                <span :class="statusBadge(enquiry.status)" class="inline-flex rounded-full px-2 py-0.5 text-xs font-medium capitalize">
-                                    {{ enquiry.status }}
-                                </span>
-                                <span class="text-xs text-gray-400 dark:text-gray-500">{{ new Date(enquiry.created_at).toLocaleDateString() }}</span>
-                            </div>
-                        </Link>
+                            <span class="text-xs text-gray-400 dark:text-gray-500">{{ new Date(enquiry.created_at).toLocaleDateString() }}</span>
+                        </div>
                     </div>
                     <div v-else class="px-6 py-8 text-center text-sm text-gray-500 dark:text-gray-400">No enquiries yet.</div>
                 </div>

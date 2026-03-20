@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Dashboard\DashboardIndexRequest;
-use App\Models\ContactEnquiryModel;
+use App\Models\FormSubmissionModel;
 use App\Models\MediaItemModel;
 use App\Models\PageModel;
 use App\Models\PostModel;
@@ -21,7 +21,7 @@ class DashboardController extends Controller
                 'totalPages' => PageModel::count(),
                 'publishedPosts' => PostModel::where('status', 'published')->count(),
                 'draftPosts' => PostModel::where('status', 'draft')->count(),
-                'newEnquiries' => ContactEnquiryModel::where('status', 'new')->count(),
+                'newEnquiries' => FormSubmissionModel::where('created_at', '>=', now()->subDays(7))->count(),
                 'totalMedia' => MediaItemModel::count(),
                 'totalUsers' => UserModel::count(),
             ],
@@ -29,9 +29,10 @@ class DashboardController extends Controller
                 ->latest('updated_at')
                 ->limit(5)
                 ->get(['id', 'title', 'status', 'author_id', 'updated_at']),
-            'recentEnquiries' => ContactEnquiryModel::latest()
+            'recentEnquiries' => FormSubmissionModel::with('form:id,name')
+                ->latest()
                 ->limit(5)
-                ->get(['id', 'name', 'email', 'subject', 'status', 'created_at']),
+                ->get(),
             'recentPages' => PageModel::with('author')
                 ->latest('updated_at')
                 ->limit(5)

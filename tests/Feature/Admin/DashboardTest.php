@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\ContactEnquiryModel;
+use App\Models\FormModel;
+use App\Models\FormSubmissionModel;
 use App\Models\MediaItemModel;
 use App\Models\PageModel;
 use App\Models\PostModel;
@@ -26,7 +27,8 @@ it('returns correct stat counts', function () {
     PageModel::factory()->count(3)->create();
     PostModel::factory()->published()->count(2)->create();
     PostModel::factory()->create(['status' => 'draft']);
-    ContactEnquiryModel::factory()->count(4)->create();
+    $form = FormModel::factory()->create();
+    FormSubmissionModel::factory()->for($form, 'form')->count(4)->create();
     MediaItemModel::factory()->count(5)->create();
 
     $this->get(route('admin.dashboard'))

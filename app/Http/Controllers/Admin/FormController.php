@@ -66,6 +66,17 @@ class FormController extends Controller
         return redirect()->route('admin.forms.index')->with('success', 'Form deleted.');
     }
 
+    public function allSubmissions(): Response
+    {
+        $submissions = FormSubmissionModel::with('form')
+            ->latest()
+            ->paginate(25);
+
+        return Inertia::render('Admin/Forms/AllSubmissionsPage', [
+            'submissions' => $submissions,
+        ]);
+    }
+
     public function submissions(FormModel $form): Response
     {
         return Inertia::render('Admin/Forms/FormSubmissionsPage', [
@@ -101,7 +112,8 @@ class FormController extends Controller
                     foreach ($submissions as $submission) {
                         $row = [];
                         foreach ($fields as $field) {
-                            $value = $submission->data[$field['label']] ?? '';
+                            $key = str($field['label'])->slug('_')->toString();
+                            $value = $submission->data[$key] ?? '';
                             if (is_bool($value)) {
                                 $value = $value ? 'Yes' : 'No';
                             }

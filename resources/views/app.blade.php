@@ -4,6 +4,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        @php $favicon = \App\Models\SettingModel::getCached('general', 'favicon'); @endphp
+        @if($favicon)
+        <link rel="icon" type="image/png" href="{{ $favicon }}">
+        <link rel="apple-touch-icon" href="{{ $favicon }}">
+        @endif
         <title>{{ config('app.name', 'CMS') }}</title>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @inertiaHead

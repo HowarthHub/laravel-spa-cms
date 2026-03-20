@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
-import { computed, ref } from 'vue';
+import { computed, ref, watch, Transition } from 'vue';
 
 const props = defineProps({
     meta: {
@@ -15,6 +15,17 @@ const socialLinks = computed(() => page.props.socialLinks || {});
 const navigation = computed(() => page.props.navigation || []);
 const currentYear = new Date().getFullYear();
 const searchQuery = ref('');
+const flashVisible = ref(false);
+const flashMessage = ref('');
+
+watch(() => page.props.flash?.success, (msg) => {
+    if (msg) {
+        flashMessage.value = msg;
+        flashVisible.value = true;
+        setTimeout(() => { flashVisible.value = false; }, 4000);
+    }
+}, { immediate: true });
+
 const mobileMenuOpen = ref(false);
 const mobileDropdownOpen = ref(null);
 
@@ -75,6 +86,20 @@ const socialPlatforms = [
             <link v-if="meta.canonicalUrl" rel="canonical" :href="meta.canonicalUrl" />
             <link v-if="site.favicon" rel="icon" :href="site.favicon" head-key="favicon" />
         </Head>
+
+        <!-- Flash Toast -->
+        <Transition
+            enter-active-class="transition ease-out duration-300"
+            enter-from-class="opacity-0 translate-y-[-8px]"
+            enter-to-class="opacity-100 translate-y-0"
+            leave-active-class="transition ease-in duration-200"
+            leave-from-class="opacity-100 translate-y-0"
+            leave-to-class="opacity-0 translate-y-[-8px]"
+        >
+            <div v-if="flashVisible" class="fixed top-4 right-4 z-50 rounded-lg bg-cyan-600 px-5 py-3 text-sm font-medium text-white shadow-lg">
+                {{ flashMessage }}
+            </div>
+        </Transition>
 
         <!-- Header -->
         <header class="border-b border-gray-200 bg-white">

@@ -22,7 +22,6 @@ class PostUpdateRequest extends FormRequest
             'featured_image' => ['nullable', 'string'],
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:500'],
-            'og_image' => ['nullable', 'string'],
             'category_ids' => ['nullable', 'array'],
             'category_ids.*' => ['integer', 'exists:categories,id'],
             'tag_ids' => ['nullable', 'array'],

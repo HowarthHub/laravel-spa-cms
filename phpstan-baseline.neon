@@ -145,54 +145,6 @@ parameters:
 			path: app/Models/PostModel.php
 
 		-
-			message: '#^Call to function is_array\(\) with string\|null will always evaluate to false\.$#'
-			identifier: function.impossibleType
-			count: 1
-			path: app/Models/ServiceModel.php
-
-		-
-			message: '#^Method App\\Models\\ServiceModel\:\:createRevision\(\) should return App\\Models\\RevisionModel but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Models/ServiceModel.php
-
-		-
-			message: '#^Method App\\Models\\ServiceModel\:\:hasBlocksMissingAlt\(\) is unused\.$#'
-			identifier: method.unused
-			count: 1
-			path: app/Models/ServiceModel.php
-
-		-
-			message: '#^Method App\\Models\\ServiceModel\:\:hasTiptapNodesMissingAlt\(\) is unused\.$#'
-			identifier: method.unused
-			count: 1
-			path: app/Models/ServiceModel.php
-
-		-
-			message: '#^PHPDoc type array\<int, string\> of property App\\Models\\ServiceModel\:\:\$appends is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$appends\.$#'
-			identifier: property.phpDocType
-			count: 1
-			path: app/Models/ServiceModel.php
-
-		-
-			message: '#^Result of \|\| is always true\.$#'
-			identifier: booleanOr.alwaysTrue
-			count: 1
-			path: app/Models/ServiceModel.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
-			path: app/Models/ServiceModel.php
-
-		-
-			message: '#^Variable \$content in empty\(\) is never defined\.$#'
-			identifier: empty.variable
-			count: 1
-			path: app/Models/ServiceModel.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$children\.$#'
 			identifier: property.notFound
 			count: 2

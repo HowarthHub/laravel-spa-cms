@@ -31,7 +31,6 @@ const form = useForm({
     featured_image: '',
     meta_title: '',
     meta_description: '',
-    og_image: '',
 });
 
 const slugPrefix = computed(() => {
@@ -40,7 +39,7 @@ const slugPrefix = computed(() => {
     return parent ? `/${parent.slug}` : '';
 });
 
-const pageBuilderTemplates = ['page-builder', 'landing'];
+const pageBuilderTemplates = ['page-builder'];
 const usePageBuilder = computed(() => pageBuilderTemplates.includes(form.template));
 
 watch(() => form.template, (newTemplate, oldTemplate) => {
@@ -127,7 +126,6 @@ const submit = () => {
                     <SeoPanelComponent
                         v-model:meta-title="form.meta_title"
                         v-model:meta-description="form.meta_description"
-                        v-model:og-image="form.og_image"
                     />
                 </div>
 

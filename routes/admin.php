@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\EnquiryController;
 use App\Http\Controllers\Admin\FormController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\MenuController;
@@ -85,13 +84,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/forms/{form}/submissions/export', [FormController::class, 'exportSubmissions'])->name('forms.submissions.export');
     Route::delete('/forms/submissions/{formSubmission}', [FormController::class, 'destroySubmission'])->name('forms.submissions.destroy');
 
-    // Enquiries
-    Route::get('/enquiries', [EnquiryController::class, 'index'])->name('enquiries.index');
-    Route::get('/enquiries/export', [EnquiryController::class, 'export'])->name('enquiries.export');
-    Route::get('/enquiries/{enquiry}', [EnquiryController::class, 'show'])->name('enquiries.show');
-    Route::put('/enquiries/{enquiry}', [EnquiryController::class, 'update'])->name('enquiries.update');
-    Route::delete('/enquiries/{enquiry}', [EnquiryController::class, 'destroy'])->name('enquiries.destroy');
-    Route::post('/enquiries/bulk-archive', [EnquiryController::class, 'bulkArchive'])->name('enquiries.bulk-archive');
+    // Enquiries (all form submissions)
+    Route::get('/enquiries', [FormController::class, 'allSubmissions'])->name('enquiries.index');
 
     // Redirects
     Route::get('/redirects', [RedirectController::class, 'index'])->name('redirects.index');
