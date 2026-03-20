@@ -96,14 +96,7 @@ class PublicPageController extends Controller
 
     private function resolveComponent(string $template): string
     {
-        return match ($template) {
-            'blog' => 'Public/PageShowPage',
-            'services' => 'Public/PageShowPage',
-            'contact' => 'Public/PageShowPage',
-            'landing' => 'Public/PageShowPage',
-            'page-builder' => 'Public/PageShowPage',
-            default => 'Public/PageShowPage',
-        };
+        return 'Public/PageShowPage';
     }
 
     /**
