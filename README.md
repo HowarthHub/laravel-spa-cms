@@ -4,16 +4,15 @@ A production-ready CMS boilerplate built with Laravel 12, Inertia.js v2, Vue 3, 
 
 ## Features
 
-- **Page Builder** — 10 drag-and-drop block types (hero, rich text, image, columns, CTA, features, testimonials, checklist, spacer)
+- **Page Builder** — 11 drag-and-drop block types (hero, rich text, image, columns, card grid, CTA, features, testimonials, checklist, spacer)
 - **Blog** — posts with categories, tags, featured images, SEO metadata
-- **Services** — service directory with full CRUD
 - **Dynamic Forms** — drag-and-drop form builder with email notifications on submission
 - **Media Library** — upload, browse, auto-generated thumbnails and previews
 - **Navigation** — hierarchical menu builder with drag-and-drop ordering
 - **Contact Enquiries** — status tracking, admin notes, CSV export
 - **User Management** — role-based access control (admin, editor, author)
 - **Settings** — site name, logo, favicon, SEO defaults, social links, schema markup, maintenance mode
-- **Revisions** — version history for pages, posts, and services
+- **Revisions** — version history for pages and posts
 - **Scheduled Publishing** — set a future publish date, content goes live automatically
 - **URL Redirects** — manage 301/302 redirects for SEO
 - **Search** — full-text search across all content types
@@ -32,7 +31,7 @@ A production-ready CMS boilerplate built with Laravel 12, Inertia.js v2, Vue 3, 
 | Database | MySQL 8.4 |
 | Dev Environment | Laravel Sail (Docker) |
 | Build | Vite 7 |
-| Testing | Pest (220 tests, 1163 assertions) |
+| Testing | Pest (198 tests, 1000 assertions) |
 | CI | GitHub Actions (Pint, Larastan, vue-tsc, Pest, Vite) |
 | Media | Spatie Media Library |
 | Auth | Spatie Permission |
@@ -93,14 +92,14 @@ Controller -> FormRequest -> Service -> Repository -> Model
 ```
 
 - **Controllers** handle HTTP, delegate to services
-- **Form Requests** validate all input (52 classes)
-- **Services** contain business logic (12 services)
-- **Repositories** handle data access (12 repositories)
-- **Models** define relationships and casts (15 models)
+- **Form Requests** validate all input (54 classes)
+- **Services** contain business logic (11 services)
+- **Repositories** handle data access (11 repositories)
+- **Models** define relationships and casts (14 models)
 
 ## Page Builder
 
-Pages can use a block-based editor with 10 block types:
+Pages can use a block-based editor with 11 block types:
 
 | Block | Description |
 |-------|-------------|
@@ -109,6 +108,7 @@ Pages can use a block-based editor with 10 block types:
 | Image | Single image with alt text and caption |
 | Two Column | Side-by-side rich text columns |
 | Three Column | Three rich text columns |
+| Card Grid | Grid of linked content cards |
 | Call to Action | CTA banner with button and colour variants |
 | Feature Grid | Grid of feature cards with icons |
 | Testimonial | Quote with author, role, and avatar |
@@ -144,4 +144,4 @@ GitHub Actions runs on push to `main`/`dev` and PRs to `main`:
 
 ## License
 
-Proprietary. All rights reserved.
+Released under the [MIT License](LICENSE).
